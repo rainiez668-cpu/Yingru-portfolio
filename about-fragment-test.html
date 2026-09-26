@@ -1,0 +1,2064 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Fragment Prototype</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap");
+
+    :root {
+      color-scheme: light;
+      background: #f4f3ed;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #f4f3ed;
+    }
+
+    body {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", monospace;
+    }
+
+    .scroll-track {
+      height: 200vh;
+    }
+
+    .sticky-stage {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #f4f3ed;
+    }
+
+    .hand-frame {
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      display: block;
+      width: min(100vw, 1920px);
+      height: auto;
+      max-height: 100vh;
+      margin-inline: auto;
+      object-fit: contain;
+      object-position: bottom center;
+      image-rendering: auto;
+      transform: translateY(42vh);
+      will-change: transform;
+    }
+
+    .hand-frame.is-entering {
+      transform: translateY(0);
+      transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .hand-frame.is-settled {
+      transform: none;
+      transition: none;
+      will-change: auto;
+    }
+
+    .display-name {
+      position: absolute;
+      z-index: 3;
+      top: calc(clamp(38px, 6vh, 75px) - 28px);
+      left: clamp(38px, 5vw, 76px);
+      display: flex;
+      flex-direction: column;
+      width: fit-content;
+      margin: 0;
+      color: #65bceb;
+      font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      font-size: clamp(82px, 8.2vw, 126px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-140%);
+      will-change: transform, opacity;
+    }
+
+    .display-name.is-entering {
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        transform 900ms cubic-bezier(0.22, 1, 0.36, 1) 100ms,
+        opacity 280ms ease-out 100ms;
+    }
+
+    .display-name-line {
+      width: 100%;
+      white-space: nowrap;
+    }
+
+    .display-name-line--top {
+      position: relative;
+      transform: translateY(-10px);
+    }
+
+    .display-name-line--top::before {
+      content: "Yingru";
+      display: block;
+      visibility: hidden;
+    }
+
+    .display-name-primary {
+      position: absolute;
+      inset: 0;
+    }
+
+    .display-name.has-art-y .display-name-primary::first-letter {
+      color: #beeb4f;
+      font-family: "Pinyon Script", "Snell Roundhand", "Brush Script MT", cursive;
+      font-size: 1.4286em;
+      font-weight: 400;
+    }
+
+    .display-name-line--bottom {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 0.06em;
+    }
+
+    .display-name-secondary {
+      font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      font-size: 0.94em;
+      font-style: normal;
+      font-weight: 400;
+      letter-spacing: -0.055em;
+      transform: translate(0px, -5px);
+    }
+
+    .top-navigation {
+      position: absolute;
+      z-index: 3;
+      top: clamp(38px, 6vh, 74px);
+      right: clamp(48px, 4.167vw, 96px);
+      display: none;
+      gap: 33px;
+      margin: 0;
+      padding: 0;
+      color: #65bceb;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 25px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .top-navigation__item {
+      white-space: nowrap;
+    }
+
+    .top-navigation-rule {
+      position: absolute;
+      z-index: 3;
+      top: calc(clamp(112px, 13.33vh, 165px) - 28px);
+      right: clamp(48px, 4.167vw, 96px);
+      left: clamp(190px, 21.1vw, 486px);
+      height: 2px;
+      background: #65bceb;
+      opacity: 0;
+      transform: translateY(-140%) rotate(0.2deg);
+      transform-origin: right center;
+      will-change: transform, opacity;
+    }
+
+    .top-navigation-rule.is-entering {
+      opacity: 1;
+      transform: translateY(0) rotate(0.2deg);
+      transition:
+        transform 1200ms cubic-bezier(0.22, 1, 0.36, 1) 100ms,
+        opacity 1000ms ease-out 100ms;
+    }
+
+    @media (max-width: 600px) {
+      .display-name {
+        font-size: clamp(62px, 18vw, 88px);
+        line-height: 0.9;
+      }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      z-index: 3;
+      left: clamp(38px, 5vw, 76px);
+      bottom: clamp(24px, 2.75vh, 34px);
+      color: #65bceb;
+      font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB",
+        "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+      font-size: 19px;
+      font-weight: 400;
+      line-height: 1.225;
+      letter-spacing: 1.68px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(5px);
+    }
+
+    .scroll-hint.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 400ms ease,
+        transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .scroll-hint.is-consumed {
+      opacity: 0;
+      transform: translateY(3px);
+      transition:
+        opacity 300ms ease,
+        transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .scroll-hint__text {
+      white-space: nowrap;
+    }
+
+    .scroll-hint__eyebrow {
+      display: block;
+      margin-bottom: 2px;
+      color: inherit;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13.3px;
+      font-weight: 400;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+
+    .scroll-hint__arrow {
+      display: inline-block;
+      margin-left: 0;
+      color: inherit;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: 0;
+      opacity: 0;
+      transition: opacity 280ms ease;
+    }
+
+    .scroll-hint__arrow.is-visible {
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .scroll-hint {
+        bottom: 28px;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+      }
+
+      .top-navigation {
+        top: 38px;
+        right: 38px;
+        gap: 16px;
+        font-size: 14px;
+      }
+
+      .top-navigation-rule {
+        top: 62px;
+        right: 38px;
+        left: 38px;
+      }
+    }
+
+    .fragment-layer,
+    .debug-markers {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .fragment-group {
+      position: absolute;
+      inset: 0;
+    }
+
+    .symbol-glow {
+      --glow-scale: 1;
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(var(--glow-scale));
+      transform-origin: 50% 50%;
+      will-change: opacity;
+    }
+
+    .four-point-glow {
+      width: 300px;
+      height: 350px;
+    }
+
+    .four-point-glow::before,
+    .four-point-glow::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      filter: blur(22px);
+      transform: translate(-50%, -50%);
+    }
+
+    .four-point-glow::before {
+      width: 46px;
+      height: 304px;
+      background: radial-gradient(ellipse at center,
+          rgb(217 245 106 / 42%) 0%,
+          rgb(190 235 79 / 30%) 38%,
+          rgb(174 234 85 / 0%) 78%);
+    }
+
+    .four-point-glow::after {
+      width: 272px;
+      height: 44px;
+      background: radial-gradient(ellipse at center,
+          rgb(217 245 106 / 38%) 0%,
+          rgb(190 235 79 / 27%) 40%,
+          rgb(174 234 85 / 0%) 80%);
+    }
+
+    .symbol-glow__core {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center,
+          rgb(217 245 106 / 58%) 0%,
+          rgb(190 235 79 / 32%) 42%,
+          rgb(174 234 85 / 0%) 76%);
+      filter: blur(11px);
+      transform: translate(-50%, -50%);
+    }
+
+    .lab-five-glow {
+      width: 220px;
+      height: 210px;
+      transform: translate(-50%, -50%) rotate(20deg) scale(var(--glow-scale));
+    }
+
+    .lab-five-glow::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: 50%;
+      left: 50%;
+      width: 172px;
+      height: 156px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 52%,
+          rgb(217 245 106 / 50%) 0%,
+          rgb(190 235 79 / 36%) 30%,
+          rgb(174 234 85 / 20%) 52%,
+          rgb(174 234 85 / 8%) 68%,
+          rgb(174 234 85 / 0%) 86%);
+      filter: blur(16px);
+      transform: translate(-50%, -50%);
+    }
+
+    .lab-glow-node {
+      position: absolute;
+      z-index: 1;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center,
+          rgb(217 245 106 / 35%) 0%,
+          rgb(190 235 79 / 20%) 42%,
+          rgb(174 234 85 / 0%) 78%);
+      filter: blur(20px);
+      transform: translate(-50%, -50%);
+    }
+
+    .lab-glow-node:nth-child(1) {
+      top: 10%;
+      left: 50%;
+    }
+
+    .lab-glow-node:nth-child(2) {
+      top: 39%;
+      left: 82%;
+    }
+
+    .lab-glow-node:nth-child(3) {
+      top: 79%;
+      left: 70%;
+    }
+
+    .lab-glow-node:nth-child(4) {
+      top: 79%;
+      left: 30%;
+    }
+
+    .lab-glow-node:nth-child(5) {
+      top: 39%;
+      left: 18%;
+    }
+
+    .lab-glow-node:nth-child(6) {
+      top: 53%;
+      left: 50%;
+      width: 70px;
+      height: 70px;
+      background: radial-gradient(circle at center,
+          rgb(217 245 106 / 58%) 0%,
+          rgb(190 235 79 / 32%) 42%,
+          rgb(174 234 85 / 0%) 76%);
+      filter: blur(11px);
+    }
+
+    .work-main-glow {
+      width: 260px;
+      height: 250px;
+    }
+
+    .work-main-glow::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: 50%;
+      left: 50%;
+      width: 220px;
+      height: 190px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 52%,
+          rgb(217 245 106 / 50%) 0%,
+          rgb(190 235 79 / 36%) 30%,
+          rgb(174 234 85 / 20%) 52%,
+          rgb(174 234 85 / 8%) 68%,
+          rgb(174 234 85 / 0%) 86%);
+      filter: blur(18px);
+      transform: translate(-50%, -50%);
+    }
+
+    .work-glow-node {
+      position: absolute;
+      z-index: 1;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center,
+          rgb(217 245 106 / 36%) 0%,
+          rgb(190 235 79 / 21%) 42%,
+          rgb(174 234 85 / 0%) 78%);
+      filter: blur(21px);
+      transform: translate(-50%, -50%);
+    }
+
+    .work-glow-node:nth-child(1) {
+      top: 12%;
+      left: 50%;
+    }
+
+    .work-glow-node:nth-child(2) {
+      top: 39%;
+      left: 83%;
+    }
+
+    .work-glow-node:nth-child(3) {
+      top: 78%;
+      left: 71%;
+    }
+
+    .work-glow-node:nth-child(4) {
+      top: 78%;
+      left: 29%;
+    }
+
+    .work-glow-node:nth-child(5) {
+      top: 39%;
+      left: 17%;
+    }
+
+    .work-glow-node:nth-child(6) {
+      top: 52%;
+      left: 50%;
+      width: 82px;
+      height: 82px;
+      background: radial-gradient(circle at center,
+          rgb(217 245 106 / 58%) 0%,
+          rgb(190 235 79 / 32%) 42%,
+          rgb(174 234 85 / 0%) 76%);
+      filter: blur(11px);
+    }
+
+    .work-spark-glow {
+      width: 104px;
+      height: 118px;
+    }
+
+    .work-spark-glow::before,
+    .work-spark-glow::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center,
+          rgb(217 245 106 / 40%) 0%,
+          rgb(190 235 79 / 24%) 42%,
+          rgb(174 234 85 / 0%) 80%);
+      filter: blur(12px);
+      transform: translate(-50%, -50%);
+    }
+
+    .work-spark-glow::before {
+      width: 24px;
+      height: 104px;
+    }
+
+    .work-spark-glow::after {
+      width: 92px;
+      height: 22px;
+    }
+
+    .fragment-particle {
+      --fragment-glow-opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      opacity: 0;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+
+
+
+    .fragment-particle::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      top: 50%;
+      left: 50%;
+      width: 42px;
+      height: 30px;
+      border-radius: 50%;
+      background: radial-gradient(
+        ellipse at center,
+        rgb(217 245 106 / 45%) 0%,
+        rgb(190 235 79 / 28%) 38%,
+        rgb(174 234 85 / 10%) 65%,
+        rgb(174 234 85 / 0%) 100%
+      );
+      filter: blur(8px);
+      opacity: var(--fragment-glow-opacity);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .fragment-char {
+      position: relative;
+      z-index: 1;
+      display: block;
+      color: #65bceb;
+      font-family: Consolas, "Lucida Console", "DejaVu Sans Mono", monospace;
+      font-size: clamp(16px, 1.25vw, 24px);
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .module-hit-area {
+      position: absolute;
+      z-index: 3;
+      top: 0;
+      left: 0;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      opacity: 0;
+      pointer-events: none;
+      cursor: default;
+      transform: translate(-50%, -50%);
+    }
+
+    .module-hit-area.is-interactive {
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .module-label {
+      position: absolute;
+      z-index: 3;
+      top: 0;
+      left: 0;
+      color: #355b6b;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 25px;
+      font-style: italic;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(4px);
+      transition:
+        opacity 200ms ease,
+        transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .module-label.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .module-label.is-resetting {
+      transition: none;
+    }
+
+    .debug-panel {
+      display: none;
+      position: fixed;
+      z-index: 4;
+      top: 16px;
+      left: 16px;
+      margin: 0;
+      padding: 10px 12px;
+      color: #17455d;
+      background: rgb(244 243 237 / 90%);
+      border: 1px solid rgb(23 69 93 / 18%);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .debug-toggle {
+      display: block;
+      margin-top: 8px;
+      padding: 4px 7px;
+      color: inherit;
+      background: transparent;
+      border: 1px solid rgb(23 69 93 / 30%);
+      border-radius: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .debug-legend {
+      display: none;
+      margin-top: 7px;
+      font-size: 11px;
+    }
+
+    body.debug-visible .debug-legend {
+      display: block;
+    }
+
+    .debug-markers {
+      z-index: 3;
+      display: none;
+    }
+
+    body.debug-visible .debug-markers {
+      display: block;
+    }
+
+    .path-marker {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      margin: -2.5px 0 0 -2.5px;
+      border-radius: 50%;
+    }
+
+    .path-marker--start {
+      background: #9ddcf4;
+    }
+
+    .path-marker--disperse {
+      background: #55b5df;
+    }
+
+    .path-marker--target {
+      width: 4px;
+      height: 4px;
+      margin: -2px 0 0 -2px;
+      background: #2697d4;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="scroll-track" aria-label="About fragment scroll animation test">
+    <section class="sticky-stage">
+      <img id="hand-frame" class="hand-frame" src="public/assets/hands/hand_01.webp" width="1920" height="1080"
+        alt="Hands opening from a fist" draggable="false" />
+
+      <h1 id="display-name" class="display-name" aria-label="Yingru Zhao">
+        <span class="display-name-line display-name-line--top" aria-hidden="true">
+          <span id="display-name-primary" class="display-name-primary">#1×+·0</span>
+        </span>
+        <span class="display-name-line display-name-line--bottom" aria-hidden="true">
+          <span id="display-name-secondary" class="display-name-secondary">×#01</span>
+        </span>
+      </h1>
+
+      <nav class="top-navigation" aria-label="Primary navigation">
+        <span class="top-navigation__item">About</span>
+        <span class="top-navigation__item">Work</span>
+        <span class="top-navigation__item">Lab</span>
+        <span class="top-navigation__item">Contact</span>
+      </nav>
+      <div class="top-navigation-rule" aria-hidden="true"></div>
+
+      <div id="scroll-hint" class="scroll-hint" aria-hidden="true">
+        <span id="scroll-hint-text" class="scroll-hint__text">#1×+·01×</span>
+        <span id="scroll-hint-arrow" class="scroll-hint__arrow" aria-hidden="true">↓</span>
+      </div>
+
+      <div id="about-star-glow" class="symbol-glow four-point-glow" aria-hidden="true">
+        <span class="symbol-glow__core"></span>
+      </div>
+
+      <div id="work-main-glow" class="symbol-glow work-main-glow" aria-hidden="true">
+        <span class="work-glow-node"></span>
+        <span class="work-glow-node"></span>
+        <span class="work-glow-node"></span>
+        <span class="work-glow-node"></span>
+        <span class="work-glow-node"></span>
+        <span class="work-glow-node"></span>
+      </div>
+
+      <div id="work-spark-glow" class="symbol-glow work-spark-glow" aria-hidden="true"></div>
+
+      <div id="lab-star-glow" class="symbol-glow lab-five-glow" aria-hidden="true">
+        <span class="lab-glow-node"></span>
+        <span class="lab-glow-node"></span>
+        <span class="lab-glow-node"></span>
+        <span class="lab-glow-node"></span>
+        <span class="lab-glow-node"></span>
+        <span class="lab-glow-node"></span>
+      </div>
+
+      <div id="fragment-layer" class="fragment-layer" aria-hidden="true">
+        <div class="fragment-group" data-group="ambient"></div>
+        <div class="fragment-group" data-group="about"></div>
+        <div class="fragment-group" data-group="work"></div>
+        <div class="fragment-group" data-group="lab"></div>
+      </div>
+
+      <div id="about-hit-area" class="module-hit-area" aria-hidden="true"></div>
+      <div id="work-hit-area" class="module-hit-area" aria-hidden="true"></div>
+      <div id="lab-hit-area" class="module-hit-area" aria-hidden="true"></div>
+
+      <div id="about-label" class="module-label" aria-hidden="true">#1×+·</div>
+      <div id="work-label" class="module-label" aria-hidden="true">#×01</div>
+      <div id="lab-label" class="module-label" aria-hidden="true">×#1</div>
+
+      <div id="debug-markers" class="debug-markers" aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <aside class="debug-panel" aria-live="polite">
+    Frame: <span id="frame-value">01 / 20</span><br />
+    Overall Progress: <span id="progress-value">0%</span><br />
+    Hand Progress: <span id="hand-progress-value">0%</span><br />
+    Fragment Progress: <span id="fragment-progress-value">0%</span><br />
+    Stage: <span id="stage-value">RELEASE</span>
+    <button id="debug-toggle" class="debug-toggle" type="button" aria-pressed="false">
+      Show path points
+    </button>
+    <span class="debug-legend">
+      Light: start · Mid: disperse · Dark: target
+    </span>
+  </aside>
+
+  <script>
+    (() => {
+      const FRAME_COUNT = 20;
+      const FRAME_ROOT = "public/assets/hands";
+      const SMOOTHING_FACTOR = 0.12;
+      const MAX_PROGRESS_STEP = 1 / (FRAME_COUNT - 1);
+      const SETTLE_EPSILON = 0.0001;
+      const FRAGMENT_START = 0.62;
+      const RELEASE_END = 0.3;
+      const DISPERSE_END = 0.66;
+      const FRAGMENT_TOP_BOUNDARY_GAP = 22;
+      const STAR_TARGET_SCALE = 0.73;
+      const PALM_VISIBILITY_START = 0.615;
+      const PALM_VISIBLE_BY = 0.64;
+      const PALM_CLUSTER_FILLED_BY = 0.66;
+      const PALM_EARLY_COUNT = 28;
+      const PALM_CLUSTER_COUNT = 42;
+      const ABOUT_INTERACTIVE_THRESHOLD = 0.97;
+      const ABOUT_HOVER_ENTER_DURATION = 380;
+      const ABOUT_HOVER_LEAVE_DURATION = 420;
+      const ABOUT_DECODE_DELAY = 70;
+      const ABOUT_DECODE_DURATION = 300;
+      const ABOUT_DECODE_CHARACTERS = ["·", "+", "×", "#", "0", "1"];
+      const DISPLAY_NAME_DECODE_DURATION = 620;
+      const DISPLAY_NAME_DECODE_DELAY = 280;
+      const SCROLL_HINT_DECODE_DURATION = 450;
+      const SCROLL_HINT_INTRO_DELAY = 350;
+      const SCROLL_HINT_ARROW_PROGRESS = 0.6;
+      const SCROLL_HINT_THRESHOLD = 8;
+      const SOURCE_SIZE = { width: 1920, height: 1080 };
+      const PALMS = {
+        left: { x: 690, y: 775 },
+        right: { x: 1225, y: 775 },
+      };
+
+      // All path design lives here. Start offsets use source-image pixels;
+      // disperse points use viewport ratios; targets use reference pixels
+      // around the star center and are scaled responsively at render time.
+      const aboutFragments = [
+        { char: "·", palm: "left", start: [-38, -18], disperse: [0.30, 0.45], target: [0, -174], flightRotation: -12, targetRotation: -2, startScale: 0.45, targetScale: 0.76, curve: -24, delay: 0.00 },
+        { char: "+", palm: "right", start: [31, -20], disperse: [0.69, 0.43], target: [-3, -132], flightRotation: 10, targetRotation: 2, startScale: 0.54, targetScale: 0.92, curve: 28, delay: 0.01 },
+        { char: "×", palm: "left", start: [-12, 14], disperse: [0.38, 0.34], target: [4, -96], flightRotation: -8, targetRotation: 3, startScale: 0.58, targetScale: 1.02, curve: 20, delay: 0.02 },
+        { char: "#", palm: "right", start: [8, 18], disperse: [0.61, 0.35], target: [-6, -63], flightRotation: 13, targetRotation: -3, startScale: 0.48, targetScale: 0.86, curve: -18, delay: 0.03 },
+        { char: "01", palm: "left", start: [35, -8], disperse: [0.43, 0.49], target: [-31, -32], flightRotation: -14, targetRotation: -4, startScale: 0.44, targetScale: 0.83, curve: -26, delay: 0.04 },
+        { char: "+", palm: "right", start: [-34, -11], disperse: [0.57, 0.47], target: [30, -29], flightRotation: 9, targetRotation: 3, startScale: 0.61, targetScale: 0.96, curve: 22, delay: 0.05 },
+        { char: "·", palm: "left", start: [-44, 23], disperse: [0.24, 0.39], target: [-151, 1], flightRotation: -11, targetRotation: 1, startScale: 0.50, targetScale: 0.72, curve: -34, delay: 0.06 },
+        { char: "×", palm: "right", start: [42, 20], disperse: [0.76, 0.40], target: [-108, -4], flightRotation: 12, targetRotation: -3, startScale: 0.57, targetScale: 0.89, curve: 31, delay: 0.07 },
+        { char: "#", palm: "left", start: [18, -25], disperse: [0.33, 0.28], target: [-72, 3], flightRotation: 15, targetRotation: 4, startScale: 0.47, targetScale: 0.95, curve: 26, delay: 0.08 },
+        { char: "01", palm: "right", start: [-17, -26], disperse: [0.66, 0.27], target: [-40, -2], flightRotation: -13, targetRotation: -2, startScale: 0.64, targetScale: 0.84, curve: -29, delay: 0.09 },
+        { char: "+", palm: "left", start: [-27, 4], disperse: [0.42, 0.39], target: [-15, -1], flightRotation: -7, targetRotation: 2, startScale: 0.52, targetScale: 1.04, curve: -16, delay: 0.02 },
+        { char: "×", palm: "right", start: [24, 3], disperse: [0.59, 0.41], target: [0, -9], flightRotation: 8, targetRotation: -1, startScale: 0.55, targetScale: 1.08, curve: 17, delay: 0.04 },
+        { char: "#", palm: "left", start: [5, 25], disperse: [0.47, 0.52], target: [14, 3], flightRotation: 11, targetRotation: 3, startScale: 0.43, targetScale: 0.98, curve: 18, delay: 0.06 },
+        { char: "·", palm: "right", start: [-3, 24], disperse: [0.53, 0.50], target: [3, 14], flightRotation: -9, targetRotation: -2, startScale: 0.60, targetScale: 0.82, curve: -15, delay: 0.08 },
+        { char: "01", palm: "left", start: [42, 11], disperse: [0.39, 0.32], target: [42, -2], flightRotation: 14, targetRotation: 4, startScale: 0.46, targetScale: 0.86, curve: 25, delay: 0.01 },
+        { char: "+", palm: "right", start: [-41, 12], disperse: [0.63, 0.31], target: [74, 3], flightRotation: -15, targetRotation: -3, startScale: 0.56, targetScale: 0.96, curve: -27, delay: 0.03 },
+        { char: "×", palm: "left", start: [-7, -11], disperse: [0.27, 0.50], target: [108, -3], flightRotation: 9, targetRotation: 2, startScale: 0.49, targetScale: 0.88, curve: -32, delay: 0.05 },
+        { char: "·", palm: "right", start: [11, -9], disperse: [0.73, 0.52], target: [151, 2], flightRotation: -10, targetRotation: -1, startScale: 0.63, targetScale: 0.73, curve: 34, delay: 0.07 },
+        { char: "#", palm: "left", start: [29, 22], disperse: [0.35, 0.56], target: [-22, 34], flightRotation: 12, targetRotation: 3, startScale: 0.51, targetScale: 0.9, curve: 23, delay: 0.09 },
+        { char: "+", palm: "right", start: [-30, 22], disperse: [0.65, 0.57], target: [13, 49], flightRotation: -12, targetRotation: -4, startScale: 0.45, targetScale: 0.95, curve: -22, delay: 0.02 },
+        { char: "01", palm: "left", start: [10, -3], disperse: [0.46, 0.43], target: [-4, 96], flightRotation: 7, targetRotation: 2, startScale: 0.59, targetScale: 0.82, curve: 15, delay: 0.05 },
+        { char: "·", palm: "right", start: [-12, -1], disperse: [0.55, 0.45], target: [2, 157], flightRotation: -8, targetRotation: -2, startScale: 0.48, targetScale: 0.74, curve: -16, delay: 0.08 },
+        { char: "+", palm: "left", start: [-20, 18], disperse: [0.41, 0.46], target: [8, 73], flightRotation: -10, targetRotation: 2, startScale: 0.50, targetScale: 0.90, curve: -20, delay: 0.04 },
+        { char: "·", palm: "right", start: [20, 16], disperse: [0.60, 0.36], target: [58, 10], flightRotation: 12, targetRotation: -3, startScale: 0.55, targetScale: 0.78, curve: 24, delay: 0.06 },
+      ];
+      const ABOUT_MAX_TARGET_DISTANCE = Math.max(
+        ...aboutFragments.map((fragment) =>
+          Math.hypot(fragment.target[0], fragment.target[1]),
+        ),
+      );
+
+      // WORK uses 28 points around the five-point outline, six porous
+      // interior points, and six points for the separate four-point spark.
+      const workTargets = [
+        [0, -145], [10, -112], [20, -78], [31, -46],
+        [78, -45], [125, -42], [100, -20], [74, 2], [49, 22],
+        [63, 66], [77, 110], [51, 91], [25, 72], [0, 55],
+        [-38, 83], [-77, 110], [-68, 78], [-58, 47], [-49, 22],
+        [-87, -10], [-125, -42], [-78, -44], [-31, -46], [-15, -96],
+        [103, -31], [55, 98], [-55, 98], [-103, -31],
+        [-23, -20], [24, -17], [-30, 25], [27, 31], [1, 9], [7, -42],
+        [190, -137], [190, -105], [190, -73], [158, -105], [222, -105], [193, -102],
+      ];
+
+      // LAB uses a simpler five-point outline with three sparse interior
+      // characters; it is not a scaled copy of WORK's target structure.
+      const labTargets = [
+        [1, -142], [14, -96], [28, -52],
+        [75, -49], [121, -45], [88, -15], [54, 13],
+        [68, 61], [82, 108], [43, 82], [3, 58],
+        [-38, 86], [-80, 110], [-69, 64], [-56, 18],
+        [-91, -13], [-124, -45], [-76, -48], [-29, -51], [-14, -96],
+        [-20, -13], [24, -8], [2, 19], [-30, 33],
+      ];
+      const WORK_MAIN_FRAGMENT_COUNT = 34;
+      const WORK_SPARK_CENTER = [190, -105];
+      const WORK_MAIN_MAX_TARGET_DISTANCE = Math.max(
+        ...workTargets
+          .slice(0, WORK_MAIN_FRAGMENT_COUNT)
+          .map((target) => Math.hypot(target[0], target[1])),
+      );
+      const WORK_SPARK_MAX_TARGET_DISTANCE = Math.max(
+        ...workTargets
+          .slice(WORK_MAIN_FRAGMENT_COUNT)
+          .map((target) =>
+            Math.hypot(
+              target[0] - WORK_SPARK_CENTER[0],
+              target[1] - WORK_SPARK_CENTER[1],
+            ),
+          ),
+      );
+      const LAB_MAX_TARGET_DISTANCE = Math.max(
+        ...labTargets.map((target) => Math.hypot(target[0], target[1])),
+      );
+
+      const CHARACTER_SET = ["·", "+", "×", "#", "01"];
+      const START_OFFSETS = [
+        [-62, -18], [-54, 8], [-48, -36], [-41, 30], [-34, -7], [-28, 38],
+        [-22, -42], [-16, 14], [-10, -24], [-4, 34], [2, -11], [8, 23],
+        [14, -38], [20, 7], [26, 35], [32, -19], [38, 16], [44, -33],
+        [50, 29], [56, -5], [62, 20], [-58, 24], [-46, -2], [-36, 19],
+        [-24, -29], [6, -31], [30, 2], [52, -25],
+      ];
+      const FLIGHT_ROTATIONS = [
+        -12, 10, -8, 13, -14, 9, -11, 12, 15, -13, -7, 8, -10, 14,
+        -6, 11, -15, 7, -9, 13, -12, 6, -8, 15, -11, 9, -14, 10,
+      ];
+      const WORK_DISPERSE = [
+        [0.20, 0.48], [0.27, 0.31], [0.34, 0.17], [0.42, 0.39],
+        [0.48, 0.12], [0.54, 0.58], [0.61, 0.18], [0.69, 0.35],
+        [0.76, 0.24], [0.82, 0.49], [0.24, 0.57], [0.31, 0.22],
+        [0.39, 0.52], [0.47, 0.29], [0.56, 0.13], [0.64, 0.55],
+        [0.73, 0.31], [0.86, 0.44],
+      ];
+      const LAB_DISPERSE = [
+        [0.49, 0.54], [0.56, 0.32], [0.63, 0.15], [0.70, 0.44],
+        [0.77, 0.23], [0.83, 0.60], [0.88, 0.30], [0.74, 0.11],
+        [0.67, 0.51], [0.91, 0.42], [0.58, 0.62], [0.52, 0.27],
+        [0.79, 0.48], [0.85, 0.18], [0.62, 0.40], [0.90, 0.56],
+      ];
+
+      const ABOUT_DISPERSE_HORIZONTAL_EXPANSION = 1.42;
+      const ABOUT_DISPERSE_VERTICAL_EXPANSION = 1.45;
+      const ABOUT_CURVE_MULTIPLIER = 1.55;
+      const AMBIENT_CHARACTERS = ["·", "+", "×", "#", "0", "1", "01"];
+      const AMBIENT_DISPERSE = [
+        [0.10, 0.48], [0.16, 0.22], [0.22, 0.61], [0.28, 0.11],
+        [0.34, 0.43], [0.40, 0.18], [0.46, 0.67], [0.52, 0.08],
+        [0.58, 0.49], [0.64, 0.15], [0.70, 0.62], [0.76, 0.27],
+        [0.82, 0.10], [0.88, 0.52], [0.92, 0.36], [0.18, 0.37],
+        [0.30, 0.56], [0.43, 0.30], [0.55, 0.22], [0.67, 0.57],
+        [0.79, 0.39], [0.87, 0.65], [0.13, 0.13], [0.25, 0.47],
+        [0.37, 0.08], [0.49, 0.54], [0.61, 0.34], [0.73, 0.17],
+        [0.85, 0.47], [0.20, 0.66], [0.32, 0.25], [0.44, 0.59],
+        [0.57, 0.12], [0.69, 0.46], [0.81, 0.58], [0.90, 0.23],
+      ];
+      const ambientFragments = AMBIENT_DISPERSE.map((disperse, index) => {
+        const scale = index < 22
+          ? 0.55 + (index % 5) * 0.05
+          : index < 33
+            ? 0.75 + (index % 5) * 0.04
+            : 0.95 + (index % 3) * 0.05;
+        return {
+          char: AMBIENT_CHARACTERS[index % AMBIENT_CHARACTERS.length],
+          palm: index < 18 ? "left" : "right",
+          start: [
+            START_OFFSETS[index % START_OFFSETS.length][0] + (index % 3 - 1) * 8,
+            START_OFFSETS[index % START_OFFSETS.length][1] + (Math.floor(index / 3) % 3 - 1) * 7,
+          ],
+          disperse,
+          flightRotation: FLIGHT_ROTATIONS[(index * 3 + 4) % FLIGHT_ROTATIONS.length],
+          curve: (index % 2 === 0 ? -1 : 1) * (30 + (index % 5) * 6),
+          delay: (index % 12) / 120,
+          startScale: scale * 0.72,
+          disperseScale: scale,
+        };
+      });
+
+      function buildGroupFragments(targets, dispersePoints, phase) {
+        return targets.map((target, index) => {
+          const presetIndex = (index + phase) % START_OFFSETS.length;
+          const flightRotation = FLIGHT_ROTATIONS[presetIndex];
+          return {
+            char: CHARACTER_SET[(index + phase) % CHARACTER_SET.length],
+            palm: index % 2 === 0 ? "left" : "right",
+            start: START_OFFSETS[presetIndex],
+            disperse: dispersePoints[(index * 5 + phase) % dispersePoints.length],
+            target,
+            flightRotation,
+            targetRotation: ((index * 3 + phase) % 9) - 4,
+            startScale: 0.44 + ((index + phase) % 5) * 0.04,
+            targetScale: 0.76 + ((index * 2 + phase) % 7) * 0.045,
+            curve: (index % 2 === 0 ? -1 : 1) * (28 + ((index + phase) % 5) * 7),
+            delay: ((index * 2 + phase) % 10) / 100,
+          };
+        });
+      }
+
+      const fragmentGroups = [
+        {
+          id: "about",
+          center: [0.18, 0.42],
+          scale: 1.12,
+          groupDelay: 0,
+          fragments: aboutFragments,
+          glows: [
+            { elementId: "about-star-glow", offset: [0, 0], scale: 1.12, opacity: 0.58 },
+          ],
+        },
+        {
+          id: "work",
+          center: [0.50, 0.30],
+          scale: 1.05,
+          groupDelay: 0.03,
+          fragments: buildGroupFragments(workTargets, WORK_DISPERSE, 2),
+          glows: [
+            { elementId: "work-main-glow", offset: [0, 0], scale: 0.88, opacity: 0.58 },
+            { elementId: "work-spark-glow", offset: [190, -105], scale: 0.72, opacity: 0.40 },
+          ],
+        },
+        {
+          id: "lab",
+          center: [0.82, 0.64],
+          scale: 0.78,
+          structureRotation: 20,
+          groupDelay: 0.06,
+          fragments: buildGroupFragments(labTargets, LAB_DISPERSE, 5),
+          glows: [
+            { elementId: "lab-star-glow", offset: [0, 0], scale: 0.72, opacity: 0.58 },
+          ],
+        },
+      ];
+
+      const TOTAL_FRAGMENT_COUNT = fragmentGroups.reduce(
+        (total, group) => total + group.fragments.length,
+        0,
+      );
+
+      const frameElement = document.querySelector("#hand-frame");
+      const ambientContainer = document.querySelector('[data-group="ambient"]');
+      const displayName = document.querySelector("#display-name");
+      const topNavigationRule = document.querySelector(".top-navigation-rule");
+      const displayNamePrimary = document.querySelector("#display-name-primary");
+      const displayNameSecondary = document.querySelector("#display-name-secondary");
+      const scrollHint = document.querySelector("#scroll-hint");
+      const scrollHintText = document.querySelector("#scroll-hint-text");
+      const scrollHintArrow = document.querySelector("#scroll-hint-arrow");
+      const frameValue = document.querySelector("#frame-value");
+      const progressValue = document.querySelector("#progress-value");
+      const handProgressValue = document.querySelector("#hand-progress-value");
+      const fragmentProgressValue = document.querySelector("#fragment-progress-value");
+      const stageValue = document.querySelector("#stage-value");
+      const aboutHitArea = document.querySelector("#about-hit-area");
+      const workHitArea = document.querySelector("#work-hit-area");
+      const labHitArea = document.querySelector("#lab-hit-area");
+      const aboutLabel = document.querySelector("#about-label");
+      const workLabel = document.querySelector("#work-label");
+      const labLabel = document.querySelector("#lab-label");
+      const debugToggle = document.querySelector("#debug-toggle");
+      const debugMarkers = document.querySelector("#debug-markers");
+
+      const frameSources = Array.from({ length: FRAME_COUNT }, (_, index) => {
+        const number = String(index + 1).padStart(2, "0");
+        return `${FRAME_ROOT}/hand_${number}.webp`;
+      });
+
+      const preloadedFrames = frameSources.map((source) => {
+        const image = new Image();
+        image.src = source;
+        return image;
+      });
+
+      let currentFrameIndex = 0;
+      let targetProgress = 0;
+      let currentProgress = 0;
+      let scrubFrameId = null;
+      let introComplete = false;
+      let exploreInteractionsEnabled = false;
+      let activeModuleId = null;
+      let ambientElements = [];
+      let ambientPathPoints = [];
+      let fragmentTopBoundary = 0;
+      let displayNameEntranceStarted = false;
+      let scrollHintStarted = false;
+      let scrollHintConsumed = false;
+      let scrollHintDelayId = null;
+      let scrollHintAnimationId = null;
+
+      const moduleInteractions = [
+        {
+          id: "about",
+          finalText: "ABOUT",
+          placeholder: "#1×+·",
+          hitArea: aboutHitArea,
+          label: aboutLabel,
+          labelOffset: [60, 105],
+          hoverProgress: 0,
+          hoverAnimationId: null,
+          decodeDelayId: null,
+          decodeAnimationId: null,
+        },
+        {
+          id: "work",
+          finalText: "WORK",
+          placeholder: "#×01",
+          hitArea: workHitArea,
+          label: workLabel,
+          labelOffset: [105, 105],
+          hoverProgress: 0,
+          hoverAnimationId: null,
+          decodeDelayId: null,
+          decodeAnimationId: null,
+        },
+        {
+          id: "lab",
+          finalText: "LAB",
+          placeholder: "×#1",
+          hitArea: labHitArea,
+          label: labLabel,
+          labelOffset: [-95, 95],
+          hoverProgress: 0,
+          hoverAnimationId: null,
+          decodeDelayId: null,
+          decodeAnimationId: null,
+        },
+      ];
+
+      const clamp01 = (value) => Math.min(1, Math.max(0, value));
+      const mix = (from, to, progress) => from + (to - from) * progress;
+      const smoothstep = (progress) => {
+        const value = clamp01(progress);
+        return value * value * (3 - 2 * value);
+      };
+
+      function hoverEase(progress) {
+        const x = clamp01(progress);
+        let parameter = x;
+        for (let iteration = 0; iteration < 5; iteration += 1) {
+          const inverse = 1 - parameter;
+          const estimate =
+            3 * inverse * inverse * parameter * 0.22 +
+            3 * inverse * parameter * parameter * 0.36 +
+            parameter * parameter * parameter;
+          const derivative =
+            3 * inverse * inverse * 0.22 +
+            6 * inverse * parameter * (0.36 - 0.22) +
+            3 * parameter * parameter * (1 - 0.36);
+          if (Math.abs(derivative) < 0.0001) break;
+          parameter = clamp01(parameter - (estimate - x) / derivative);
+        }
+        const inverse = 1 - parameter;
+        return (
+          3 * inverse * inverse * parameter +
+          3 * inverse * parameter * parameter +
+          parameter * parameter * parameter
+        );
+      }
+
+      function cancelDecode(module, immediate = false) {
+        if (module.decodeDelayId !== null) {
+          window.clearTimeout(module.decodeDelayId);
+          module.decodeDelayId = null;
+        }
+        if (module.decodeAnimationId !== null) {
+          window.cancelAnimationFrame(module.decodeAnimationId);
+          module.decodeAnimationId = null;
+        }
+        if (immediate) module.label.classList.add("is-resetting");
+        module.label.classList.remove("is-visible");
+        module.label.textContent = module.placeholder;
+        if (immediate) {
+          window.requestAnimationFrame(() => {
+            module.label.classList.remove("is-resetting");
+          });
+        }
+      }
+
+      function startDecode(module) {
+        cancelDecode(module);
+        module.decodeDelayId = window.setTimeout(() => {
+          module.decodeDelayId = null;
+          if (
+            activeModuleId !== module.id ||
+            !exploreInteractionsEnabled
+          ) return;
+          module.label.classList.add("is-visible");
+          const startedAt = performance.now();
+
+          const renderDecode = (timestamp) => {
+            if (
+              activeModuleId !== module.id ||
+              !exploreInteractionsEnabled
+            ) return;
+            const decodeProgress = clamp01(
+              (timestamp - startedAt) / ABOUT_DECODE_DURATION,
+            );
+            const letterCount = module.finalText.length;
+            const lockedCount = Math.min(
+              letterCount,
+              Math.floor(decodeProgress * (letterCount + 1)),
+            );
+            const noiseStep = Math.floor((timestamp - startedAt) / 48);
+            module.label.textContent = module.finalText
+              .split("")
+              .map((letter, index) => {
+                if (index < lockedCount) return letter;
+                return ABOUT_DECODE_CHARACTERS[
+                  (noiseStep + index * 2) % ABOUT_DECODE_CHARACTERS.length
+                ];
+              })
+              .join("");
+
+            if (decodeProgress >= 1) {
+              module.label.textContent = module.finalText;
+              module.decodeAnimationId = null;
+              return;
+            }
+            module.decodeAnimationId = window.requestAnimationFrame(renderDecode);
+          };
+
+          module.decodeAnimationId = window.requestAnimationFrame(renderDecode);
+        }, ABOUT_DECODE_DELAY);
+      }
+
+      function animateModuleHover(module, target, duration) {
+        if (module.hoverAnimationId !== null) {
+          window.cancelAnimationFrame(module.hoverAnimationId);
+        }
+        const startValue = module.hoverProgress;
+        const startedAt = performance.now();
+
+        const renderHover = (timestamp) => {
+          const animationProgress = clamp01((timestamp - startedAt) / duration);
+          module.hoverProgress = mix(
+            startValue,
+            target,
+            hoverEase(animationProgress),
+          );
+          renderProgress(currentProgress);
+          if (!exploreInteractionsEnabled) {
+            module.hoverProgress = 0;
+            module.hoverAnimationId = null;
+            return;
+          }
+          if (animationProgress >= 1) {
+            module.hoverProgress = target;
+            module.hoverAnimationId = null;
+            return;
+          }
+          module.hoverAnimationId = window.requestAnimationFrame(renderHover);
+        };
+
+        module.hoverAnimationId = window.requestAnimationFrame(renderHover);
+      }
+
+      function deactivateModule(module, immediate = false) {
+        cancelDecode(module, immediate);
+        if (module.hoverAnimationId !== null) {
+          window.cancelAnimationFrame(module.hoverAnimationId);
+          module.hoverAnimationId = null;
+        }
+        if (immediate) {
+          module.hoverProgress = 0;
+          return;
+        }
+        animateModuleHover(module, 0, ABOUT_HOVER_LEAVE_DURATION);
+      }
+
+      function activateModule(module) {
+        if (!exploreInteractionsEnabled || activeModuleId === module.id) return;
+        const previousModule = moduleInteractions.find(
+          (candidate) => candidate.id === activeModuleId,
+        );
+        if (previousModule) deactivateModule(previousModule, true);
+        activeModuleId = module.id;
+        animateModuleHover(module, 1, ABOUT_HOVER_ENTER_DURATION);
+        startDecode(module);
+      }
+
+      function setExploreInteractionsEnabled(enabled) {
+        if (enabled === exploreInteractionsEnabled) return;
+        exploreInteractionsEnabled = enabled;
+        moduleInteractions.forEach((module) => {
+          module.hitArea.classList.toggle("is-interactive", enabled);
+          module.hitArea.setAttribute("aria-hidden", String(!enabled));
+        });
+        if (enabled) return;
+
+        activeModuleId = null;
+        moduleInteractions.forEach((module) => {
+          deactivateModule(module, true);
+        });
+      }
+
+      function getModuleHoverOffset(group, fragment, index) {
+        const module = moduleInteractions.find(
+          (candidate) => candidate.id === group.id,
+        );
+        if (!module || module.hoverProgress <= 0) return { x: 0, y: 0 };
+
+        let x = fragment.target[0];
+        let y = fragment.target[1];
+        let maxDistance = ABOUT_MAX_TARGET_DISTANCE;
+        let minDisplacement = 1.25;
+        let displacementRange = 6;
+        let displacementCap = 8;
+        let extraX = 0;
+        let extraY = 0;
+        let tangentialAmount = 0;
+
+        if (group.id === "work") {
+          if (index >= WORK_MAIN_FRAGMENT_COUNT) {
+            x -= WORK_SPARK_CENTER[0];
+            y -= WORK_SPARK_CENTER[1];
+            maxDistance = WORK_SPARK_MAX_TARGET_DISTANCE;
+            minDisplacement = 1;
+            displacementRange = 2;
+            displacementCap = 3;
+            extraX = 5;
+            extraY = -4;
+          } else {
+            maxDistance = WORK_MAIN_MAX_TARGET_DISTANCE;
+            minDisplacement = 1;
+            displacementRange = 5.5;
+            displacementCap = 7;
+          }
+        } else if (group.id === "lab") {
+          [x, y] = rotatePoint(fragment.target, group.structureRotation);
+          maxDistance = LAB_MAX_TARGET_DISTANCE;
+          minDisplacement = 1;
+          displacementRange = 4.5;
+          displacementCap = 6;
+        }
+
+        const distance = Math.hypot(x, y);
+        if (distance <= 0) {
+          return {
+            x: extraX * module.hoverProgress,
+            y: extraY * module.hoverProgress,
+          };
+        }
+        const distanceRatio = clamp01(distance / maxDistance);
+        const variation = (((index * 5) % 7) - 3) * 0.22;
+        const radialAmount = Math.min(
+          displacementCap,
+          Math.max(
+            1,
+            minDisplacement + distanceRatio * displacementRange + variation,
+          ),
+        );
+        if (group.id === "lab") {
+          tangentialAmount = Math.min(3, 1 + distanceRatio * 2);
+        }
+        const radialX = x / distance;
+        const radialY = y / distance;
+        const tangentX = -radialY;
+        const tangentY = radialX;
+        return {
+          x:
+            (radialX * radialAmount +
+              tangentX * tangentialAmount +
+              extraX) * module.hoverProgress,
+          y:
+            (radialY * radialAmount +
+              tangentY * tangentialAmount +
+              extraY) * module.hoverProgress,
+        };
+      }
+      function getIndividualGlowOpacity(localProgress) {
+        if (localProgress <= 0.08) return 0;
+
+        if (localProgress <= 0.3) {
+          return mix(
+            0,
+            0.18,
+            smoothstep((localProgress - 0.08) / 0.22)
+          );
+        }
+
+        if (localProgress <= 0.66) {
+          return mix(
+            0.18,
+            0.28,
+            smoothstep((localProgress - 0.3) / 0.36)
+          );
+        }
+
+        return 0.28;
+      }
+
+      function getCharacterOpacity(overallProgress, visibilityRank) {
+        if (visibilityRank < PALM_EARLY_COUNT) {
+          const visibilityStart =
+            PALM_VISIBILITY_START +
+            (visibilityRank / Math.max(1, PALM_EARLY_COUNT - 1)) * 0.012;
+          return smoothstep(
+            (overallProgress - visibilityStart) /
+            Math.max(0.001, PALM_VISIBLE_BY - visibilityStart),
+          );
+        }
+
+        if (visibilityRank < PALM_CLUSTER_COUNT) {
+          const clusterRank = visibilityRank - PALM_EARLY_COUNT;
+          const clusterCount = PALM_CLUSTER_COUNT - PALM_EARLY_COUNT;
+          const visibilityStart =
+            0.638 + (clusterRank / Math.max(1, clusterCount - 1)) * 0.012;
+          return smoothstep(
+            (overallProgress - visibilityStart) /
+            Math.max(0.001, PALM_CLUSTER_FILLED_BY - visibilityStart),
+          );
+        }
+
+        const remainingCount = Math.max(
+          1,
+          TOTAL_FRAGMENT_COUNT - PALM_CLUSTER_COUNT - 1,
+        );
+        const lateRank = visibilityRank - PALM_CLUSTER_COUNT;
+        const visibilityStart = 0.665 + (lateRank / remainingCount) * 0.045;
+        return smoothstep((overallProgress - visibilityStart) / 0.025);
+      }
+
+      function rotatePoint(point, angleInDegrees) {
+        const angle = (angleInDegrees * Math.PI) / 180;
+        const cosine = Math.cos(angle);
+        const sine = Math.sin(angle);
+        return [
+          point[0] * cosine - point[1] * sine,
+          point[0] * sine + point[1] * cosine,
+        ];
+      }
+
+      function quadraticPoint(start, control, end, progress) {
+        const inverse = 1 - progress;
+        return {
+          x:
+            inverse * inverse * start.x +
+            2 * inverse * progress * control.x +
+            progress * progress * end.x,
+          y:
+            inverse * inverse * start.y +
+            2 * inverse * progress * control.y +
+            progress * progress * end.y,
+        };
+      }
+
+      function getScrollProgress() {
+        const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
+        if (scrollRange <= 0) return 0;
+        return clamp01(window.scrollY / scrollRange);
+      }
+
+      function getFragmentProgress(progress) {
+        return clamp01((progress - FRAGMENT_START) / (1 - FRAGMENT_START));
+      }
+
+      function initializeFragmentGroups() {
+        fragmentGroups.forEach((group) => {
+          group.container = document.querySelector(`[data-group="${group.id}"]`);
+          group.elements = group.fragments.map((fragment) => {
+            const particle = document.createElement("span");
+            particle.className = "fragment-particle";
+            particle.dataset.group = group.id;
+            const character = document.createElement("span");
+            character.className = "fragment-char";
+            character.textContent = fragment.char;
+            particle.append(character);
+            group.container.append(particle);
+            return particle;
+          });
+          group.glows.forEach((glow) => {
+            glow.element = document.querySelector(`#${glow.elementId}`);
+          });
+          group.pathPoints = [];
+        });
+
+        ambientElements = ambientFragments.map((fragment) => {
+          const particle = document.createElement("span");
+          particle.className = "fragment-particle";
+          particle.dataset.group = "ambient";
+          const character = document.createElement("span");
+          character.className = "fragment-char";
+          character.textContent = fragment.char;
+          particle.append(character);
+          ambientContainer.append(particle);
+          return particle;
+        });
+
+        let visibilityRank = 0;
+        const maxGroupSize = Math.max(
+          ...fragmentGroups.map((group) => group.fragments.length),
+        );
+        for (let index = 0; index < maxGroupSize; index += 1) {
+          fragmentGroups.forEach((group) => {
+            if (!group.fragments[index]) return;
+            group.fragments[index].visibilityRank = visibilityRank;
+            visibilityRank += 1;
+          });
+        }
+      }
+
+      function calculatePathPoints() {
+        const imageRect = frameElement.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const starScale = Math.min(viewportWidth / 1440, viewportHeight / 900);
+        const navigationRuleRect = topNavigationRule.getBoundingClientRect();
+        const navigationRuleBottom = Math.max(
+          navigationRuleRect.bottom,
+          topNavigationRule.offsetTop + navigationRuleRect.height,
+        );
+        fragmentTopBoundary = navigationRuleBottom + FRAGMENT_TOP_BOUNDARY_GAP;
+
+        fragmentGroups.forEach((group) => {
+          // Desktop-first safety margins prevent any symbol center from
+          // reaching an edge while preserving the configured vw/vh layout.
+          const center = {
+            x: Math.min(viewportWidth - 130, Math.max(130, viewportWidth * group.center[0])),
+            y: Math.min(viewportHeight - 140, Math.max(130, viewportHeight * group.center[1])),
+          };
+          group.centerPoint = center;
+
+          group.glows.forEach((glow) => {
+            const glowX =
+              center.x +
+              glow.offset[0] * starScale * STAR_TARGET_SCALE * group.scale;
+            const glowY =
+              center.y +
+              glow.offset[1] * starScale * STAR_TARGET_SCALE * group.scale;
+            glow.element.style.left = `${glowX}px`;
+            glow.element.style.top = `${glowY}px`;
+            glow.element.style.setProperty(
+              "--glow-scale",
+              (starScale * glow.scale).toFixed(4),
+            );
+          });
+
+          group.pathPoints = group.fragments.map((fragment) => {
+            const palm = PALMS[fragment.palm];
+            const sourceX = palm.x + fragment.start[0];
+            const sourceY = palm.y + fragment.start[1];
+            const target = group.structureRotation
+              ? rotatePoint(fragment.target, group.structureRotation)
+              : fragment.target;
+            return {
+              start: {
+                x: imageRect.left + (sourceX / SOURCE_SIZE.width) * imageRect.width,
+                y: imageRect.top + (sourceY / SOURCE_SIZE.height) * imageRect.height,
+              },
+              disperse: (() => {
+                const isAbout = group.id === "about";
+                const x = isAbout
+                  ? Math.min(0.92, Math.max(0.10, 0.5 +
+                    (fragment.disperse[0] - 0.5) * ABOUT_DISPERSE_HORIZONTAL_EXPANSION))
+                  : fragment.disperse[0];
+                const y = isAbout
+                  ? Math.min(0.68, Math.max(0.08, 0.4 +
+                    (fragment.disperse[1] - 0.4) * ABOUT_DISPERSE_VERTICAL_EXPANSION))
+                  : fragment.disperse[1];
+                return {
+                  x: viewportWidth * x,
+                  y: Math.max(fragmentTopBoundary, viewportHeight * y),
+                };
+              })(),
+              target: {
+                x:
+                  center.x +
+                  target[0] * starScale * STAR_TARGET_SCALE * group.scale,
+                y:
+                  center.y +
+                  target[1] * starScale * STAR_TARGET_SCALE * group.scale,
+              },
+            };
+          });
+        });
+
+        ambientPathPoints = ambientFragments.map((fragment) => {
+          const palm = PALMS[fragment.palm];
+          return {
+            start: {
+              x: imageRect.left +
+                ((palm.x + fragment.start[0]) / SOURCE_SIZE.width) * imageRect.width,
+              y: imageRect.top +
+                ((palm.y + fragment.start[1]) / SOURCE_SIZE.height) * imageRect.height,
+            },
+            disperse: {
+              x: viewportWidth * fragment.disperse[0],
+              y: Math.max(fragmentTopBoundary, viewportHeight * fragment.disperse[1]),
+            },
+          };
+        });
+
+        moduleInteractions.forEach((module) => {
+          const group = fragmentGroups.find(
+            (candidate) => candidate.id === module.id,
+          );
+          const maxHorizontalDistance = Math.max(
+            ...group.pathPoints.map((points) =>
+              Math.abs(points.target.x - group.centerPoint.x),
+            ),
+          );
+          const maxVerticalDistance = Math.max(
+            ...group.pathPoints.map((points) =>
+              Math.abs(points.target.y - group.centerPoint.y),
+            ),
+          );
+          module.hitArea.style.left = `${group.centerPoint.x}px`;
+          module.hitArea.style.top = `${group.centerPoint.y}px`;
+          module.hitArea.style.width = `${Math.ceil(maxHorizontalDistance * 2 + 56)}px`;
+          module.hitArea.style.height = `${Math.ceil(maxVerticalDistance * 2 + 56)}px`;
+          module.label.style.left = `${group.centerPoint.x + module.labelOffset[0] * starScale
+            }px`;
+          module.label.style.top = `${group.centerPoint.y + module.labelOffset[1] * starScale
+            }px`;
+        });
+
+        updateDebugMarkers();
+      }
+
+      function createDebugMarkers() {
+        const markerTypes = ["start", "disperse", "target"];
+        fragmentGroups.forEach((group) => {
+          group.fragments.forEach((_, index) => {
+            markerTypes.forEach((type) => {
+              const marker = document.createElement("span");
+              marker.className = `path-marker path-marker--${type}`;
+              marker.dataset.group = group.id;
+              marker.dataset.fragment = String(index);
+              marker.dataset.point = type;
+              marker.title = `${group.id} ${index + 1}: ${type}`;
+              debugMarkers.append(marker);
+            });
+          });
+        });
+      }
+
+      function updateDebugMarkers() {
+        debugMarkers.querySelectorAll(".path-marker").forEach((marker) => {
+          const group = fragmentGroups.find(
+            (candidate) => candidate.id === marker.dataset.group,
+          );
+          const index = Number(marker.dataset.fragment);
+          const point = group.pathPoints[index][marker.dataset.point];
+          marker.style.transform = `translate(${Math.round(point.x)}px, ${Math.round(point.y)}px)`;
+        });
+      }
+
+      function renderFrame(progress) {
+        const nextFrameIndex = Math.round(progress * (FRAME_COUNT - 1));
+        if (nextFrameIndex !== currentFrameIndex) {
+          currentFrameIndex = nextFrameIndex;
+          frameElement.src = frameSources[currentFrameIndex];
+          frameValue.textContent = `${String(currentFrameIndex + 1).padStart(2, "0")} / 20`;
+        }
+      }
+
+      function getStage(fragmentProgress) {
+        if (fragmentProgress < RELEASE_END) return "RELEASE";
+        if (fragmentProgress < DISPERSE_END) return "DISPERSE";
+        return "FORM";
+      }
+
+      function renderFragments(progress) {
+        const fragmentProgress = getFragmentProgress(progress);
+        fragmentProgressValue.textContent = `${Math.round(fragmentProgress * 100)}%`;
+        stageValue.textContent = getStage(fragmentProgress);
+
+        const aboutGroup = fragmentGroups.find((group) => group.id === "about");
+        const aboutGroupProgress = clamp01(
+          (fragmentProgress - aboutGroup.groupDelay) /
+          (1 - aboutGroup.groupDelay),
+        );
+        setExploreInteractionsEnabled(
+          aboutGroupProgress >= ABOUT_INTERACTIVE_THRESHOLD,
+        );
+
+        fragmentGroups.forEach((group) => {
+          const groupProgress = clamp01(
+            (fragmentProgress - group.groupDelay) / (1 - group.groupDelay),
+          );
+          const glowProgress = smoothstep(
+            (groupProgress - DISPERSE_END) / (1 - DISPERSE_END),
+          );
+          group.glows.forEach((glow) => {
+            glow.element.style.opacity = (glowProgress * glow.opacity).toFixed(3);
+          });
+
+          group.fragments.forEach((fragment, index) => {
+            const points = group.pathPoints[index];
+            const curve = group.id === "about"
+              ? fragment.curve * ABOUT_CURVE_MULTIPLIER
+              : fragment.curve;
+            const localProgress = clamp01(
+              (groupProgress - fragment.delay) / (1 - fragment.delay),
+            );
+            const releasePoint = {
+              x: mix(points.start.x, points.disperse.x, 0.38),
+              y: mix(points.start.y, points.disperse.y, 0.38),
+            };
+            let point;
+            let rotation;
+            let scale;
+
+            if (localProgress <= RELEASE_END) {
+              const stageProgress = smoothstep(localProgress / RELEASE_END);
+              const control = {
+                x: mix(points.start.x, releasePoint.x, 0.45) + curve,
+                y: Math.max(
+                  fragmentTopBoundary,
+                  Math.min(points.start.y, releasePoint.y) - 24,
+                ),
+              };
+              point = quadraticPoint(points.start, control, releasePoint, stageProgress);
+              rotation = mix(fragment.flightRotation * 0.35, fragment.flightRotation, stageProgress);
+              scale = mix(fragment.startScale, 0.92, stageProgress);
+            } else if (localProgress <= DISPERSE_END) {
+              const stageProgress = smoothstep(
+                (localProgress - RELEASE_END) / (DISPERSE_END - RELEASE_END),
+              );
+              const control = {
+                x: mix(releasePoint.x, points.disperse.x, 0.5) + curve,
+                y: Math.max(
+                  fragmentTopBoundary,
+                  Math.min(releasePoint.y, points.disperse.y) - 34,
+                ),
+              };
+              point = quadraticPoint(releasePoint, control, points.disperse, stageProgress);
+              rotation = mix(fragment.flightRotation, fragment.flightRotation * 0.55, stageProgress);
+              scale = mix(0.92, 1, stageProgress);
+            } else {
+              const stageProgress = smoothstep(
+                (localProgress - DISPERSE_END) / (1 - DISPERSE_END),
+              );
+              const control = {
+                x: mix(points.disperse.x, points.target.x, 0.52) - curve * 0.65,
+                y: Math.max(
+                  fragmentTopBoundary,
+                  mix(points.disperse.y, points.target.y, 0.48) - 18,
+                ),
+              };
+              point = quadraticPoint(points.disperse, control, points.target, stageProgress);
+              rotation = mix(fragment.flightRotation * 0.55, fragment.targetRotation, stageProgress);
+              scale = mix(1, fragment.targetScale, stageProgress);
+            }
+
+            const opacity = getCharacterOpacity(
+              progress,
+              fragment.visibilityRank,
+            );
+            const fragmentGlowOpacity = getIndividualGlowOpacity(localProgress);
+            const hoverOffset = getModuleHoverOffset(group, fragment, index);
+            point.x += hoverOffset.x;
+            point.y += hoverOffset.y;
+            const x = Math.round(point.x * 4) / 4;
+            const y = Math.round(point.y * 4) / 4;
+            group.elements[index].style.opacity = opacity.toFixed(3);
+            group.elements[index].style.setProperty(
+              "--fragment-glow-opacity",
+              fragmentGlowOpacity.toFixed(3),
+            );
+            group.elements[index].style.transform =
+              `translate(${x}px, ${y}px) translate(-50%, -50%) ` +
+              `rotate(${rotation.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+          });
+        });
+
+        const ambientAppearance = smoothstep(
+          (progress - PALM_VISIBILITY_START) /
+          (PALM_VISIBLE_BY - PALM_VISIBILITY_START),
+        );
+        const ambientFade = fragmentProgress <= DISPERSE_END
+          ? 1
+          : 1 - smoothstep((fragmentProgress - DISPERSE_END) / 0.28);
+
+        ambientFragments.forEach((fragment, index) => {
+          const points = ambientPathPoints[index];
+          const localProgress = clamp01(
+            (fragmentProgress - fragment.delay) /
+            Math.max(0.001, DISPERSE_END - fragment.delay),
+          );
+          const releasePoint = {
+            x: mix(points.start.x, points.disperse.x, 0.40),
+            y: mix(points.start.y, points.disperse.y, 0.40),
+          };
+          let point;
+          let rotation;
+          let scale;
+
+          if (localProgress <= RELEASE_END) {
+            const stageProgress = smoothstep(localProgress / RELEASE_END);
+            const control = {
+              x: mix(points.start.x, releasePoint.x, 0.46) + fragment.curve,
+              y: Math.max(
+                fragmentTopBoundary,
+                Math.min(points.start.y, releasePoint.y) - 28,
+              ),
+            };
+            point = quadraticPoint(points.start, control, releasePoint, stageProgress);
+            rotation = mix(fragment.flightRotation * 0.3, fragment.flightRotation, stageProgress);
+            scale = mix(fragment.startScale, fragment.disperseScale * 0.88, stageProgress);
+          } else {
+            const stageProgress = smoothstep(
+              (localProgress - RELEASE_END) / (DISPERSE_END - RELEASE_END),
+            );
+            const control = {
+              x: mix(releasePoint.x, points.disperse.x, 0.52) + fragment.curve,
+              y: Math.max(
+                fragmentTopBoundary,
+                Math.min(releasePoint.y, points.disperse.y) - 38,
+              ),
+            };
+            point = quadraticPoint(releasePoint, control, points.disperse, stageProgress);
+            rotation = mix(fragment.flightRotation, fragment.flightRotation * 0.48, stageProgress);
+            scale = mix(fragment.disperseScale * 0.88, fragment.disperseScale, stageProgress);
+          }
+
+          const opacity = ambientAppearance * ambientFade;
+          const x = Math.round(point.x * 4) / 4;
+          const y = Math.round(point.y * 4) / 4;
+          ambientElements[index].style.opacity = opacity.toFixed(3);
+          ambientElements[index].style.setProperty(
+            "--fragment-glow-opacity",
+            (getIndividualGlowOpacity(localProgress) * 0.85).toFixed(3),
+          );
+          ambientElements[index].style.transform =
+            `translate(${x}px, ${y}px) translate(-50%, -50%) ` +
+            `rotate(${rotation.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+        });
+      }
+
+      function renderProgress(progress) {
+        renderFrame(progress);
+        renderFragments(progress);
+        handProgressValue.textContent = `${Math.round(progress * 100)}%`;
+      }
+
+      function scrubTowardTarget() {
+        scrubFrameId = null;
+        const difference = targetProgress - currentProgress;
+        if (Math.abs(difference) <= SETTLE_EPSILON) {
+          currentProgress = targetProgress;
+          renderProgress(currentProgress);
+          return;
+        }
+
+        const lerpedStep = difference * SMOOTHING_FACTOR;
+        const progressStep =
+          Math.sign(lerpedStep) *
+          Math.min(Math.abs(lerpedStep), MAX_PROGRESS_STEP);
+        currentProgress = clamp01(currentProgress + progressStep);
+        renderProgress(currentProgress);
+        scrubFrameId = window.requestAnimationFrame(scrubTowardTarget);
+      }
+
+      function requestScrub() {
+        targetProgress = getScrollProgress();
+        progressValue.textContent = `${Math.round(targetProgress * 100)}%`;
+        if (!introComplete || scrubFrameId !== null) return;
+        scrubFrameId = window.requestAnimationFrame(scrubTowardTarget);
+      }
+
+      function startEntrance() {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            frameElement.classList.add("is-entering");
+          });
+        });
+      }
+
+      function resolveDisplayNameText(finalText, progress, noiseStep) {
+        const lockedCount = Math.min(
+          finalText.length,
+          Math.floor(progress * (finalText.length + 1)),
+        );
+        return finalText
+          .split("")
+          .map((letter, index) => {
+            if (index < lockedCount) return letter;
+            return ABOUT_DECODE_CHARACTERS[
+              (noiseStep + index * 2) % ABOUT_DECODE_CHARACTERS.length
+            ];
+          })
+          .join("");
+      }
+
+      function startDisplayNameDecode() {
+        const startedAt = performance.now();
+
+        const renderDisplayNameDecode = (timestamp) => {
+          const progress = clamp01(
+            (timestamp - startedAt) / DISPLAY_NAME_DECODE_DURATION,
+          );
+          const noiseStep = Math.floor((timestamp - startedAt) / 64);
+          displayNamePrimary.textContent = resolveDisplayNameText(
+            "Yingru",
+            progress,
+            noiseStep,
+          );
+          displayNameSecondary.textContent = resolveDisplayNameText(
+            "Zhao",
+            progress,
+            noiseStep + 2,
+          );
+          if (displayNamePrimary.textContent.startsWith("Y")) {
+            displayName.classList.add("has-art-y");
+          }
+
+          if (progress >= 1) {
+            displayNamePrimary.textContent = "Yingru";
+            displayNameSecondary.textContent = "Zhao";
+            return;
+          }
+          window.requestAnimationFrame(renderDisplayNameDecode);
+        };
+
+        window.requestAnimationFrame(renderDisplayNameDecode);
+      }
+
+      function startNameEntrance() {
+        if (displayNameEntranceStarted) return;
+        displayNameEntranceStarted = true;
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            displayName.classList.add("is-entering");
+            topNavigationRule.classList.add("is-entering");
+            window.setTimeout(
+              startDisplayNameDecode,
+              DISPLAY_NAME_DECODE_DELAY,
+            );
+            scheduleScrollHint();
+          });
+        });
+      }
+
+      function startScrollHintDecode() {
+        if (scrollHintConsumed || scrollHintStarted) return;
+        scrollHintStarted = true;
+        scrollHint.setAttribute("aria-hidden", "false");
+        scrollHint.classList.add("is-visible");
+        const startedAt = performance.now();
+
+        const renderScrollHintDecode = (timestamp) => {
+          if (scrollHintConsumed) {
+            scrollHintAnimationId = null;
+            return;
+          }
+          const progress = clamp01(
+            (timestamp - startedAt) / SCROLL_HINT_DECODE_DURATION,
+          );
+          const noiseStep = Math.floor((timestamp - startedAt) / 64);
+          scrollHintText.textContent = resolveDisplayNameText(
+            "向下滑动开始探索",
+            progress,
+            noiseStep,
+          );
+          if (progress >= SCROLL_HINT_ARROW_PROGRESS) {
+            scrollHintArrow.classList.add("is-visible");
+          }
+          if (progress >= 1) {
+            scrollHintText.textContent = "向下滑动开始探索";
+            scrollHintAnimationId = null;
+            return;
+          }
+          scrollHintAnimationId = window.requestAnimationFrame(
+            renderScrollHintDecode,
+          );
+        };
+
+        scrollHintAnimationId = window.requestAnimationFrame(
+          renderScrollHintDecode,
+        );
+      }
+
+      function scheduleScrollHint() {
+        if (scrollHintConsumed || scrollHintStarted || scrollHintDelayId !== null) {
+          return;
+        }
+        scrollHintDelayId = window.setTimeout(() => {
+          scrollHintDelayId = null;
+          startScrollHintDecode();
+        }, SCROLL_HINT_INTRO_DELAY);
+      }
+
+      function consumeScrollHint() {
+        if (scrollHintConsumed || window.scrollY <= SCROLL_HINT_THRESHOLD) return;
+        scrollHintConsumed = true;
+        if (scrollHintDelayId !== null) {
+          window.clearTimeout(scrollHintDelayId);
+          scrollHintDelayId = null;
+        }
+        if (scrollHintAnimationId !== null) {
+          window.cancelAnimationFrame(scrollHintAnimationId);
+          scrollHintAnimationId = null;
+        }
+        scrollHint.setAttribute("aria-hidden", "true");
+        scrollHint.classList.add("is-consumed");
+      }
+
+      function handlePageScroll() {
+        consumeScrollHint();
+        requestScrub();
+      }
+
+      initializeFragmentGroups();
+      createDebugMarkers();
+      calculatePathPoints();
+      renderFragments(0);
+
+      moduleInteractions.forEach((module) => {
+        module.hitArea.addEventListener("pointerenter", () => {
+          activateModule(module);
+        });
+        module.hitArea.addEventListener("pointerleave", () => {
+          if (activeModuleId !== module.id) return;
+          activeModuleId = null;
+          deactivateModule(module);
+        });
+      });
+
+      debugToggle.addEventListener("click", () => {
+        const visible = document.body.classList.toggle("debug-visible");
+        debugToggle.setAttribute("aria-pressed", String(visible));
+        debugToggle.textContent = visible ? "Hide path points" : "Show path points";
+      });
+
+      frameElement.addEventListener(
+        "transitionend",
+        (event) => {
+          if (event.propertyName !== "transform") return;
+          frameElement.classList.add("is-settled");
+          introComplete = true;
+          calculatePathPoints();
+          requestScrub();
+        },
+        { once: true },
+      );
+
+      Promise.all(
+        preloadedFrames.map(
+          (image) =>
+            new Promise((resolve, reject) => {
+              if (image.complete && image.naturalWidth > 0) {
+                resolve(image);
+                return;
+              }
+              image.addEventListener("load", () => resolve(image), { once: true });
+              image.addEventListener("error", reject, { once: true });
+            }),
+        ),
+      )
+        .then((images) =>
+          Promise.all(images.map((image) => image.decode().catch(() => undefined))),
+        )
+        .then(() => {
+          window.addEventListener("scroll", handlePageScroll, { passive: true });
+          window.addEventListener("resize", () => {
+            calculatePathPoints();
+            renderProgress(currentProgress);
+            requestScrub();
+          });
+          console.info(`Preloaded ${FRAME_COUNT} hand animation frames.`);
+          targetProgress = getScrollProgress();
+          progressValue.textContent = `${Math.round(targetProgress * 100)}%`;
+          startEntrance();
+          startNameEntrance();
+        })
+        .catch((error) => {
+          console.error("Hand frame preload failed.", error);
+        });
+    })();
+  </script>
+</body>
+
+</html>
