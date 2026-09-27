@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab — Yingru Zhao</title>
+    <link rel="stylesheet" href="site-chrome.css" />
+  </head>
+  <body class="lab-page">
+    <header>
+      <a class="site-logo" href="index.html" aria-label="Return to homepage">
+        <span class="site-logo__line site-logo__line--top">
+          <span class="site-logo__primary">Yingru</span>
+        </span>
+        <span class="site-logo__line site-logo__line--bottom">
+          <span class="site-logo__secondary">Zhao</span>
+        </span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="site-nav__item" href="about.html">ABOUT</a>
+        <a class="site-nav__item" href="work.html">WORK</a>
+        <span class="site-nav__item site-nav__item--active" aria-current="page">(LAB)</span>
+      </nav>
+      <div class="site-navigation-rule" aria-hidden="true"></div>
+    </header>
+
+    <main class="lab-main">
+      <section class="lab-intro" aria-labelledby="lab-title">
+        <p class="lab-section-label">LAB / EXPERIMENTS</p>
+        <h1 id="lab-title">Small experiments in code,<br />interaction and visual systems.</h1>
+      </section>
+
+      <section class="lab-experiments" aria-label="Creative coding experiments">
+        <article class="lab-experiment lab-experiment--01 lab-experiment--embedded" aria-labelledby="experiment-01-label">
+          <div class="lab-experiment__preview">
+            <iframe
+              class="lab-experiment__iframe"
+              src="public/experiments/poster-01/"
+              title="Experiment 01 interactive poster"
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="lab-experiment__meta lab-experiment--01__meta">
+            <p class="lab-experiment__number">01</p>
+            <div class="lab-experiment--01__title-group">
+              <h2 id="experiment-01-label">切片之后</h2>
+              <p>After the Slice</p>
+            </div>
+            <div class="lab-experiment__title-slot" aria-hidden="true"></div>
+            <div class="lab-experiment--01__detail">
+              <p class="lab-experiment--01__note">移动鼠标并点击，探索切片后的变化。</p>
+              <p class="lab-experiment__technology">p5.js · 互动海报 · 2026</p>
+              <a
+                class="lab-experiment__entry"
+                href="public/experiments/poster-01/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >点击进入 ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="lab-experiment lab-experiment--02 lab-experiment--embedded lab-experiment--reversed" aria-labelledby="experiment-02-label">
+          <div class="lab-experiment__preview">
+            <iframe
+              class="lab-experiment__iframe"
+              src="public/experiments/poster-02/"
+              title="Experiment 02 interactive poster"
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="lab-experiment__meta lab-experiment--02__meta">
+            <p class="lab-experiment__number">02</p>
+            <div class="lab-experiment--02__title-group">
+              <h2 id="experiment-02-label">孢子幻视</h2>
+              <p>Spore Delirium</p>
+            </div>
+            <div class="lab-experiment__title-slot" aria-hidden="true"></div>
+            <div class="lab-experiment--02__detail">
+              <p class="lab-experiment--02__note">点击画面，释放孢子与幻视。</p>
+              <p class="lab-experiment__technology">p5.js · 互动海报 · 2026</p>
+              <a
+                class="lab-experiment__entry"
+                href="public/experiments/poster-02/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >点击进入 ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="lab-experiment lab-experiment--03 lab-experiment--embedded" aria-labelledby="experiment-03-label">
+          <div class="lab-experiment__preview">
+            <iframe
+              class="lab-experiment__iframe"
+              src="public/experiments/poster-03/"
+              title="Experiment 03 interactive poster"
+              loading="lazy"
+            ></iframe>
+          </div>
+          <div class="lab-experiment__meta lab-experiment--03__meta">
+            <p class="lab-experiment__number">03</p>
+            <div class="lab-experiment--03__title-group">
+              <h2 id="experiment-03-label">状态未明</h2>
+              <p>Status Unknown</p>
+            </div>
+            <div class="lab-experiment__title-slot" aria-hidden="true"></div>
+            <div class="lab-experiment--03__detail">
+              <p class="lab-experiment--03__note">移动鼠标，扰动不断累积的等待。</p>
+              <p class="lab-experiment__technology">p5.js · 互动海报 · 2026</p>
+              <a
+                class="lab-experiment__entry"
+                href="public/experiments/poster-03/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >点击进入 ↗</a>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const previews = [
+          ...document.querySelectorAll(".lab-experiment__preview"),
+        ];
+        const activeFrames = new Map();
+
+        const syncFrameVisibility = (frame) => {
+          const active =
+            document.visibilityState === "visible" &&
+            activeFrames.get(frame) === true;
+          frame.contentWindow?.postMessage(
+            { type: "lab-visibility", active },
+            "*",
+          );
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              const frame = entry.target.querySelector(
+                ".lab-experiment__iframe",
+              );
+              if (!frame) return;
+              activeFrames.set(frame, entry.isIntersecting);
+              syncFrameVisibility(frame);
+            });
+          },
+          { rootMargin: "200px 0px", threshold: 0 },
+        );
+
+        previews.forEach((preview) => {
+          const frame = preview.querySelector(".lab-experiment__iframe");
+          if (!frame) return;
+          activeFrames.set(frame, false);
+          frame.addEventListener("load", () => syncFrameVisibility(frame));
+          observer.observe(preview);
+        });
+
+        document.addEventListener("visibilitychange", () => {
+          activeFrames.forEach((_, frame) => syncFrameVisibility(frame));
+        });
+      })();
+    </script>
+  </body>
+</html>
