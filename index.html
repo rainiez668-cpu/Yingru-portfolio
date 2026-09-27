@@ -47,15 +47,28 @@
       left: 0;
       bottom: 0;
       display: block;
-      width: min(100vw, 1286px);
-      height: auto;
+      width: min(100vw, 1286px, 177.777778vh);
+      aspect-ratio: 1920 / 1080;
       max-height: 100vh;
       margin-inline: auto;
+      transform: translateY(42vh);
+      will-change: transform;
+    }
+
+    .hand-frame__image {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      visibility: hidden;
       object-fit: contain;
       object-position: bottom center;
       image-rendering: auto;
-      transform: translateY(42vh);
-      will-change: transform;
+    }
+
+    .hand-frame__image.is-active {
+      visibility: visible;
     }
 
     .hand-frame.is-entering {
@@ -711,8 +724,17 @@
 <body>
   <main class="scroll-track" aria-label="About fragment scroll animation test">
     <section class="sticky-stage">
-      <img id="hand-frame" class="hand-frame" src="public/assets/hands/hand_01.webp" width="1920" height="1080"
-        alt="Hands opening from a fist" draggable="false" />
+      <div id="hand-frame" class="hand-frame" role="img" aria-label="Hands opening from a fist">
+        <img
+          class="hand-frame__image is-active"
+          src="public/assets/hands/hand_01.webp"
+          width="1920"
+          height="1080"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+        />
+      </div>
 
       <h1 id="display-name" class="display-name" aria-label="Yingru Zhao">
         <span class="display-name-line display-name-line--top" aria-hidden="true">
@@ -1058,9 +1080,19 @@
         return `${FRAME_ROOT}/hand_${number}.webp`;
       });
 
-      const preloadedFrames = frameSources.map((source) => {
-        const image = new Image();
+      const frameElements = frameSources.map((source, index) => {
+        if (index === 0) {
+          return frameElement.querySelector(".hand-frame__image");
+        }
+        const image = document.createElement("img");
+        image.className = "hand-frame__image";
         image.src = source;
+        image.width = 1920;
+        image.height = 1080;
+        image.alt = "";
+        image.setAttribute("aria-hidden", "true");
+        image.draggable = false;
+        frameElement.append(image);
         return image;
       });
 
@@ -1641,8 +1673,9 @@
       function renderFrame(progress) {
         const nextFrameIndex = Math.round(progress * (FRAME_COUNT - 1));
         if (nextFrameIndex !== currentFrameIndex) {
+          frameElements[currentFrameIndex].classList.remove("is-active");
           currentFrameIndex = nextFrameIndex;
-          frameElement.src = frameSources[currentFrameIndex];
+          frameElements[currentFrameIndex].classList.add("is-active");
           frameValue.textContent = `${String(currentFrameIndex + 1).padStart(2, "0")} / 20`;
         }
       }
@@ -2044,7 +2077,7 @@
       );
 
       Promise.all(
-        preloadedFrames.map(
+        frameElements.map(
           (image) =>
             new Promise((resolve, reject) => {
               if (image.complete && image.naturalWidth > 0) {
