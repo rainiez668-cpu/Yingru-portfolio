@@ -156,25 +156,20 @@
       transform: translate(0px, -3px);
     }
 
-    .top-navigation {
-      position: absolute;
-      z-index: 3;
-      top: clamp(38px, 6vh, 74px);
-      right: clamp(48px, 4.167vw, 96px);
-      display: none;
-      gap: 33px;
-      margin: 0;
-      padding: 0;
-      color: var(--site-blue);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 25px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 1;
+    .home-navigation {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        opacity 600ms ease,
+        visibility 0s linear 600ms;
     }
 
-    .top-navigation__item {
-      white-space: nowrap;
+    .home-navigation.is-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 600ms ease;
     }
 
     .top-navigation-rule {
@@ -281,13 +276,6 @@
         bottom: 28px;
         font-size: 13px;
         letter-spacing: 0.08em;
-      }
-
-      .top-navigation {
-        top: 38px;
-        right: 38px;
-        gap: 16px;
-        font-size: 14px;
       }
 
       .top-navigation-rule {
@@ -557,6 +545,9 @@
 
     .fragment-particle {
       --fragment-glow-opacity: 0;
+      --magnetic-glow: 0;
+      --magnetic-x: 0px;
+      --magnetic-y: 0px;
       position: absolute;
       top: 0;
       left: 0;
@@ -598,6 +589,67 @@
       font-weight: 400;
       line-height: 1;
       white-space: nowrap;
+    }
+
+    .fragment-group.is-idle .fragment-char {
+      animation: fragment-idle-drift var(--idle-duration) ease-in-out
+        var(--idle-delay) infinite both;
+    }
+
+    .fragment-group.is-idle .fragment-particle::before {
+      animation: fragment-glow-breathe var(--idle-glow-duration) ease-in-out
+        var(--idle-delay) infinite both;
+    }
+
+    .fragment-group.is-hovered .fragment-char,
+    .fragment-group.is-hovered .fragment-particle::before {
+      animation-play-state: paused;
+    }
+
+    @keyframes fragment-idle-drift {
+      0%,
+      100% {
+        transform: translate(var(--magnetic-x), var(--magnetic-y));
+      }
+
+      22% {
+        transform: translate(
+          calc(var(--idle-x) + var(--magnetic-x)),
+          calc(var(--idle-y-neg-45) + var(--magnetic-y))
+        );
+      }
+
+      52% {
+        transform: translate(
+          calc(var(--idle-x-neg-50) + var(--magnetic-x)),
+          calc(var(--idle-y) + var(--magnetic-y))
+        );
+      }
+
+      78% {
+        transform: translate(
+          calc(var(--idle-x-neg) + var(--magnetic-x)),
+          calc(var(--idle-y-neg-35) + var(--magnetic-y))
+        );
+      }
+    }
+
+    @keyframes fragment-glow-breathe {
+      0%,
+      100% {
+        filter: blur(8px) brightness(calc(0.94 + var(--magnetic-glow)));
+      }
+
+      50% {
+        filter: blur(8px) brightness(calc(1.06 + var(--magnetic-glow)));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fragment-group.is-idle .fragment-char,
+      .fragment-group.is-idle .fragment-particle::before {
+        animation: none;
+      }
     }
 
     .module-hit-area {
@@ -745,11 +797,15 @@
         </span>
       </h1>
 
-      <nav class="top-navigation" aria-label="Primary navigation">
-        <span class="top-navigation__item">About</span>
-        <span class="top-navigation__item">Work</span>
-        <span class="top-navigation__item">Lab</span>
-        <span class="top-navigation__item">Contact</span>
+      <nav
+        id="home-navigation"
+        class="site-nav home-navigation"
+        aria-label="Primary navigation"
+        aria-hidden="true"
+      >
+        <a class="site-nav__item" href="about.html">ABOUT</a>
+        <a class="site-nav__item" href="work.html">WORK</a>
+        <a class="site-nav__item" href="lab.html">LAB</a>
       </nav>
       <div class="top-navigation-rule" aria-hidden="true"></div>
 
@@ -1055,6 +1111,7 @@
       const frameElement = document.querySelector("#hand-frame");
       const ambientContainer = document.querySelector('[data-group="ambient"]');
       const displayName = document.querySelector("#display-name");
+      const homeNavigation = document.querySelector("#home-navigation");
       const topNavigationRule = document.querySelector(".top-navigation-rule");
       const displayNamePrimary = document.querySelector("#display-name-primary");
       const displayNameSecondary = document.querySelector("#display-name-secondary");
@@ -1102,15 +1159,28 @@
       let scrubFrameId = null;
       let introComplete = false;
       let exploreInteractionsEnabled = false;
+      let fragmentIdleEnabled = false;
+      let magneticFrameId = null;
       let activeModuleId = null;
       let ambientElements = [];
       let ambientPathPoints = [];
       let fragmentTopBoundary = 0;
+      const magneticPointer = {
+        x: 0,
+        y: 0,
+        active: false,
+      };
       let displayNameEntranceStarted = false;
       let scrollHintStarted = false;
       let scrollHintConsumed = false;
       let scrollHintDelayId = null;
       let scrollHintAnimationId = null;
+
+      const magneticMediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+      const reducedMotionMediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const PROXIMITY_RADIUS = 160;
+      const MAGNETIC_SMOOTHING = 0.18;
+      const MAGNETIC_EPSILON = 0.025;
 
       const moduleInteractions = [
         {
@@ -1281,6 +1351,8 @@
 
       function deactivateModule(module, immediate = false) {
         cancelDecode(module, immediate);
+        module.fragmentContainer.classList.remove("is-hovered");
+        requestMagneticFrame();
         if (module.hoverAnimationId !== null) {
           window.cancelAnimationFrame(module.hoverAnimationId);
           module.hoverAnimationId = null;
@@ -1299,8 +1371,154 @@
         );
         if (previousModule) deactivateModule(previousModule, true);
         activeModuleId = module.id;
+        module.fragmentContainer.classList.add("is-hovered");
+        requestMagneticFrame();
         animateModuleHover(module, 1, ABOUT_HOVER_ENTER_DURATION);
         startDecode(module);
+      }
+
+      function setFragmentIdleEnabled(enabled) {
+        if (enabled === fragmentIdleEnabled) return;
+        fragmentIdleEnabled = enabled;
+        fragmentGroups.forEach((group) => {
+          group.container.classList.toggle("is-idle", enabled);
+        });
+        if (!enabled) {
+          resetMagneticAttraction();
+        } else {
+          requestMagneticFrame();
+        }
+      }
+
+      function canUseMagneticAttraction() {
+        return (
+          fragmentIdleEnabled &&
+          magneticMediaQuery.matches &&
+          !reducedMotionMediaQuery.matches
+        );
+      }
+
+      function resetMagneticAttraction() {
+        if (magneticFrameId !== null) {
+          window.cancelAnimationFrame(magneticFrameId);
+          magneticFrameId = null;
+        }
+        magneticPointer.active = false;
+        fragmentGroups.forEach((group) => {
+          group.fragments.forEach((fragment) => {
+            if (!fragment.magneticState) return;
+            fragment.magneticState.x = 0;
+            fragment.magneticState.y = 0;
+            fragment.magneticState.glow = 0;
+          });
+          group.elements.forEach((element) => {
+            element.style.setProperty("--magnetic-x", "0px");
+            element.style.setProperty("--magnetic-y", "0px");
+            element.style.setProperty("--magnetic-glow", "0");
+          });
+        });
+      }
+
+      function requestMagneticFrame() {
+        if (magneticFrameId !== null || !canUseMagneticAttraction()) return;
+        magneticFrameId = window.requestAnimationFrame(renderMagneticAttraction);
+      }
+
+      function renderMagneticAttraction() {
+        magneticFrameId = null;
+        if (!canUseMagneticAttraction()) {
+          resetMagneticAttraction();
+          return;
+        }
+
+        let shouldContinue = false;
+
+        fragmentGroups.forEach((group) => {
+          const groupCenter = group.centerPoint;
+          const groupDistance = magneticPointer.active
+            ? Math.hypot(
+              magneticPointer.x - groupCenter.x,
+              magneticPointer.y - groupCenter.y,
+            )
+            : PROXIMITY_RADIUS;
+          const groupInfluence =
+            activeModuleId === group.id
+              ? smoothstep((PROXIMITY_RADIUS - groupDistance) / PROXIMITY_RADIUS) * 0.4
+              : smoothstep((PROXIMITY_RADIUS - groupDistance) / PROXIMITY_RADIUS);
+
+          group.fragments.forEach((fragment, index) => {
+            const state = fragment.magneticState;
+            const element = group.elements[index];
+            const points = group.pathPoints[index];
+            let targetX = 0;
+            let targetY = 0;
+            let targetGlow = 0;
+
+            if (groupInfluence > 0 && points) {
+              const dx = magneticPointer.x - points.target.x;
+              const dy = magneticPointer.y - points.target.y;
+              const fragmentDistance = Math.max(1, Math.hypot(dx, dy));
+              const fragmentInfluence =
+                0.72 +
+                (1 - smoothstep(fragmentDistance / PROXIMITY_RADIUS)) * 0.48;
+              const amount =
+                state.maxOffset *
+                state.response *
+                groupInfluence *
+                fragmentInfluence;
+              targetX = (dx / fragmentDistance) * amount;
+              targetY = (dy / fragmentDistance) * amount;
+              targetGlow = groupInfluence * 0.16;
+            }
+
+            state.x += (targetX - state.x) * MAGNETIC_SMOOTHING;
+            state.y += (targetY - state.y) * MAGNETIC_SMOOTHING;
+            state.glow += (targetGlow - state.glow) * MAGNETIC_SMOOTHING;
+
+            if (
+              Math.abs(targetX - state.x) > MAGNETIC_EPSILON ||
+              Math.abs(targetY - state.y) > MAGNETIC_EPSILON ||
+              Math.abs(targetGlow - state.glow) > 0.002
+            ) {
+              shouldContinue = true;
+            }
+
+            if (
+              targetX === 0 &&
+              targetY === 0 &&
+              targetGlow === 0 &&
+              Math.abs(state.x) <= MAGNETIC_EPSILON &&
+              Math.abs(state.y) <= MAGNETIC_EPSILON &&
+              Math.abs(state.glow) <= 0.002
+            ) {
+              state.x = 0;
+              state.y = 0;
+              state.glow = 0;
+            }
+
+            element.style.setProperty("--magnetic-x", `${state.x.toFixed(2)}px`);
+            element.style.setProperty("--magnetic-y", `${state.y.toFixed(2)}px`);
+            element.style.setProperty("--magnetic-glow", state.glow.toFixed(3));
+          });
+        });
+
+        if (shouldContinue) {
+          magneticFrameId = window.requestAnimationFrame(renderMagneticAttraction);
+        }
+      }
+
+      function handlePointerMove(event) {
+        if (!canUseMagneticAttraction()) return;
+        magneticPointer.active = true;
+        magneticPointer.x = event.clientX;
+        magneticPointer.y = event.clientY;
+        requestMagneticFrame();
+      }
+
+      function handlePointerLeave() {
+        if (!canUseMagneticAttraction()) return;
+        magneticPointer.active = false;
+        requestMagneticFrame();
       }
 
       function setExploreInteractionsEnabled(enabled) {
@@ -1480,12 +1698,70 @@
       }
 
       function initializeFragmentGroups() {
-        fragmentGroups.forEach((group) => {
+        fragmentGroups.forEach((group, groupIndex) => {
           group.container = document.querySelector(`[data-group="${group.id}"]`);
-          group.elements = group.fragments.map((fragment) => {
+          const module = moduleInteractions.find(
+            (candidate) => candidate.id === group.id,
+          );
+          module.fragmentContainer = group.container;
+          group.elements = group.fragments.map((fragment, index) => {
             const particle = document.createElement("span");
             particle.className = "fragment-particle";
             particle.dataset.group = group.id;
+            const seed = groupIndex * 53 + index + 1;
+            const amplitudeX = seed % 13 === 0
+              ? 5.7
+              : 2 + ((seed * 7) % 31) / 10;
+            const amplitudeY = seed % 11 === 0
+              ? 5.8
+              : 2 + ((seed * 11) % 31) / 10;
+            const directionX = seed % 2 === 0 ? 1 : -1;
+            const directionY = seed % 3 === 0 ? -1 : 1;
+            fragment.magneticState = {
+              x: 0,
+              y: 0,
+              glow: 0,
+              maxOffset: seed % 17 === 0
+                ? 13.4
+                : 6 + ((seed * 23) % 41) / 10,
+              response: 0.78 + ((seed * 29) % 45) / 100,
+            };
+            particle.style.setProperty(
+              "--idle-x",
+              `${(amplitudeX * directionX).toFixed(1)}px`,
+            );
+            particle.style.setProperty(
+              "--idle-y",
+              `${(amplitudeY * directionY).toFixed(1)}px`,
+            );
+            particle.style.setProperty(
+              "--idle-x-neg",
+              `${(amplitudeX * directionX * -1).toFixed(2)}px`,
+            );
+            particle.style.setProperty(
+              "--idle-x-neg-50",
+              `${(amplitudeX * directionX * -0.5).toFixed(2)}px`,
+            );
+            particle.style.setProperty(
+              "--idle-y-neg-45",
+              `${(amplitudeY * directionY * -0.45).toFixed(2)}px`,
+            );
+            particle.style.setProperty(
+              "--idle-y-neg-35",
+              `${(amplitudeY * directionY * -0.35).toFixed(2)}px`,
+            );
+            particle.style.setProperty(
+              "--idle-duration",
+              `${(3.8 + ((seed * 13) % 33) / 10).toFixed(1)}s`,
+            );
+            particle.style.setProperty(
+              "--idle-glow-duration",
+              `${(4.4 + ((seed * 17) % 27) / 10).toFixed(1)}s`,
+            );
+            particle.style.setProperty(
+              "--idle-delay",
+              `${450 + ((seed * 19) % 7) * 70}ms`,
+            );
             const character = document.createElement("span");
             character.className = "fragment-char";
             character.textContent = fragment.char;
@@ -1699,6 +1975,15 @@
         setExploreInteractionsEnabled(
           aboutGroupProgress >= ABOUT_INTERACTIVE_THRESHOLD,
         );
+        const allGroupsFormed = fragmentGroups.every((group) => {
+          const groupProgress = clamp01(
+            (fragmentProgress - group.groupDelay) / (1 - group.groupDelay),
+          );
+          return groupProgress >= ABOUT_INTERACTIVE_THRESHOLD;
+        });
+        homeNavigation.classList.toggle("is-visible", allGroupsFormed);
+        homeNavigation.setAttribute("aria-hidden", String(!allGroupsFormed));
+        setFragmentIdleEnabled(allGroupsFormed);
 
         fragmentGroups.forEach((group) => {
           const groupProgress = clamp01(
@@ -2094,10 +2379,17 @@
         )
         .then(() => {
           window.addEventListener("scroll", handlePageScroll, { passive: true });
+          window.addEventListener("pointermove", handlePointerMove, { passive: true });
+          window.addEventListener("pointerleave", handlePointerLeave);
+          window.addEventListener("blur", handlePointerLeave);
           window.addEventListener("resize", () => {
             calculatePathPoints();
             renderProgress(currentProgress);
             requestScrub();
+            requestMagneticFrame();
+          });
+          document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "hidden") handlePointerLeave();
           });
           console.info(`Preloaded ${FRAME_COUNT} hand animation frames.`);
           targetProgress = getScrollProgress();
