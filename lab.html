@@ -18,9 +18,9 @@
       </a>
 
       <nav class="site-nav" aria-label="Primary navigation">
-        <a class="site-nav__item" href="about.html">ABOUT</a>
-        <a class="site-nav__item" href="work.html">WORK</a>
-        <span class="site-nav__item site-nav__item--active" aria-current="page">(LAB)</span>
+        <a class="site-nav__item" href="about.html">ABOUT<span class="site-nav__separator" aria-hidden="true"> / </span><span class="site-nav__chinese">关于</span></a>
+        <a class="site-nav__item" href="work.html">WORK<span class="site-nav__separator" aria-hidden="true"> / </span><span class="site-nav__chinese">作品</span></a>
+        <a class="site-nav__item site-nav__item--active" href="lab.html" aria-current="page">(LAB<span class="site-nav__separator" aria-hidden="true"> / </span><span class="site-nav__chinese">实验</span>)</a>
       </nav>
       <div class="site-navigation-rule" aria-hidden="true"></div>
     </header>
@@ -30,6 +30,11 @@
         <p class="lab-section-label">LAB / EXPERIMENTS</p>
         <h1 id="lab-title">Small experiments in code,<br />interaction and visual systems.</h1>
       </section>
+
+      <nav class="work-filter lab-category-nav" aria-label="Lab categories">
+        <span class="work-filter__button is-active" aria-current="page">（交互海报）</span>
+        <a class="work-filter__button" href="lab/visual-studies/">视觉研究</a>
+      </nav>
 
       <section class="lab-experiments" aria-label="Creative coding experiments">
         <article class="lab-experiment lab-experiment--01 lab-experiment--embedded" aria-labelledby="experiment-01-label">
@@ -56,7 +61,7 @@
                 href="public/experiments/poster-01/"
                 target="_blank"
                 rel="noopener noreferrer"
-              >点击进入 ↗</a>
+              >点击进入 <span class="cta-arrow" aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>
@@ -85,7 +90,7 @@
                 href="public/experiments/poster-02/"
                 target="_blank"
                 rel="noopener noreferrer"
-              >点击进入 ↗</a>
+              >点击进入 <span class="cta-arrow" aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>
@@ -114,7 +119,7 @@
                 href="public/experiments/poster-03/"
                 target="_blank"
                 rel="noopener noreferrer"
-              >点击进入 ↗</a>
+              >点击进入 <span class="cta-arrow" aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>

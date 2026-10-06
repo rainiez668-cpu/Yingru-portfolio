@@ -18,9 +18,9 @@
       </a>
 
       <nav class="site-nav" aria-label="Primary navigation">
-        <a class="site-nav__item" href="about.html">ABOUT</a>
-        <span class="site-nav__item site-nav__item--active" aria-current="page">(WORK)</span>
-        <a class="site-nav__item" href="lab.html">LAB</a>
+        <a class="site-nav__item" href="about.html">ABOUT<span class="site-nav__separator" aria-hidden="true"> / </span><span class="site-nav__chinese">关于</span></a>
+        <a class="site-nav__item site-nav__item--active" href="work.html" aria-current="page">(WORK<span class="site-nav__separator" aria-hidden="true"> / </span><span class="site-nav__chinese">作品</span>)</a>
+        <a class="site-nav__item" href="lab.html">LAB<span class="site-nav__separator" aria-hidden="true"> / </span><span class="site-nav__chinese">实验</span></a>
       </nav>
       <div class="site-navigation-rule" aria-hidden="true"></div>
     </header>
@@ -29,80 +29,76 @@
       <section class="work-intro" aria-labelledby="work-title">
         <p class="work-section-label">WORK / SELECTED PROJECTS</p>
         <h1 id="work-title">Selected work across product,<br />interaction and experimental systems.</h1>
-        <div class="work-intro__metadata" aria-label="Project period">
-          <span>2024 — 2026</span>
-        </div>
+        <div class="work-intro__metadata" aria-label="Project period"></div>
       </section>
 
       <nav class="work-filter" aria-label="Project categories">
-        <button class="work-filter__button is-active" type="button" data-filter="all" aria-pressed="true">(ALL)</button>
-        <button class="work-filter__button" type="button" data-filter="product" aria-pressed="false">PRODUCT</button>
-        <button class="work-filter__button" type="button" data-filter="experience" aria-pressed="false">EXPERIENCE</button>
-        <button class="work-filter__button" type="button" data-filter="creative-tech" aria-pressed="false">CREATIVE TECH</button>
+        <button class="work-filter__button is-active" type="button" data-filter="all" aria-pressed="true">（全部）</button>
+        <button class="work-filter__button" type="button" data-filter="product" aria-pressed="false">产品设计</button>
+        <button class="work-filter__button" type="button" data-filter="experience" aria-pressed="false">体验设计</button>
+        <button class="work-filter__button" type="button" data-filter="creative-tech" aria-pressed="false">创意技术</button>
       </nav>
 
       <section class="work-projects" aria-label="Selected projects">
         <article class="work-project work-project--anew" data-category="product">
           <a class="work-project__visual work-project__visual--anew" href="work/anew/" aria-label="查看 Anew 项目详情">
             <img class="work-project__cover" src="public/assets/images/work/anew/anew-cover.webp" alt="Anew 项目界面预览" />
-            <span class="work-project__visual-entry">查看项目 ↗</span>
+            <span class="work-project__visual-entry">查看项目 <span class="cta-arrow" aria-hidden="true">↗</span></span>
           </a>
           <div class="work-project__header">
-            <p class="work-project__eyebrow"><span>01</span><span>PRODUCT</span></p>
+            <p class="work-project__eyebrow"><span>01</span><span>产品设计</span></p>
             <h2 class="work-project__title--anew">Anew</h2>
             <p class="work-project__subtitle"></p>
             <p class="work-project__description">ADHD友好的每日计划工具</p>
           </div>
           <div class="work-project__details">
             <dl class="work-project__metadata">
-              <div><dt>角色</dt><dd>产品设计 · UX/UI · AI 辅助开发</dd></div>
-              <div><dt>状态</dt><dd>可运行 MVP</dd></div>
+              <div><dt>角色</dt><dd>产品设计 · UX/UI · AI辅助开发</dd></div>
+              <div><dt>定位</dt><dd>移动端 Web · 可运行原型</dd></div>
               <div><dt>年份</dt><dd>2026</dd></div>
             </dl>
           </div>
         </article>
 
         <article class="work-project" data-category="product">
-          <div class="work-project__visual"><span>VISUAL / 02</span><span class="work-project__visual-entry">查看项目 ↗</span></div>
-          <div class="work-project__header"><p class="work-project__eyebrow"><span>02</span><span>PRODUCT</span></p><h2>项目名称</h2><p class="work-project__description">项目简述</p></div>
+          <a class="work-project__visual" href="work/nugget/" aria-label="查看 Nugget 项目详情">
+            <img class="work-project__cover" src="public/assets/images/work/nugget/nugget-cover.webp" alt="Nugget competition discovery and AI proposal tool interface" />
+            <span class="work-project__visual-entry">查看项目 <span class="cta-arrow" aria-hidden="true">↗</span></span>
+          </a>
+          <div class="work-project__header"><p class="work-project__eyebrow"><span>02</span><span>产品设计</span></p><h2>Nugget</h2><p class="work-project__description">一款帮助设计师及学生快速发现竞赛、判断参赛资格并将竞赛Brief转化为可执行提案的AI辅助设计工具。</p></div>
+          <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>产品设计 · UX/UI · AI辅助开发</dd></div><div><dt>定位</dt><dd>桌面端 Web · 可运行原型</dd></div><div><dt>年份</dt><dd>2026</dd></div></dl></div>
+        </article>
+
+        <article class="work-project" data-category="creative-tech">
+          <a class="work-project__visual" href="work/reworn-in-the-space/" aria-label="查看 Reworn in the Space 项目详情">
+            <img class="work-project__cover" src="public/assets/images/work/Reworn%20in%20the%20Space/cover.webp" alt="Reworn in the Space 互动装置项目预览" />
+            <span class="work-project__visual-entry">查看项目 <span class="cta-arrow" aria-hidden="true">↗</span></span>
+          </a>
+          <div class="work-project__header"><p class="work-project__eyebrow"><span>03</span><span>创意技术</span></p><h2>Reworn in the Space</h2><p class="work-project__description">将快时尚废弃数据转化为身体可感知的互动体验。</p></div>
+          <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>交互设计 · 视觉设计</dd></div><div><dt>定位</dt><dd>交互装置 · 爱丁堡科学节展出</dd></div><div><dt>年份</dt><dd>2025</dd></div></dl></div>
+        </article>
+
+        <article class="work-project" data-category="creative-tech">
+          <a class="work-project__visual" href="work/birdsong-beacon/" aria-label="查看 Birdsong Beacon 项目详情">
+            <img class="work-project__cover" src="public/assets/images/work/Birdsong%20Beacon/birdsongbeacon-cover.webp" alt="Birdsong Beacon 城市鸟类生态交互装置预览" />
+            <span class="work-project__visual-entry">查看项目 <span class="cta-arrow" aria-hidden="true">↗</span></span>
+          </a>
+          <div class="work-project__header"><p class="work-project__eyebrow"><span>04</span><span>创意技术</span></p><h2>Birdsong Beacon</h2><p class="work-project__description">面向城市步道的交互装置，帮助游客注意原本难以看见的鸟类活动。</p></div>
+          <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>交互设计 · 原型制作</dd></div><div><dt>定位</dt><dd>交互装置 · 爱丁堡国家机器人中心展出</dd></div><div><dt>年份</dt><dd>2024</dd></div></dl></div>
+        </article>
+
+        <article class="work-project" data-category="creative-tech">
+          <div class="work-project__visual"><span>VISUAL / 05</span><span class="work-project__visual-entry">查看项目 <span class="cta-arrow" aria-hidden="true">↗</span></span></div>
+          <div class="work-project__header"><p class="work-project__eyebrow"><span>05</span><span>创意技术</span></p><h2>项目名称</h2><p class="work-project__description">项目简述</p></div>
           <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>待补充</dd></div><div><dt>状态</dt><dd>待补充</dd></div><div><dt>年份</dt><dd>20XX</dd></div></dl></div>
         </article>
 
         <article class="work-project" data-category="experience">
-          <div class="work-project__visual"><span>VISUAL / 03</span><span class="work-project__visual-entry">查看项目 ↗</span></div>
-          <div class="work-project__header"><p class="work-project__eyebrow"><span>03</span><span>EXPERIENCE</span></p><h2>项目名称</h2><p class="work-project__description">项目简述</p></div>
+          <div class="work-project__visual"><span>VISUAL / 06</span><span class="work-project__visual-entry">查看项目 <span class="cta-arrow" aria-hidden="true">↗</span></span></div>
+          <div class="work-project__header"><p class="work-project__eyebrow"><span>06</span><span>体验设计</span></p><h2>项目名称</h2><p class="work-project__description">项目简述</p></div>
           <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>待补充</dd></div><div><dt>状态</dt><dd>待补充</dd></div><div><dt>年份</dt><dd>20XX</dd></div></dl></div>
         </article>
 
-        <article class="work-project" data-category="product">
-          <div class="work-project__visual"><span>VISUAL / 04</span><span class="work-project__visual-entry">查看项目 ↗</span></div>
-          <div class="work-project__header"><p class="work-project__eyebrow"><span>04</span><span>PRODUCT</span></p><h2>项目名称</h2><p class="work-project__description">项目简述</p></div>
-          <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>待补充</dd></div><div><dt>状态</dt><dd>待补充</dd></div><div><dt>年份</dt><dd>20XX</dd></div></dl></div>
-        </article>
-
-        <article class="work-project" data-category="creative-tech">
-          <div class="work-project__visual"><span>VISUAL / 05</span><span class="work-project__visual-entry">查看项目 ↗</span></div>
-          <div class="work-project__header"><p class="work-project__eyebrow"><span>05</span><span>CREATIVE TECH</span></p><h2>项目名称</h2><p class="work-project__description">项目简述</p></div>
-          <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>待补充</dd></div><div><dt>状态</dt><dd>待补充</dd></div><div><dt>年份</dt><dd>20XX</dd></div></dl></div>
-        </article>
-
-        <article class="work-project" data-category="experience">
-          <div class="work-project__visual"><span>VISUAL / 06</span><span class="work-project__visual-entry">查看项目 ↗</span></div>
-          <div class="work-project__header"><p class="work-project__eyebrow"><span>06</span><span>EXPERIENCE</span></p><h2>项目名称</h2><p class="work-project__description">项目简述</p></div>
-          <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>待补充</dd></div><div><dt>状态</dt><dd>待补充</dd></div><div><dt>年份</dt><dd>20XX</dd></div></dl></div>
-        </article>
-
-        <article class="work-project" data-category="creative-tech">
-          <div class="work-project__visual"><span>VISUAL / 07</span><span class="work-project__visual-entry">查看项目 ↗</span></div>
-          <div class="work-project__header"><p class="work-project__eyebrow"><span>07</span><span>CREATIVE TECH</span></p><h2>项目名称</h2><p class="work-project__description">项目简述</p></div>
-          <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>待补充</dd></div><div><dt>状态</dt><dd>待补充</dd></div><div><dt>年份</dt><dd>20XX</dd></div></dl></div>
-        </article>
-
-        <article class="work-project" data-category="product">
-          <div class="work-project__visual"><span>VISUAL / 08</span><span class="work-project__visual-entry">查看项目 ↗</span></div>
-          <div class="work-project__header"><p class="work-project__eyebrow"><span>08</span><span>PRODUCT</span></p><h2>项目名称</h2><p class="work-project__description">项目简述</p></div>
-          <div class="work-project__details"><dl class="work-project__metadata"><div><dt>角色</dt><dd>待补充</dd></div><div><dt>状态</dt><dd>待补充</dd></div><div><dt>年份</dt><dd>20XX</dd></div></dl></div>
-        </article>
       </section>
     </main>
 
@@ -111,10 +107,10 @@
         const buttons = [...document.querySelectorAll(".work-filter__button")];
         const projects = [...document.querySelectorAll(".work-project")];
         const filterLabels = {
-          all: "ALL",
-          product: "PRODUCT",
-          experience: "EXPERIENCE",
-          "creative-tech": "CREATIVE TECH",
+          all: "全部",
+          product: "产品设计",
+          experience: "体验设计",
+          "creative-tech": "创意技术",
         };
 
         const applyFilter = (filter) => {
@@ -123,7 +119,7 @@
             button.classList.toggle("is-active", active);
             button.setAttribute("aria-pressed", String(active));
             button.textContent = active
-              ? `(${filterLabels[button.dataset.filter]})`
+              ? `（${filterLabels[button.dataset.filter]}）`
               : filterLabels[button.dataset.filter];
           });
 

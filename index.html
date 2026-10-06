@@ -181,17 +181,28 @@
       height: 1.34px;
       background: var(--site-blue);
       opacity: 0;
-      transform: translateY(-140%) rotate(0.2deg);
+      transform: rotate(0.2deg);
       transform-origin: right center;
-      will-change: transform, opacity;
+      will-change: opacity;
     }
 
     .top-navigation-rule.is-entering {
       opacity: 1;
-      transform: translateY(0) rotate(0.2deg);
-      transition:
-        transform 1200ms cubic-bezier(0.22, 1, 0.36, 1) 100ms,
-        opacity 1000ms ease-out 100ms;
+      transition: opacity 600ms ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .home-navigation {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: none;
+      }
+
+      .top-navigation-rule {
+        opacity: 1;
+        transition: none;
+      }
     }
 
     @media (max-width: 600px) {
@@ -801,16 +812,15 @@
         id="home-navigation"
         class="site-nav home-navigation"
         aria-label="Primary navigation"
-        aria-hidden="true"
       >
-        <a class="site-nav__item" href="about.html">ABOUT</a>
-        <a class="site-nav__item" href="work.html">WORK</a>
-        <a class="site-nav__item" href="lab.html">LAB</a>
+        <a class="site-nav__item" href="about.html">ABOUT<span class="site-nav__separator" aria-hidden="true"> / </span><span class="site-nav__chinese">关于</span></a>
+        <a class="site-nav__item" href="work.html">WORK<span class="site-nav__separator" aria-hidden="true"> / </span><span class="site-nav__chinese">作品</span></a>
+        <a class="site-nav__item" href="lab.html">LAB<span class="site-nav__separator" aria-hidden="true"> / </span><span class="site-nav__chinese">实验</span></a>
       </nav>
       <div class="top-navigation-rule" aria-hidden="true"></div>
 
       <div id="scroll-hint" class="scroll-hint" aria-hidden="true">
-        <span id="scroll-hint-text" class="scroll-hint__text">#1×+·01×</span>
+        <span id="scroll-hint-text" class="scroll-hint__text">向下滚动 · SCROLL TO RELEASE</span>
         <span id="scroll-hint-arrow" class="scroll-hint__arrow" aria-hidden="true">↓</span>
       </div>
 
@@ -900,6 +910,7 @@
       const SCROLL_HINT_INTRO_DELAY = 350;
       const SCROLL_HINT_ARROW_PROGRESS = 0.6;
       const SCROLL_HINT_THRESHOLD = 8;
+      const SCROLL_HINT_TEXT = "向下滚动 · SCROLL TO RELEASE";
       const SOURCE_SIZE = { width: 1920, height: 1080 };
       const PALMS = {
         left: { x: 690, y: 775 },
@@ -1981,8 +1992,6 @@
           );
           return groupProgress >= ABOUT_INTERACTIVE_THRESHOLD;
         });
-        homeNavigation.classList.toggle("is-visible", allGroupsFormed);
-        homeNavigation.setAttribute("aria-hidden", String(!allGroupsFormed));
         setFragmentIdleEnabled(allGroupsFormed);
 
         fragmentGroups.forEach((group) => {
@@ -2233,6 +2242,7 @@
         window.requestAnimationFrame(() => {
           window.requestAnimationFrame(() => {
             displayName.classList.add("is-entering");
+            homeNavigation.classList.add("is-visible");
             topNavigationRule.classList.add("is-entering");
             window.setTimeout(
               startDisplayNameDecode,
@@ -2260,7 +2270,7 @@
           );
           const noiseStep = Math.floor((timestamp - startedAt) / 64);
           scrollHintText.textContent = resolveDisplayNameText(
-            "Scroll To Release",
+            SCROLL_HINT_TEXT,
             progress,
             noiseStep,
           );
@@ -2268,7 +2278,7 @@
             scrollHintArrow.classList.add("is-visible");
           }
           if (progress >= 1) {
-            scrollHintText.textContent = "Scroll To Release";
+            scrollHintText.textContent = SCROLL_HINT_TEXT;
             scrollHintAnimationId = null;
             return;
           }
@@ -2400,6 +2410,304 @@
         .catch((error) => {
           console.error("Hand frame preload failed.", error);
         });
+    })();
+  </script>
+  <script>
+    (() => {
+      "use strict";
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+          !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+      const settings = {
+        cursorRadius: 215, cursorImpulse: 13.5, velocityThreshold: 240,
+        maxVelocity: 5, velocitySmoothing: 0.15, maxDisplacement: 95,
+        springStrength: 0.009, damping: 0.925, starDragLag: 0.18,
+        starThrowMultiplier: 0.36, starForceRadius: 165,
+        starForceStrength: 3, modulePhysicsStrength: 0.68,
+      };
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const smoothstep = value => {
+        const t = clamp(value, 0, 1);
+        return t * t * (3 - 2 * t);
+      };
+      const particles = [...document.querySelectorAll(".fragment-particle")];
+      const starElements = ["about-star-glow", "work-main-glow", "work-spark-glow", "lab-star-glow"]
+        .map(id => document.getElementById(id)).filter(Boolean);
+      const modules = ["about", "work", "lab"].map(id => ({
+        id, hitArea: document.getElementById(`${id}-hit-area`), center: { x: 0, y: 0 },
+      }));
+      if (!particles.length || !starElements.length || modules.some(module => !module.hitArea)) return;
+
+      const style = document.createElement("style");
+      style.textContent = `
+        html.home-play-star-dragging,
+        html.home-play-star-dragging * { cursor: grabbing !important; }
+        .home-play-nav-star-hit {
+          position: absolute; z-index: 4; width: 56px; height: 56px; margin: 0;
+          padding: 0; border: 0; background: transparent; opacity: 0;
+          transform: translate(-50%, -50%); cursor: pointer; touch-action: none;
+        }
+        .home-play-nav-star-hit:focus-visible {
+          opacity: 1; outline: 1px solid #65bceb; outline-offset: 3px;
+        }
+      `;
+      document.head.append(style);
+
+      const pointer = { x: 0, y: 0, previousX: 0, previousY: 0, velocityX: 0, velocityY: 0, speed: 0, active: false, lastMove: performance.now() };
+      const state = {
+        playing: false, activeModule: null, hoveredStar: null, draggedStar: null,
+        dragPointerId: null, dragDistance: 0, pendingStar: null, pendingPointerId: null,
+        pressStart: { x: 0, y: 0 }, suppressNavigationStar: null, lastFrame: performance.now(),
+      };
+      const particleStates = particles.map((element, index) => ({
+        index, element, group: element.dataset.group || "ambient",
+        mass: (element.dataset.group || "ambient") === "ambient" ? 0.78 : 1.35,
+        home: { x: 0, y: 0 }, offset: { x: 0, y: 0 }, velocity: { x: 0, y: 0 }, force: { x: 0, y: 0 },
+      }));
+      const starStates = starElements.map((element, index) => ({
+        index, element, id: element.id, mass: 2.25, home: { x: 0, y: 0 },
+        offset: { x: 0, y: 0 }, velocity: { x: 0, y: 0 }, dragTarget: { x: 0, y: 0 },
+        rotation: 0, scale: 1, glow: 1, pulse: 0, grabRadius: 46,
+      }));
+      const navigationStars = [
+        ["about", "about-star-glow", "about.html"],
+        ["work", "work-main-glow", "work.html"],
+        ["lab", "lab-star-glow", "lab.html"],
+      ].map(([moduleId, elementId, href]) => {
+        const star = starStates.find(candidate => candidate.id === elementId);
+        const hitArea = document.createElement("a");
+        hitArea.className = "home-play-nav-star-hit";
+        hitArea.href = document.querySelector(`#home-navigation a[href="${href}"]`)?.getAttribute("href") || href;
+        hitArea.setAttribute("aria-label", `Open ${moduleId}`);
+        document.querySelector(".sticky-stage")?.append(hitArea);
+        return { moduleId, star, hitArea };
+      });
+
+      const currentStarPosition = star => ({ x: star.home.x + star.offset.x, y: star.home.y + star.offset.y });
+      const syncNavigationHitAreas = () => navigationStars.forEach(({ star, hitArea }) => {
+        const position = currentStarPosition(star);
+        const scaleOffsetX = (star.scale - 1) * star.element.offsetWidth / 2;
+        const scaleOffsetY = (star.scale - 1) * star.element.offsetHeight / 2;
+        hitArea.style.left = `${(position.x - scaleOffsetX).toFixed(2)}px`;
+        hitArea.style.top = `${(position.y - scaleOffsetY).toFixed(2)}px`;
+      });
+      const clearPresentation = () => {
+        document.documentElement.classList.remove("home-play-star-dragging");
+        particleStates.forEach(item => { item.element.style.translate = ""; });
+        starStates.forEach(star => {
+          star.element.style.translate = ""; star.element.style.rotate = "";
+          star.element.style.scale = ""; star.element.style.filter = "";
+        });
+      };
+      const resetPhysics = () => {
+        particleStates.forEach(item => {
+          item.offset.x = item.offset.y = item.velocity.x = item.velocity.y = item.force.x = item.force.y = 0;
+        });
+        starStates.forEach(star => {
+          star.offset.x = star.offset.y = star.velocity.x = star.velocity.y = star.dragTarget.x = star.dragTarget.y = 0;
+          star.rotation = 0; star.scale = 1; star.glow = 1; star.pulse = 0;
+        });
+        state.hoveredStar = state.draggedStar = state.pendingStar = state.suppressNavigationStar = null;
+        state.dragPointerId = state.pendingPointerId = null;
+        clearPresentation();
+      };
+      const cacheGeometry = () => {
+        clearPresentation();
+        particleStates.forEach(item => {
+          const bounds = item.element.getBoundingClientRect();
+          item.home.x = bounds.left + bounds.width / 2; item.home.y = bounds.top + bounds.height / 2;
+        });
+        starStates.forEach(star => {
+          const bounds = star.element.getBoundingClientRect();
+          star.home.x = bounds.left + bounds.width / 2; star.home.y = bounds.top + bounds.height / 2;
+          star.grabRadius = clamp(Math.min(bounds.width, bounds.height) * 0.24, 30, 66);
+        });
+        modules.forEach(module => {
+          const bounds = module.hitArea.getBoundingClientRect();
+          module.center.x = bounds.left + bounds.width / 2; module.center.y = bounds.top + bounds.height / 2;
+        });
+        syncNavigationHitAreas();
+      };
+      const homeReady = () => modules.every(module => module.hitArea.classList.contains("is-interactive"));
+      const nearestStar = (x, y) => starStates.reduce((nearest, star) => {
+        const point = currentStarPosition(star);
+        const distance = Math.hypot(x - point.x, y - point.y);
+        return distance <= star.grabRadius && (!nearest || distance < nearest.distance) ? { star, distance } : nearest;
+      }, null)?.star || null;
+      const segmentDistance = (px, py, ax, ay, bx, by) => {
+        const abX = bx - ax, abY = by - ay, length = abX * abX + abY * abY;
+        const t = length ? clamp(((px - ax) * abX + (py - ay) * abY) / length, 0, 1) : 0;
+        const x = ax + abX * t, y = ay + abY * t;
+        return { dx: px - x, dy: py - y, distance: Math.hypot(px - x, py - y) };
+      };
+      const addCursorImpulse = () => {
+        if (pointer.speed <= settings.velocityThreshold || state.draggedStar) return;
+        const influence = Math.pow(smoothstep((pointer.speed - settings.velocityThreshold) / Math.max(1, 1600 - settings.velocityThreshold)), 1.25);
+        const speed = Math.max(1, pointer.speed), travelX = pointer.velocityX / speed, travelY = pointer.velocityY / speed;
+        particleStates.forEach(item => {
+          const segment = segmentDistance(item.home.x + item.offset.x, item.home.y + item.offset.y, pointer.previousX, pointer.previousY, pointer.x, pointer.y);
+          if (segment.distance >= settings.cursorRadius) return;
+          const distance = Math.max(1, segment.distance), falloff = Math.pow(1 - distance / settings.cursorRadius, 2);
+          const weight = item.group === "ambient" ? 1 : settings.modulePhysicsStrength;
+          const impulse = settings.cursorImpulse * influence * falloff * weight / item.mass;
+          item.force.x += (segment.dx / distance * 0.76 + travelX * 0.42) * impulse;
+          item.force.y += (segment.dy / distance * 0.76 + travelY * 0.42) * impulse;
+          const length = Math.hypot(item.force.x, item.force.y), limit = settings.maxVelocity * 1.05;
+          if (length > limit) { item.force.x *= limit / length; item.force.y *= limit / length; }
+        });
+      };
+      const beginDrag = (star, event) => {
+        if (state.draggedStar || state.pendingStar !== star) return;
+        state.draggedStar = star; state.dragPointerId = state.pendingPointerId;
+        state.pendingStar = null; state.pendingPointerId = null;
+        star.dragTarget.x = event.clientX - star.home.x; star.dragTarget.y = event.clientY - star.home.y;
+        star.velocity.x *= 0.35; star.velocity.y *= 0.35;
+        document.documentElement.classList.add("home-play-star-dragging");
+        try { event.target.setPointerCapture(event.pointerId); } catch {}
+        event.stopImmediatePropagation();
+      };
+      const updatePointer = event => {
+        const now = performance.now(), elapsed = Math.max(8, now - pointer.lastMove);
+        const previousX = pointer.x || event.clientX, previousY = pointer.y || event.clientY;
+        const rawX = (event.clientX - previousX) / elapsed * 1000, rawY = (event.clientY - previousY) / elapsed * 1000;
+        pointer.previousX = previousX; pointer.previousY = previousY; pointer.x = event.clientX; pointer.y = event.clientY;
+        pointer.velocityX += (rawX - pointer.velocityX) * settings.velocitySmoothing;
+        pointer.velocityY += (rawY - pointer.velocityY) * settings.velocitySmoothing;
+        pointer.speed = Math.hypot(pointer.velocityX, pointer.velocityY); pointer.active = true; pointer.lastMove = now;
+        if (!state.playing) return;
+        if (state.pendingStar && event.pointerId === state.pendingPointerId) {
+          state.dragDistance = Math.hypot(pointer.x - state.pressStart.x, pointer.y - state.pressStart.y);
+          if (state.dragDistance >= 7) beginDrag(state.pendingStar, event);
+        }
+        if (state.draggedStar) {
+          state.draggedStar.dragTarget.x = pointer.x - state.draggedStar.home.x;
+          state.draggedStar.dragTarget.y = pointer.y - state.draggedStar.home.y;
+        } else { state.hoveredStar = nearestStar(pointer.x, pointer.y); addCursorImpulse(); }
+      };
+      const finishDrag = (event, cancelled = false) => {
+        if (state.pendingStar && event.pointerId === state.pendingPointerId) {
+          state.pendingStar = null; state.pendingPointerId = null; return;
+        }
+        if (!state.draggedStar || event.pointerId !== state.dragPointerId) return;
+        const star = state.draggedStar;
+        if (cancelled) { star.velocity.x *= 0.2; star.velocity.y *= 0.2; }
+        else {
+          star.velocity.x = clamp(pointer.velocityX / 60 * settings.starThrowMultiplier, -12, 12);
+          star.velocity.y = clamp(pointer.velocityY / 60 * settings.starThrowMultiplier, -12, 12);
+        }
+        state.draggedStar = null; state.dragPointerId = null; state.suppressNavigationStar = star;
+        window.setTimeout(() => { if (state.suppressNavigationStar === star) state.suppressNavigationStar = null; }, 0);
+        document.documentElement.classList.remove("home-play-star-dragging");
+        state.hoveredStar = nearestStar(pointer.x, pointer.y); event.stopImmediatePropagation();
+      };
+      const moduleField = (item, module) => {
+        const dx = item.home.x - module.center.x, dy = item.home.y - module.center.y, distance = Math.max(1, Math.hypot(dx, dy)), radius = 250;
+        if (distance >= radius) return { x: 0, y: 0 };
+        const influence = Math.pow(1 - distance / radius, 2) * 0.7;
+        if (module.id === "about") return { x: -dx / distance * 7 * influence, y: -dy / distance * 7 * influence };
+        if (module.id === "work") return { x: Math.sign(dx || 1) * 13 * influence, y: -dy * 0.045 * influence };
+        return { x: (dx / distance * 10 - dy / distance * 4) * influence, y: (dy / distance * 10 + dx / distance * 4) * influence };
+      };
+      const applyStarForce = star => {
+        const point = currentStarPosition(star), speed = Math.hypot(star.velocity.x, star.velocity.y), displacement = Math.hypot(star.offset.x, star.offset.y);
+        const energy = state.draggedStar === star ? 1 : clamp(speed / 7 + displacement / 150, 0, 1);
+        if (energy < 0.025) return;
+        particleStates.forEach(item => {
+          const dx = item.home.x + item.offset.x - point.x, dy = item.home.y + item.offset.y - point.y, distance = Math.max(1, Math.hypot(dx, dy));
+          if (distance >= settings.starForceRadius) return;
+          const weight = item.group === "ambient" ? 1 : settings.modulePhysicsStrength;
+          const force = settings.starForceStrength * energy * Math.pow(1 - distance / settings.starForceRadius, 2) * weight / item.mass;
+          item.force.x += dx / distance * force; item.force.y += dy / distance * force;
+          const length = Math.hypot(item.force.x, item.force.y), limit = settings.maxVelocity * 1.05;
+          if (length > limit) { item.force.x *= limit / length; item.force.y *= limit / length; }
+        });
+      };
+      const updateStar = (star, delta) => {
+        const dragged = state.draggedStar === star, hovered = state.hoveredStar === star;
+        let targetScale = hovered ? 1.1 : 1, targetGlow = hovered ? 1.16 : 1, targetRotation = 0;
+        if (dragged) {
+          targetScale = 1.13; targetGlow = 1.26;
+          const strength = settings.starDragLag / star.mass;
+          star.velocity.x += (star.dragTarget.x - star.offset.x) * strength * delta;
+          star.velocity.y += (star.dragTarget.y - star.offset.y) * strength * delta;
+          star.velocity.x *= Math.pow(0.7, delta); star.velocity.y *= Math.pow(0.7, delta);
+          targetRotation = clamp(pointer.velocityX / 160, -8, 8);
+        } else {
+          const spring = settings.springStrength * 0.58 / star.mass;
+          star.velocity.x += -star.offset.x * spring * delta; star.velocity.y += -star.offset.y * spring * delta;
+          star.velocity.x *= Math.pow(Math.max(settings.damping, 0.9), delta); star.velocity.y *= Math.pow(Math.max(settings.damping, 0.9), delta);
+        }
+        const x = star.home.x + star.offset.x, y = star.home.y + star.offset.y, edge = 72;
+        if (x < edge) star.velocity.x += (edge - x) * 0.035 * delta;
+        if (x > innerWidth - edge) star.velocity.x -= (x - innerWidth + edge) * 0.035 * delta;
+        if (y < edge + 75) star.velocity.y += (edge + 75 - y) * 0.035 * delta;
+        if (y > innerHeight - edge) star.velocity.y -= (y - innerHeight + edge) * 0.035 * delta;
+        star.offset.x = clamp(star.offset.x + star.velocity.x * delta, -innerWidth * 0.42, innerWidth * 0.42);
+        star.offset.y = clamp(star.offset.y + star.velocity.y * delta, -innerHeight * 0.42, innerHeight * 0.42);
+        star.rotation += (targetRotation - star.rotation) * 0.13 * delta;
+        star.scale += (targetScale - star.scale) * 0.16 * delta; star.glow += (targetGlow - star.glow) * 0.15 * delta;
+        star.element.style.translate = `${star.offset.x.toFixed(2)}px ${star.offset.y.toFixed(2)}px`;
+        star.element.style.rotate = `${star.rotation.toFixed(2)}deg`; star.element.style.scale = star.scale.toFixed(4);
+        star.element.style.filter = `brightness(${star.glow.toFixed(3)})`; syncNavigationHitAreas();
+      };
+      const updateParticle = (item, delta) => {
+        let targetX = 0, targetY = 0; const module = modules.find(candidate => candidate.id === state.activeModule);
+        if (module) ({ x: targetX, y: targetY } = moduleField(item, module));
+        const spring = settings.springStrength / item.mass;
+        item.velocity.x += item.force.x * 0.075 * delta; item.velocity.y += item.force.y * 0.075 * delta;
+        item.force.x *= Math.pow(0.9, delta); item.force.y *= Math.pow(0.9, delta);
+        item.velocity.x += (targetX - item.offset.x) * spring * delta; item.velocity.y += (targetY - item.offset.y) * spring * delta;
+        item.velocity.x *= Math.pow(settings.damping, delta); item.velocity.y *= Math.pow(settings.damping, delta);
+        item.velocity.x = clamp(item.velocity.x, -settings.maxVelocity, settings.maxVelocity); item.velocity.y = clamp(item.velocity.y, -settings.maxVelocity, settings.maxVelocity);
+        item.offset.x += item.velocity.x * delta; item.offset.y += item.velocity.y * delta;
+        const limit = settings.maxDisplacement * (item.group === "ambient" ? 1.15 : 0.82), distance = Math.hypot(item.offset.x, item.offset.y);
+        if (distance > limit) { const scale = limit / distance; item.offset.x *= scale; item.offset.y *= scale; item.velocity.x *= 0.62; item.velocity.y *= 0.62; }
+        if (!module && Math.hypot(item.offset.x, item.offset.y, item.velocity.x, item.velocity.y, item.force.x, item.force.y) < 0.04) item.offset.x = item.offset.y = item.velocity.x = item.velocity.y = item.force.x = item.force.y = 0;
+        item.element.style.translate = `${item.offset.x.toFixed(2)}px ${item.offset.y.toFixed(2)}px`;
+      };
+      navigationStars.forEach(({ star, hitArea }) => {
+        hitArea.addEventListener("pointerenter", () => { if (!state.draggedStar) state.hoveredStar = star; });
+        hitArea.addEventListener("pointerleave", () => { if (!state.draggedStar && state.pendingStar !== star && state.hoveredStar === star) state.hoveredStar = null; });
+        hitArea.addEventListener("pointerdown", event => {
+          if (!state.playing || event.button !== 0) return;
+          state.pendingStar = star; state.pendingPointerId = event.pointerId;
+          state.pressStart.x = event.clientX; state.pressStart.y = event.clientY; state.dragDistance = 0; state.hoveredStar = star;
+        });
+        hitArea.addEventListener("click", event => {
+          if (state.suppressNavigationStar !== star) return;
+          state.suppressNavigationStar = null; event.preventDefault(); event.stopImmediatePropagation();
+        }, true);
+      });
+      modules.forEach(module => {
+        module.hitArea.addEventListener("pointerenter", () => { if (state.playing && !state.draggedStar) state.activeModule = module.id; });
+        module.hitArea.addEventListener("pointerleave", () => { if (state.activeModule === module.id) state.activeModule = null; });
+      });
+      window.addEventListener("pointermove", updatePointer, { passive: false });
+      window.addEventListener("pointerup", finishDrag, true);
+      window.addEventListener("pointercancel", event => finishDrag(event, true), true);
+      window.addEventListener("pointerleave", () => { pointer.active = false; state.hoveredStar = null; });
+      window.addEventListener("blur", () => { pointer.active = false; state.hoveredStar = null; });
+      window.addEventListener("resize", () => {
+        if (!state.playing) return;
+        resetPhysics(); window.requestAnimationFrame(cacheGeometry);
+      });
+      const animate = now => {
+        const delta = Math.min(34, now - state.lastFrame || 16.67) / 16.67;
+        state.lastFrame = now;
+        const ready = homeReady();
+        if (ready && !state.playing) { state.playing = true; cacheGeometry(); }
+        else if (!ready && state.playing) { state.playing = false; state.activeModule = null; resetPhysics(); }
+        if (performance.now() - pointer.lastMove > 70) {
+          pointer.velocityX *= 0.86; pointer.velocityY *= 0.86; pointer.speed = Math.hypot(pointer.velocityX, pointer.velocityY);
+        }
+        if (state.playing) {
+          starStates.forEach(star => updateStar(star, delta));
+          starStates.forEach(applyStarForce); particleStates.forEach(item => updateParticle(item, delta));
+        }
+        window.requestAnimationFrame(animate);
+      };
+      window.requestAnimationFrame(animate);
     })();
   </script>
 </body>
