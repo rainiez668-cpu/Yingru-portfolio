@@ -89,6 +89,12 @@
   document.body.append(navigation);
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const scrollToDocumentTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: reducedMotion ? "auto" : "smooth",
+    });
+  };
   const desktopTopButton = document.createElement("button");
   desktopTopButton.className = "project-desktop-top";
   desktopTopButton.type = "button";
@@ -162,11 +168,11 @@
 
   topButton.addEventListener("click", () => {
     setExpanded(false);
-    hero.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+    scrollToDocumentTop();
   });
 
   desktopTopButton.addEventListener("click", () => {
-    hero.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+    scrollToDocumentTop();
   });
 
   mobileLinks.forEach((button, id) => {
