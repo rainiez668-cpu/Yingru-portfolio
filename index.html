@@ -207,8 +207,61 @@
 
     @media (max-width: 600px) {
       .display-name {
-        font-size: clamp(42px, 18vw, 59px);
+        font-size: clamp(36px, 14vw, 47px);
         line-height: 0.9;
+      }
+
+      .home-navigation {
+        top: 78px;
+        right: 16px;
+        left: auto;
+        gap: 10px;
+        font-size: 10px;
+        white-space: nowrap;
+      }
+
+      .top-navigation-rule {
+        top: 95px;
+        right: 20px;
+        left: clamp(125px, 32vw, 150px);
+      }
+
+      .hand-frame {
+        right: auto;
+        left: 50%;
+        width: min(calc(1140px - 90vw), 200vw, 177.777778vh);
+        margin-inline: 0;
+        transform: translate(-50%, 42vh);
+      }
+
+      .hand-frame.is-entering {
+        transform: translate(-50%, 0);
+      }
+
+      .hand-frame.is-settled {
+        transform: translateX(-50%);
+      }
+
+      .fragment-char {
+        font-size: clamp(16px, 4.2vw, 18px);
+      }
+
+      [data-group="about"] .fragment-particle:nth-child(even),
+      [data-group="work"] .fragment-particle:nth-child(even),
+      [data-group="lab"] .fragment-particle:nth-child(even),
+      [data-group="work"] .fragment-particle:nth-child(n + 35) {
+        display: none;
+      }
+
+      .work-spark-glow {
+        display: none;
+      }
+
+      .scroll-hint {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
       }
     }
 
@@ -284,15 +337,13 @@
 
     @media (max-width: 600px) {
       .scroll-hint {
-        bottom: 28px;
+        top: 46%;
+        bottom: auto;
+        left: 50%;
+        width: max-content;
+        max-width: calc(100vw - 32px);
         font-size: 14px;
         letter-spacing: 0.08em;
-      }
-
-      .top-navigation-rule {
-        top: 62px;
-        right: 38px;
-        left: 38px;
       }
     }
 
@@ -1815,7 +1866,15 @@
         const imageRect = frameElement.getBoundingClientRect();
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const starScale = Math.min(viewportWidth / 1440, viewportHeight / 900);
+        const isCompactViewport = viewportWidth <= 600;
+        const starScale = isCompactViewport
+          ? Math.min(viewportWidth / 900, viewportHeight / 900)
+          : Math.min(viewportWidth / 1440, viewportHeight / 900);
+        const compactCenters = {
+          about: [0.24, 0.39],
+          work: [0.74, 0.34],
+          lab: [0.5, 0.58],
+        };
         const navigationRuleRect = topNavigationRule.getBoundingClientRect();
         const navigationRuleBottom = Math.max(
           navigationRuleRect.bottom,
@@ -1826,9 +1885,23 @@
         fragmentGroups.forEach((group) => {
           // Desktop-first safety margins prevent any symbol center from
           // reaching an edge while preserving the configured vw/vh layout.
+          const centerRatio = isCompactViewport
+            ? compactCenters[group.id]
+            : group.center;
+          const horizontalEdge = isCompactViewport ? 58 : 130;
+          const topEdge = isCompactViewport
+            ? Math.max(fragmentTopBoundary + 68, 190)
+            : 130;
+          const bottomEdge = isCompactViewport ? 96 : 140;
           const center = {
-            x: Math.min(viewportWidth - 130, Math.max(130, viewportWidth * group.center[0])),
-            y: Math.min(viewportHeight - 140, Math.max(130, viewportHeight * group.center[1])),
+            x: Math.min(
+              viewportWidth - horizontalEdge,
+              Math.max(horizontalEdge, viewportWidth * centerRatio[0]),
+            ),
+            y: Math.min(
+              viewportHeight - bottomEdge,
+              Math.max(topEdge, viewportHeight * centerRatio[1]),
+            ),
           };
           group.centerPoint = center;
 

@@ -100,6 +100,70 @@ html.birdsong-detail-document {
   opacity: 1;
 }
 
+.project-desktop-top {
+  position: fixed;
+  z-index: 2;
+  bottom: 28px;
+  left: calc(max(8px, calc(50% - 712px)) + 38px);
+  display: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: #328ab6;
+  background: #e2f0f7;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: background-color 180ms ease, color 180ms ease, opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.project-desktop-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.project-desktop-top:hover {
+  color: #236f98;
+  background: #d7eaf4;
+}
+
+.project-desktop-top:focus-visible {
+  outline: 1px solid var(--site-blue);
+  outline-offset: 4px;
+}
+
+.project-desktop-top svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  transition: transform 180ms ease;
+}
+
+.project-desktop-top:hover svg {
+  transform: translateY(-2px);
+}
+
+.birdsong-section-nav__links {
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.birdsong-section-nav__links::-webkit-scrollbar {
+  display: none;
+}
+
 .birdsong-case-study {
   width: min(100%, 1024px);
   margin: 0 auto;
@@ -3398,7 +3462,18 @@ html.birdsong-detail-document {
 
 @media (min-width: 1400px) {
   .birdsong-section-nav {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 48px);
+    overflow: visible;
+  }
+
+  .birdsong-section-nav__links {
+    max-height: calc(100vh - 48px);
+  }
+
+  .project-desktop-top {
+    display: grid;
   }
 }
 
@@ -3410,6 +3485,11 @@ html.birdsong-detail-document {
   .birdsong-section-nav,
   .birdsong-section-nav.is-visible {
     transform: translateY(-50%);
+    transition: none;
+  }
+
+  .project-desktop-top,
+  .project-desktop-top svg {
     transition: none;
   }
 }
@@ -3501,6 +3581,7 @@ html.birdsong-detail-document {
 }
 
 .site-nav__item {
+  position: relative;
   color: inherit;
   font: inherit;
   text-decoration: none;
@@ -3528,8 +3609,30 @@ html.birdsong-detail-document {
   opacity: 0.72;
 }
 
-.site-nav__item--active {
-  font-weight: 600;
+.site-nav__item--active,
+.site-nav__item[aria-current="page"] {
+  color: #349FD6;
+  font-weight: 700;
+}
+
+.site-nav__item--active::before,
+.site-nav__item[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  background: #BEEB4F;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.site-nav__item--active:hover,
+.site-nav__item[aria-current="page"]:hover {
+  opacity: 1;
+  color: #349FD6;
 }
 
 .site-navigation-rule {
@@ -3588,32 +3691,38 @@ html.birdsong-detail-document {
     font-size: 18px;
   }
 
+  .site-nav__item--active::before,
+  .site-nav__item[aria-current="page"]::before {
+    width: 10px;
+    height: 10px;
+  }
+
 }
 
 @media (max-width: 760px) {
   .site-logo {
-    font-size: clamp(42px, 18vw, 59px);
+    font-size: clamp(36px, 14vw, 47px);
   }
 
   .site-nav {
-    top: 26px;
+    top: 78px;
     right: 16px;
-    gap: 6px;
-    font-size: 11px;
+    gap: clamp(14px, 3.2vw, 16px);
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  .site-nav__item--active::before,
+  .site-nav__item[aria-current="page"]::before {
+    left: -12px;
+    width: 8px;
+    height: 8px;
   }
 
   .site-navigation-rule {
-    top: 42px;
-    right: 25px;
-    left: 25px;
-  }
-
-  @media (max-width: 400px) {
-    .site-nav {
-      right: 12px;
-      gap: 2px;
-      font-size: 9px;
-    }
+    top: 95px;
+    right: 20px;
+    left: clamp(125px, 32vw, 150px);
   }
 
 }
