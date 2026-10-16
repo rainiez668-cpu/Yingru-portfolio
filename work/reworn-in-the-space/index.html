@@ -1,10 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="birdsong-detail-document reworn-detail-document">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reworn in the Space — Yingru Zhao</title>
-    <link rel="stylesheet" href="../../site-chrome.css" />
+  <link rel="stylesheet" href="../../styles/project-detail.css" />
+  <link rel="stylesheet" href="../../site-chrome.css" />
+  <link rel="stylesheet" href="../../styles/reworn.css" />
   </head>
   <body class="project-detail-page">
     <header>
@@ -24,6 +26,33 @@
       </nav>
       <div class="site-navigation-rule" aria-hidden="true"></div>
     </header>
+
+    <nav class="birdsong-section-nav reworn-section-nav" aria-label="Reworn in the Space 项目章节">
+      <a class="birdsong-section-nav__link is-active" href="#reworn-concept-title" aria-current="location">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>项目概念</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#reworn-iteration-title">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>方案迭代</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#components">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>装置构成</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#interaction-mechanism">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>交互机制</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#final-exhibition">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>最终展陈</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#reflection">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>反思与后续</span>
+      </a>
+    </nav>
 
     <main class="project-detail">
       <a class="project-back" href="../../work.html">← BACK</a>
@@ -55,7 +84,7 @@
             装置通过Kinect捕捉观众的身体轮廓，将实时动作引入持续增长的废弃物粒子系统，使观众从数据的旁观者转变为系统的一部分。将抽象的环境统计转化为身体可感知的体验，引导公众重新思考消费、丢弃与再利用之间的关系。
           </p>
           <p class="project-description">
-            已完成项目于2025年4月在爱丁堡科学节展出。
+            已完成装置于2025年4月在爱丁堡科学节展出。
           </p>
           <div class="project-actions" aria-label="Reworn in the Space 项目链接">
             <a class="project-action" href="../../public/assets/videos/Reworninthe%20space.mp4" target="_blank" rel="noopener noreferrer">查看视频 <span class="cta-arrow" aria-hidden="true">↗</span></a>
@@ -64,7 +93,7 @@
         <dl class="project-meta" aria-label="项目信息">
           <div class="project-meta-item">
             <dt>角色</dt>
-            <dd class="project-meta-value">交互设计 · 视觉设计</dd>
+            <dd class="project-meta-value">交互设计 · 数据可视化 · 视觉设计</dd>
           </div>
           <div class="project-meta-item">
             <dt>时间线</dt>
@@ -84,6 +113,344 @@
           </div>
         </dl>
       </section>
+
+      <div class="birdsong-case-study reworn-case-study">
+        <section class="birdsong-research reworn-case-section" aria-labelledby="reworn-concept-title">
+          <h2 id="reworn-concept-title" class="birdsong-research__title">项目概念</h2>
+
+          <div class="birdsong-research__body">
+            <p>以快时尚催生的纺织废弃问题为切入点。过去二十年，全球纺织年产量从 5800 万吨翻倍至 1.09 亿吨，预计 2030 年将突破 1.49 亿吨。这个产业每年消耗 930 亿立方米水资源，同时产生逾 9200 万吨纺织废弃物——相当于每秒就有一卡车衣物被焚烧或填埋。</p>
+            <p class="reworn-case-source">数据来源：<a class="birdsong-research__link" href="https://www.eea.europa.eu/en/topics/in-depth/textiles" target="_blank" rel="noopener noreferrer">欧洲环境署</a>、<a class="birdsong-research__link" href="https://www.unep.org/ietc/news/statement/press-release-unsustainable-fashion-and-textiles-focus-international-day-zero-waste" target="_blank" rel="noopener noreferrer">联合国环境规划署</a></p>
+          </div>
+
+          <figure class="birdsong-research__visual">
+            <img
+              src="../../public/assets/images/work/Reworn%20in%20the%20Space/1.webp"
+              width="2550"
+              height="1434"
+              loading="lazy"
+              decoding="async"
+              alt="纺织生产增长、环境影响与将废弃物送入太空设想的研究拼贴"
+            />
+          </figure>
+
+          <div class="birdsong-case-section__body birdsong-case-section__body--after-visual">
+            <p>这不仅是末端垃圾问题，而是全产业链的系统性困局。更深层的症结是：人类面对废弃物，惯于「转移」而非「消解」。填埋、焚烧、倾倒，每一个方案只是把问题推得更远。由此，<a class="birdsong-research__link" href="https://www.discovermagazine.com/humanity-has-a-trash-problem-launching-it-into-space-isnt-the-solution-43075" target="_blank" rel="noopener noreferrer">《发现》</a>杂志曾讨论过「将废弃物送入太空」的设想。但霍金辐射理论则暗示：连黑洞都可能缓慢蒸发，并非永久的能量陷阱。</p>
+          </div>
+
+          <figure class="birdsong-research__visual">
+            <img
+              src="../../public/assets/images/work/Reworn%20in%20the%20Space/2.webp"
+              width="2550"
+              height="1434"
+              loading="lazy"
+              decoding="async"
+              alt="批判性设计、助推理论与废弃物层级构成的项目理论和概念框架"
+            />
+          </figure>
+
+          <div class="birdsong-case-section__body birdsong-case-section__body--after-visual">
+            <p>项目围绕三项理论构建概念框架：批判性设计用以构筑极端未来情境；助推理论关注如何通过环境反馈引导公众重新思考废弃物议题；废弃物层级理论则直指要害——真正有效的策略，是优先从源头减少废弃，而非不断寻找新的处置手段。</p>
+            <p>由此推演出一个极端的未来思辨：当地球再也无法承载持续增长的纺织废弃物，人类是否会将它们投向太空、送入黑洞？</p>
+            <p>基于上述研究，项目并不试图提出现实中的废弃物处理方案，而是希望通过一个可体验的思辨性交互装置，将抽象的环境数据转化为可感知的空间叙事，引导观众重新思考消费、废弃与责任之间的关系。</p>
+          </div>
+        </section>
+
+        <section class="birdsong-case-section birdsong-case-section--divided reworn-case-section" aria-labelledby="reworn-iteration-title">
+          <h2 id="reworn-iteration-title" class="birdsong-research__title">方案迭代</h2>
+
+          <div class="birdsong-case-section__body">
+            <p>项目经历三轮交互迭代，逐步从依赖复杂传感器转向更直接、更稳定的身体参与方式。</p>
+          </div>
+
+          <figure class="birdsong-research__visual birdsong-case-section__visual">
+            <img
+              src="../../public/assets/images/work/Reworn%20in%20the%20Space/3.webp"
+              width="2550"
+              height="1434"
+              loading="lazy"
+              decoding="async"
+              alt="从脑电波和重力传感到 Kinect 全身追踪的三轮交互方案迭代"
+            />
+          </figure>
+
+          <div class="birdsong-iterations">
+            <article class="birdsong-iteration">
+              <p class="birdsong-iteration__version">V1.0</p>
+              <h3 class="birdsong-iteration__title">脑电波感知</h3>
+              <p class="birdsong-iteration__body">悬挂式纺织结构模拟失重环境。观众佩戴脑电波传感器，通过专注状态「修复」热致变色纱线中的空缺——纱线颜色恢复的同时，投影中的水污染随之消退，暗示废弃物减少与环境修复的关联。但脑电设备佩戴繁琐，交互逻辑不够直观，反馈稳定性也不足。</p>
+            </article>
+
+            <article class="birdsong-iteration">
+              <p class="birdsong-iteration__version">V2.0</p>
+              <h3 class="birdsong-iteration__title">重力传感</h3>
+              <p class="birdsong-iteration__body">将传感器替换为重力感应，观众拾起衣物即可触发热致变色纱线的变化，投影同步呈现环境数据。相比初版，身体动作的介入让「修复」更具参与感。然而单次触发难以体现变化的连续性，观众也不易理解动作与环境反馈之间的因果链条。</p>
+            </article>
+
+            <article class="birdsong-iteration">
+              <p class="birdsong-iteration__version">Final</p>
+              <h3 class="birdsong-iteration__title">Kinect 全身追踪</h3>
+              <p class="birdsong-iteration__body">最终方案舍弃实体传感器，以 Kinect 实现无接触全身追踪。作品以黑洞隐喻时尚废弃物被持续转移与掩盖的系统性问题：观众移动时，身体被重构为漂浮的数据粒子，象征废弃衣物的再利用——每一次参与为系统注入能量，纱线重新获得色彩。一旦无人参与，废弃物累积，色彩褪去，系统走向崩溃，指向环境恶化不可逆的后果。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="birdsong-case-section birdsong-case-section--divided reworn-case-section" aria-labelledby="components">
+          <h2 id="components" class="birdsong-research__title">装置构成</h2>
+
+          <div class="birdsong-case-section__body">
+            <p>在前期交互方案中，观众走近装置后，Kinect 捕捉身体动作，驱散废弃物粒子并将其汇聚为人形轮廓，象征被丢弃的衣物重新回到人的身上。随着互动持续，热致变色纤维逐渐恢复色彩，象征系统能量被激活；无人参与时，纤维褪为白色，指向资源消耗与环境代价。抽象的环境数据由此转化为可感知的空间体验，身体参与成为理解个人行为与环境关联的入口。</p>
+          </div>
+
+          <figure class="birdsong-research__visual birdsong-case-section__visual">
+            <img
+              src="../../public/assets/images/work/Reworn%20in%20the%20Space/4.webp"
+              width="2550"
+              height="1434"
+              loading="lazy"
+              decoding="async"
+              alt="黑洞装置的交互构想、材料选择、空间草图与实体制作记录"
+            />
+          </figure>
+
+          <div class="birdsong-case-section__body reworn-components-intro">
+            <p>以下呈现装置在设计与原型阶段探索的四种交互媒介，其中热致变色纱线反馈在最终展陈中由投影视觉替代。</p>
+          </div>
+
+          <div class="birdsong-technical-grid" aria-label="装置媒介构成">
+            <article class="birdsong-technical-item">
+              <h3>实体黑洞结构</h3>
+              <p>可感知的编织空间，将黑洞从遥远意象转化为观众能够接近并介入的交互媒介，承载装置的核心环境隐喻。</p>
+            </article>
+            <article class="birdsong-technical-item">
+              <h3>热致变色纱线</h3>
+              <p>颜色随温度变化，将身体参与直接映射为可见的系统状态。相比纯数字投影，材料自身的变化强化了人与环境之间的物理关联。</p>
+            </article>
+            <article class="birdsong-technical-item">
+              <h3>Kinect 动作捕捉</h3>
+              <p>全身动作实时映射为视觉反馈，身体行为直接影响系统运行。即时反馈强化了「参与—响应」的行为逻辑，呼应助推理论中通过环境反馈促进持续参与的设计思路。</p>
+            </article>
+            <article class="birdsong-technical-item">
+              <h3>多通道投影</h3>
+              <p>同步呈现数据粒子、人体轮廓与系统状态，构建具有包围感的沉浸空间。「参与」与「缺席」两种状态下的系统变化被并置呈现，叙事更加直观。</p>
+            </article>
+          </div>
+
+          <div class="birdsong-case-section__body reworn-components-summary">
+            <p>四种媒介分别承担空间隐喻、材料反馈、行为输入与环境叙事的功能，引导观众在互动中重新审视消费、废弃与环境责任的关系。</p>
+          </div>
+        </section>
+
+        <section class="birdsong-case-section birdsong-case-section--divided reworn-case-section" aria-labelledby="interaction-mechanism">
+          <h2 id="interaction-mechanism" class="birdsong-research__title">交互机制</h2>
+
+          <h3 class="birdsong-case-section__content-title">数据可视化</h3>
+          <div class="birdsong-case-section__body">
+            <p>基于全球纺织废弃物与快时尚消费公开数据，项目在 Processing 中将静态统计转为连续数据流：每 500 毫秒读取一个数据点，生成持续上浮、逐步聚集的粒子，最终堆叠成不断膨胀的「废弃物体量」，直观呈现快时尚产销的累积环境负担。</p>
+          </div>
+
+          <figure class="birdsong-research__visual birdsong-case-section__visual">
+            <img
+              src="../../public/assets/images/work/Reworn%20in%20the%20Space/5.webp"
+              width="2550"
+              height="1434"
+              loading="lazy"
+              decoding="async"
+              alt="纺织废弃数据流、Kinect 输入与粒子可视化之间的系统关系"
+            />
+          </figure>
+
+          <h3 class="birdsong-case-section__content-title reworn-interaction-subheading">Kinect 身体追踪</h3>
+          <div class="birdsong-case-section__body">
+            <p>观众进入装置后，Kinect 实时采集身体轮廓，经物理引擎重构为具有柔性、可形变的形态，在实时渲染中自然碰撞、消散，替代部分废弃物粒子，打断聚集进程。</p>
+          </div>
+
+          <figure class="birdsong-research__visual birdsong-case-section__visual">
+            <img
+              src="../../public/assets/images/work/Reworn%20in%20the%20Space/6.webp"
+              width="2550"
+              height="1434"
+              loading="lazy"
+              decoding="async"
+              alt="Kinect 轮廓提取、柔性形态生成与实时渲染的实现流程"
+            />
+          </figure>
+
+          <h3 class="birdsong-case-section__content-title reworn-interaction-subheading">实体材料反馈</h3>
+          <div class="birdsong-case-section__body">
+            <p>在实体材料反馈的原型探索中，超声波传感器实时检测观众与装置的距离；当观众进入设定范围时，Arduino 经中值滤波处理数据，输出信号驱动加热模块，使热致变色纤维逐步显色；观众离开后，纤维自然冷却并褪为白色。材料颜色由此成为系统状态的实体反馈，直接回应用户的靠近与远离。这一方案用于探索身体参与与物理材料之间的反馈关系，最终展陈则因安全与运行稳定性考虑，改用投影视觉实现相应的状态变化。</p>
+          </div>
+
+          <figure class="birdsong-research__visual birdsong-case-section__visual">
+            <img
+              src="../../public/assets/images/work/Reworn%20in%20the%20Space/7.webp"
+              width="2550"
+              height="971"
+              loading="lazy"
+              decoding="async"
+              alt="超声波测距与热致变色纤维加热控制的程序和流程图"
+            />
+          </figure>
+
+          <figure class="birdsong-research__visual birdsong-case-section__visual reworn-consecutive-visual reworn-image-8">
+            <img
+              src="../../public/assets/images/work/Reworn%20in%20the%20Space/8.webp"
+              width="2550"
+              height="1310"
+              loading="lazy"
+              decoding="async"
+              alt="Arduino、超声波传感器、加热模块与热致变色纤维的实体连接"
+            />
+          </figure>
+
+          <h3 class="birdsong-case-section__content-title reworn-interaction-subheading">交互闭环总结</h3>
+          <div class="birdsong-case-section__body">
+            <p>两个子系统共同构成「感知—处理—反馈」的交互闭环。公开数据化为空间中的运动与累积，身体动作化为投影形态的变化，距离进一步影响实体材料的颜色。纺织废弃物问题因此不再停留于静态数字，而成为一种可观察、可介入、可感知的空间经验，让观众直观理解个人行为如何影响更大的环境系统。</p>
+          </div>
+        </section>
+
+        <section class="birdsong-case-section birdsong-case-section--divided reworn-case-section" aria-labelledby="final-exhibition">
+          <h2 id="final-exhibition" class="birdsong-research__title">最终展陈</h2>
+
+          <div class="birdsong-case-section__body">
+            <p>装置由大型投影幕、悬挂式黑洞结构及 Kinect 无接触动作捕捉系统组成。黑洞通过钢丝悬挂于两根立柱之间，形成装置的视觉中心；Kinect 设置于观众前方，实时捕捉身体动作并驱动投影内容同步变化。</p>
+            <p>展陈布置于展厅转角，利用观众自然经过的动线引导其进入互动区域。当观众靠近时，系统自动响应，使其从被动观看者转变为交互体验的参与者。这种开放式、无接触的交互方式降低了参与门槛，也增强了作品在公共展览环境中的可达性与沉浸感。</p>
+          </div>
+
+          <div class="reworn-exhibition-gallery" aria-label="最终展陈空间与装置记录">
+            <div class="reworn-exhibition-gallery__support">
+              <figure class="birdsong-research__visual reworn-exhibition-gallery__item">
+                <img
+                  src="../../public/assets/images/work/Reworn%20in%20the%20Space/13.webp"
+                  width="1333"
+                  height="889"
+                  loading="lazy"
+                  decoding="async"
+                  alt="黑洞结构与两根立柱的装置构想草图"
+                />
+              </figure>
+              <figure class="birdsong-research__visual reworn-exhibition-gallery__item">
+                <img
+                  src="../../public/assets/images/work/Reworn%20in%20the%20Space/14.webp"
+                  width="1333"
+                  height="889"
+                  loading="lazy"
+                  decoding="async"
+                  alt="展厅动线、观众位置与 Kinect 捕捉范围的空间草图"
+                />
+              </figure>
+              <figure class="birdsong-research__visual reworn-exhibition-gallery__item">
+                <img
+                  src="../../public/assets/images/work/Reworn%20in%20the%20Space/11.webp"
+                  width="2266"
+                  height="1511"
+                  loading="lazy"
+                  decoding="async"
+                  alt="热致变色纤维在不同状态下的颜色变化记录"
+                />
+              </figure>
+            </div>
+            <figure class="birdsong-research__visual reworn-exhibition-gallery__item reworn-exhibition-gallery__main">
+              <img
+                src="../../public/assets/images/work/Reworn%20in%20the%20Space/10.webp"
+                width="1334"
+                height="2000"
+                loading="lazy"
+                decoding="async"
+                alt="观众与悬挂式黑洞及投影装置互动的展览现场"
+              />
+            </figure>
+          </div>
+
+          <div class="birdsong-case-section__body reworn-case-section__after-gallery">
+            <p>前期方案曾尝试通过加热热致变色纤维呈现系统能量变化，但原型测试暴露出安全风险、运行稳定性不足及观众距离难以控制等问题。综合展览安全、维护成本与持续运行需求，最终取消实体加热反馈，改由投影视觉呈现系统状态变化，在保留核心交互逻辑的同时提高装置的可靠性。</p>
+          </div>
+
+          <div class="birdsong-case-section__body birdsong-case-section__body--after-visual">
+            <p>投影中的废弃物粒子、人体轮廓与悬挂式黑洞共同构成动态空间场景。观众的动作改变粒子的聚集与形态，使抽象的废弃物累积转化为可见、可参与的视觉体验；当互动停止，画面重新回到停滞与累积状态。装置由此将个人行为与环境问题之间的关系，转化为可通过身体参与直接感知的展览体验。</p>
+          </div>
+        </section>
+
+        <section class="birdsong-case-section birdsong-case-section--divided reworn-case-section" aria-labelledby="reflection">
+          <h2 id="reflection" class="birdsong-research__title">反思与后续</h2>
+
+          <div class="birdsong-case-section__body">
+            <p>展览反馈表明，装置在技术运行与无接触交互方面表现稳定，但部分观众仍难以立即理解漂浮粒子与纺织废弃物之间的关系。抽象的数据视觉虽然能够呈现废弃物持续累积的状态，却缺乏足够明确的语义线索，削弱了项目概念与观众体验之间的联系。</p>
+            <p>针对这一问题，后续计划将抽象粒子进一步转化为具有明确服装形态的虚拟衣物。当 Kinect 识别到观众进入互动区域时，系统将根据身体轮廓生成并拟合虚拟服装，使其随身体动作同步形变与运动。通过这一设想，「重新穿上衣服」不再仅是概念隐喻，而成为更直观的具身交互体验，进一步强化观众与纺织废弃物之间的关联，并引导其重新思考消费、再利用与环境责任。</p>
+          </div>
+
+          <figure class="birdsong-research__visual birdsong-case-section__visual">
+            <img
+              src="../../public/assets/images/work/Reworn%20in%20the%20Space/12.webp"
+              width="2550"
+              height="1452"
+              loading="lazy"
+              decoding="async"
+              alt="Reworn in the Space 展览装置、参与者与虚拟服装概念关系的视觉记录"
+            />
+          </figure>
+        </section>
+      </div>
     </main>
+
+    <script>
+      (() => {
+        const navigation = document.querySelector(".reworn-section-nav");
+        const caseStudy = document.querySelector(".reworn-case-study");
+        const links = navigation
+          ? Array.from(navigation.querySelectorAll(".birdsong-section-nav__link"))
+          : [];
+        const sections = links
+          .map((link) => document.querySelector(link.getAttribute("href"))?.closest("section"))
+          .filter(Boolean);
+
+        if (!navigation || !caseStudy || !links.length || !("IntersectionObserver" in window)) {
+          return;
+        }
+
+        const readingLine = 144;
+        const observerOptions = {
+          root: null,
+          rootMargin: `-${readingLine}px 0px -65% 0px`,
+          threshold: [0, 0.01],
+        };
+
+        const setActive = (id) => {
+          links.forEach((link) => {
+            const active = link.hash === `#${id}`;
+            link.classList.toggle("is-active", active);
+            if (active) {
+              link.setAttribute("aria-current", "location");
+            } else {
+              link.removeAttribute("aria-current");
+            }
+          });
+        };
+
+        setActive("reworn-concept-title");
+
+        const visibilityObserver = new IntersectionObserver(([entry]) => {
+          navigation.classList.toggle("is-visible", entry.isIntersecting);
+        }, observerOptions);
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+          const current = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort(
+              (a, b) =>
+                Math.abs(a.boundingClientRect.top - readingLine) -
+                Math.abs(b.boundingClientRect.top - readingLine),
+            )[0];
+
+          const heading = current?.target.querySelector(".birdsong-research__title");
+          if (heading) {
+            setActive(heading.id);
+          }
+        }, observerOptions);
+
+        visibilityObserver.observe(caseStudy);
+        sections.forEach((section) => sectionObserver.observe(section));
+      })();
+    </script>
   </body>
 </html>

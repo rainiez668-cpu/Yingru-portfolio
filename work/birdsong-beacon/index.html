@@ -1,10 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="birdsong-detail-document">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Birdsong Beacon — Yingru Zhao</title>
-    <link rel="stylesheet" href="../../site-chrome.css" />
+  <link rel="stylesheet" href="../../styles/project-detail.css" />
+  <link rel="stylesheet" href="../../site-chrome.css" />
+  <link rel="stylesheet" href="../../styles/birdsong.css" />
   </head>
   <body class="project-detail-page">
     <header>
@@ -24,6 +26,37 @@
       </nav>
       <div class="site-navigation-rule" aria-hidden="true"></div>
     </header>
+
+    <nav class="birdsong-section-nav" aria-label="Birdsong Beacon 项目章节">
+      <a class="birdsong-section-nav__link is-active" href="#birdsong-research-title" aria-current="location">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>研究起点</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#birdsong-problem-title">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>问题定义</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#birdsong-iteration-title">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>方案迭代</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#birdsong-final-interaction-title">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>最终交互</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#birdsong-prototype-title">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>原型实现</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#birdsong-outcome-title">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>最终成果</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#birdsong-reflection-title">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>反思与设想</span>
+      </a>
+    </nav>
 
     <main class="project-detail">
       <a class="project-back" href="../../work.html">← BACK</a>
@@ -48,13 +81,10 @@
             <p id="overview-title" class="project-section-label">项目简介</p>
           </div>
           <p class="project-description">
-            Birdsong Beacon是一个关注城市鸟类感知与公众自然体验的生态交互装置。
+            Birdsong Beacon是一个面向城市自然环境的生态交互装置。项目以爱丁堡利斯河步道的废弃交通锥为载体，回应“鸟类活动丰富却难被游客察觉”的场地问题。
           </p>
           <p class="project-description">
-            在爱丁堡利斯河步道的实地调研中，我们通过场地观察与鸟食实验发现，此地鸟类活动丰富，只是受到植被遮挡、停留时间短和鸣叫方位难以判断等因素影响，往往处于游客的感知范围之外。因此，项目将问题从“如何吸引鸟类”转向“如何帮助游客发现原本就存在的鸟类活动”。
-          </p>
-          <p class="project-description">
-            装置利用多个声音传感器接收不同方向的环境声音，并由Arduino控制舵机，带动顶部观察结构朝主要声源方向转动，将难以定位的鸟鸣转化为直观的方向提示。在尽量减少对鸟类行为干预的前提下，装置引导游客留意河岸林带中容易被忽略的鸟类活动，重新建立人与城市自然之间的感知联系。
+            装置通过多向声音传感器捕捉环境中的鸟鸣，并由Arduino控制舵机带动顶部观察结构转向主要声源，将无形、难以定位的声音转化为直观的方向提示。在尽量减少对鸟类自然行为干预的前提下，引导游客发现河岸林带中容易被忽略的鸟类活动。
           </p>
           <p class="project-description">
             项目原型于 2024 年 12 月在爱丁堡国家机器人中心展出。
@@ -86,6 +116,328 @@
           </div>
         </dl>
       </section>
+
+      <div class="birdsong-case-study">
+      <section class="birdsong-research" aria-labelledby="birdsong-research-title">
+        <h2 id="birdsong-research-title" class="birdsong-research__title">研究起点</h2>
+        <div class="birdsong-research__body">
+          <p>爱丁堡利斯河步道穿城而过，兼具自然栖息地与城市休闲空间的双重属性，日常聚集着步行者、跑者、骑行者与自然爱好者等多元人群。</p>
+          <p>调研前期，我们通过<a class="birdsong-research__link" href="https://www.waterofleith.org.uk/" target="_blank" rel="noopener noreferrer">利斯河保护信托</a>的资料确认，沿岸栖息有翠鸟、河乌、灰鹡鸰等多种代表性鸟类。但实地踏勘中却出现明显反差：开阔路段仅能观测到少量鸟类，而进入植被茂密的河段后，鸟鸣声显著增多。为进一步验证鸟类活动，我们在沿途多点投放鸟食，折返时发现鸟食已全部被取食。</p>
+          <p>这意味着沿岸鸟类活动并不少，只是受植被遮挡、活动习性等因素影响，大量活动始终处于游客的直接视野之外。</p>
+        </div>
+
+        <figure class="birdsong-research__visual">
+          <img
+            src="../../public/assets/images/work/Birdsong%20Beacon/1-web.webp"
+            width="2560"
+            height="1440"
+            loading="lazy"
+            decoding="async"
+            alt="利斯河步道场地调研与鸟类活动观察记录"
+          />
+        </figure>
+
+        <p class="birdsong-research__after-image">调研同期，我们注意到步道周边散落着废弃交通锥。这类城市常见的公共设施本身具有吸引注意、引导行为的属性，也为我们提供了另一条设计线索：它是否能够从被遗弃的城市物件，转化为连接人工环境与自然观察的媒介？</p>
+
+        <aside class="birdsong-research__insight" aria-labelledby="birdsong-insight-title">
+          <p id="birdsong-insight-title"><strong>核心洞察：</strong>问题的本质并非鸟类稀少，而是它们的活动游离于人的日常感知之外；被废弃的城市公共物件恰恰可以成为重构人、城、自然连接的载体。</p>
+        </aside>
+      </section>
+
+      <section class="birdsong-case-section" aria-labelledby="birdsong-problem-title">
+        <h2 id="birdsong-problem-title" class="birdsong-research__title">问题定义</h2>
+
+        <h3 class="birdsong-case-section__content-title">废弃交通锥改造生态观察节点</h3>
+        <div class="birdsong-case-section__body">
+          <p class="birdsong-case-section__question">基于场地调研，我们锚定核心设计命题：如何在最小干扰鸟类自然行为的前提下，帮助游客发现并定位沿岸隐蔽的鸟类活动？</p>
+          <p>场地中散落的废弃交通锥成为解题切入点：它自带吸引注意、提示环境变化、引导行为的公共属性。我们延续这一原生特质，将其从交通管理设施，转化为连接人与城市自然的生态观察节点。设计以鸟鸣作为环境感知入口：声音传感器捕捉不同方向的鸟鸣，通过机械结构将声音信息转化为直观的空间指向。装置不主动吸引、追踪或干预鸟类，仅向游客提供观察线索，引导人们从「听见鸟鸣」走向「定位方向、主动观察」。</p>
+          <p>项目参考亲自然城市（Biophilic Cities）与生态知觉（Ecological Perception）理论，以低干预的实体交互重构人与环境的注意力联结，让原本易被忽略的城市自然活动变得可感知、可定位，唤起人们对身边自然的关注。</p>
+        </div>
+
+        <figure class="birdsong-research__visual birdsong-case-section__visual">
+          <img
+            src="../../public/assets/images/work/Birdsong%20Beacon/2.webp"
+            width="2560"
+            height="1440"
+            loading="lazy"
+            decoding="async"
+            alt="废弃交通锥生态观察节点概念与亲自然城市、生态知觉理论图解"
+          />
+        </figure>
+      </section>
+
+      <section class="birdsong-case-section birdsong-case-section--divided" aria-labelledby="birdsong-iteration-title">
+        <h2 id="birdsong-iteration-title" class="birdsong-research__title">方案迭代</h2>
+
+        <h3 class="birdsong-case-section__content-title">从吸引鸟类到引导观察</h3>
+        <div class="birdsong-case-section__body">
+          <p>围绕「帮助游客发现隐蔽鸟类活动」的核心目标，团队历经四轮方案迭代，方向从复用交通锥的公共引导属性，逐步转向低干预感知自然发生的鸟类活动。</p>
+        </div>
+
+        <figure class="birdsong-research__visual birdsong-case-section__visual">
+          <img
+            src="../../public/assets/images/work/Birdsong%20Beacon/3.webp"
+            width="2550"
+            height="1435"
+            loading="lazy"
+            decoding="async"
+            alt="Birdsong Beacon Version 1.0、2.1 与 2.2 原型方案迭代图"
+          />
+        </figure>
+
+        <div class="birdsong-iterations" aria-label="方案版本迭代">
+          <article class="birdsong-iteration">
+            <p class="birdsong-iteration__version">Version 1.0</p>
+            <h3 class="birdsong-iteration__title">探索交通锥引导潜力</h3>
+            <p class="birdsong-iteration__body">将交通锥改造为公共引导装置，验证了其吸引注意力、组织行为的属性，但未匹配步道生态观察的核心需求。</p>
+          </article>
+
+          <article class="birdsong-iteration">
+            <p class="birdsong-iteration__version">Version 2.1</p>
+            <h3 class="birdsong-iteration__title">鸟食记录鸟类到访</h3>
+            <p class="birdsong-iteration__body">加入喂食结构，尝试将鸟类取食行为转化为声音反馈，初步建立「鸟类活动 — 装置反馈」关联，但依赖鸟类主动触发，状态不稳定。</p>
+          </article>
+
+          <article class="birdsong-iteration">
+            <p class="birdsong-iteration__version">Version 2.2</p>
+            <h3 class="birdsong-iteration__title">人与鸟的间接互动</h3>
+            <p class="birdsong-iteration__body">增设双节点联动，通过人体感应触发远端喂食机制，形成节点通信，但人为干预易干扰鸟类活动，偏离「辅助自然观察」的初衷。</p>
+          </article>
+        </div>
+
+        <figure class="birdsong-research__visual birdsong-case-section__visual">
+          <img
+            src="../../public/assets/images/work/Birdsong%20Beacon/4.webp"
+            width="2550"
+            height="1435"
+            loading="lazy"
+            decoding="async"
+            alt="Birdsong Beacon Version 2.3 活动强度灯光提示与纸质模型测试过程"
+          />
+        </figure>
+
+        <article class="birdsong-iteration birdsong-iteration--after-visual">
+          <p class="birdsong-iteration__version">Version 2.3</p>
+          <h3 class="birdsong-iteration__title">活动强度提示观察机会</h3>
+          <p class="birdsong-iteration__body">受环境与技术限制，装置难以精准识别鸟类种类，团队因此调整方向：从「识别具体鸟种」转向「感知周边鸟类活动强度」。方案以红、黄、绿三色灯光对应不同等级的鸟类活动活跃度，并通过纸质模型完成用户测试，验证游客对灯光提示的理解度。但该版本仅能传递「附近有鸟」的抽象信号，始终无法回应游客最核心的疑问：鸟鸣到底来自哪个方向？</p>
+        </article>
+
+        <aside class="birdsong-research__insight birdsong-case-section__conclusion" aria-labelledby="birdsong-iteration-conclusion">
+          <p id="birdsong-iteration-conclusion"><strong>迭代结论：</strong>四轮探索明确，设计不应通过喂食等方式干预鸟类活动，也不应仅呈现抽象的活动等级。最终方案锚定「感知自然鸟鸣 — 转化方向线索 — 机械指引观察」的路径，回归低干预的自然观察本质。</p>
+        </aside>
+      </section>
+
+      <section class="birdsong-case-section birdsong-case-section--after-conclusion" aria-labelledby="birdsong-final-interaction-title">
+        <h2 id="birdsong-final-interaction-title" class="birdsong-research__title">最终交互</h2>
+
+        <h3 class="birdsong-case-section__content-title">将鸟鸣转化为观察方向</h3>
+        <div class="birdsong-case-section__body">
+          <p>基于前期迭代结论，最终方案放弃喂食、灯光等主动干预形式，转而感知环境中自然发生的鸟鸣，将听觉信息转化为可直接理解、可即时行动的空间指引。</p>
+          <p>装置搭载多向声音传感器，通过比对不同方位的声强差异判定声源方向；Arduino 驱动舵机带动顶部指示结构转向主声源，将无形、转瞬即逝的鸟鸣，转化为清晰可见的机械指向。</p>
+        </div>
+
+        <figure class="birdsong-research__visual birdsong-case-section__visual">
+          <img
+            src="../../public/assets/images/work/Birdsong%20Beacon/5.webp"
+            width="2560"
+            height="1440"
+            loading="lazy"
+            decoding="async"
+            alt="Birdsong Beacon 从鸟鸣触发、机械转向到游客定向观察的最终交互图解"
+          />
+        </figure>
+
+        <ol class="birdsong-process" aria-label="最终交互步骤">
+          <li class="birdsong-process__step">
+            <p class="birdsong-process__number">01</p>
+            <h3 class="birdsong-process__title">静止待机</h3>
+            <p class="birdsong-process__body">装置作为河岸生态观察节点，持续监测周边环境声音</p>
+          </li>
+          <li class="birdsong-process__step">
+            <p class="birdsong-process__number">02</p>
+            <h3 class="birdsong-process__title">鸟鸣触发</h3>
+            <p class="birdsong-process__body">鸟类在植被深处鸣叫，活动处于游人视野之外</p>
+          </li>
+          <li class="birdsong-process__step">
+            <p class="birdsong-process__number">03</p>
+            <h3 class="birdsong-process__title">感知转向</h3>
+            <p class="birdsong-process__body">多向传感器捕捉声强差，顶部结构随舵机转向主声源方向</p>
+          </li>
+          <li class="birdsong-process__step">
+            <p class="birdsong-process__number">04</p>
+            <h3 class="birdsong-process__title">吸引注意</h3>
+            <p class="birdsong-process__body">装置的转动引起游客注意，提示周边存在鸟类活动</p>
+          </li>
+          <li class="birdsong-process__step">
+            <p class="birdsong-process__number">05</p>
+            <h3 class="birdsong-process__title">定向观察</h3>
+            <p class="birdsong-process__body">游客沿装置指向望向河岸林带，从「听见鸟鸣」转向「主动观察」</p>
+          </li>
+          <li class="birdsong-process__step">
+            <p class="birdsong-process__number">06</p>
+            <h3 class="birdsong-process__title">重构感知</h3>
+            <p class="birdsong-process__body">鸟类不再是背景音，成为可被发现、定位与感知的城市生态存在</p>
+          </li>
+        </ol>
+
+        <div class="birdsong-inline-summary">
+          <p><strong>交互逻辑：</strong>鸟鸣出现 → 多向声感定位 → 方向判定 → 舵机转向指引 → 游客定向观察</p>
+        </div>
+      </section>
+
+      <section class="birdsong-case-section birdsong-case-section--divided birdsong-case-section--after-interaction-summary" aria-labelledby="birdsong-prototype-title">
+        <h2 id="birdsong-prototype-title" class="birdsong-research__title">原型实现</h2>
+
+        <h3 class="birdsong-case-section__content-title">环境声音驱动实体反馈</h3>
+        <div class="birdsong-case-section__body">
+          <p>为验证「鸟鸣感知 — 方向判断 — 机械指引」的交互逻辑，团队整合传感、运算与机械结构，打造可运行实体原型。原型不以识别具体鸟种为目标，而是测试如何将不同方向的环境声音变化转化为直观的空间反馈。</p>
+        </div>
+
+        <figure class="birdsong-research__visual birdsong-case-section__visual">
+          <img
+            src="../../public/assets/images/work/Birdsong%20Beacon/6.webp"
+            width="2560"
+            height="1440"
+            loading="lazy"
+            decoding="async"
+            alt="Birdsong Beacon 声音传感器、Nano 33 IoT、舵机结构与 Arduino 原型实验记录"
+          />
+        </figure>
+
+        <div class="birdsong-technical-grid" aria-label="原型技术拆解">
+          <article class="birdsong-technical-item">
+            <h3>多方位声音传感器阵列</h3>
+            <p>装置不同方位布设声音传感器，持续采集环境声，通过比对各方向声强变化判定主声源，为系统提供输入信号。</p>
+          </article>
+          <article class="birdsong-technical-item">
+            <h3>Arduino Nano 33 IoT 控制器</h3>
+            <p>读取多路传感器信号，按预设逻辑筛选主声源方向，将判定结果转化为机械控制指令。</p>
+          </article>
+          <article class="birdsong-technical-item">
+            <h3>舵机与旋转指向结构</h3>
+            <p>驱动顶部望远镜式指示结构转向主声源方向，把无形的声音信息转化为游客可直观理解的机械动作指引。</p>
+          </article>
+          <article class="birdsong-technical-item">
+            <h3>原型制作与闭环验证</h3>
+            <p>完成程序调试、硬件接线、舵机测试及结构组装，搭配 3D 打印外壳及支撑件，通过桌面实验验证「声音输入 — 结构转向」的交互闭环。</p>
+          </article>
+        </div>
+
+        <aside class="birdsong-research__insight birdsong-research__insight--no-bottom-rule birdsong-case-section__conclusion" aria-labelledby="birdsong-validation-boundary">
+          <p id="birdsong-validation-boundary"><strong>阶段验证边界：</strong>本阶段验证了「环境声 — 方向判定 — 机械反馈」的技术可行性。若落地真实户外场景，后续仍需优化人声、风声等环境噪声的过滤能力，提升声源方向判定的稳定性。</p>
+        </aside>
+      </section>
+
+      <section class="birdsong-case-section birdsong-case-section--divided birdsong-case-section--after-conclusion" aria-labelledby="birdsong-outcome-title">
+        <h2 id="birdsong-outcome-title" class="birdsong-research__title">最终成果</h2>
+
+        <h3 class="birdsong-case-section__content-title">从交互机制到展览原型</h3>
+        <div class="birdsong-case-section__body">
+          <p>最终原型以废弃交通锥为主体，通过 3D 打印构件整合传感器、控制模块与可转动顶部指示结构。两组舵机分别驱动观察筒与交通锥转动，将环境声音输入转化为清晰可见的机械反馈。</p>
+        </div>
+
+        <figure class="birdsong-research__visual birdsong-case-section__visual">
+          <img
+            src="../../public/assets/images/work/Birdsong%20Beacon/7.webp"
+            width="2560"
+            height="1440"
+            loading="lazy"
+            decoding="async"
+            alt="Birdsong Beacon 展览原型的组件构成、尺度推演与实体装置照片"
+          />
+        </figure>
+
+        <div class="birdsong-case-section__body birdsong-case-section__body--after-visual">
+          <p>为呈现装置未来在步道中的使用尺度，团队推演了约 150cm 高的实地部署方案；展览中则采用约 30cm 高的功能原型，将声音传感器布置于周边多个采集点，模拟不同方向的声源输入。系统检测到主声源方向后，顶部结构同步转向，完成从「听见鸟鸣」到「获得观察线索」的转化。</p>
+          <p>该原型验证了从环境声音感知到机械指引的实体交互逻辑，于 2024 年 12 月在爱丁堡国家机器人中心（The National Robotarium）展出。</p>
+        </div>
+      </section>
+
+      <section class="birdsong-case-section birdsong-case-section--divided" aria-labelledby="birdsong-reflection-title">
+        <h2 id="birdsong-reflection-title" class="birdsong-research__title">反思与设想</h2>
+
+        <div class="birdsong-case-section__body">
+          <p>当前原型已验证「环境声感知 — 方向判定 — 机械指引」的完整交互链路，但暂不具备稳定的鸟种识别能力与长期生态监测功能。后续需在真实户外环境开展持续测试，重点优化噪声误触发、声源定位稳定性、装置耐候性三大问题，并验证长期部署对鸟类及游客行为的潜在影响。</p>
+          <p>现场体验表明，缩小后的展览原型较难让首次接触的游客快速理解其交互意图。未来可通过更清晰的结构语义、观察提示与使用引导降低理解门槛；同时可在顶部观察结构加装放大镜、滤镜等部件，优化指向后的实际观察体验。</p>
+          <p>长远来看，Birdsong Beacon 可成为城市生态感知网络中的微型节点。秉持不干预野生生物的原则，未来它可拓展多物种声纹识别能力，嵌入各类城市自然空间，探寻人与野生动物相遇、驻足、静观的多元形态。</p>
+        </div>
+
+        <figure class="birdsong-research__visual birdsong-case-section__visual">
+          <img
+            src="../../public/assets/images/work/Birdsong%20Beacon/8.webp"
+            width="2560"
+            height="1440"
+            loading="lazy"
+            decoding="async"
+            alt="Birdsong Beacon 对城市生态感知、观察引导与多物种应用的未来设想"
+          />
+        </figure>
+
+        <div class="birdsong-closing-statement">
+          <p>核心价值不是替代自然观察本身，而是以极轻的介入化作一枚视线索引 —— 让匆忙穿行于城市的人们稍作停留，重新发现那些藏在植被间、隐在日常里，近在咫尺的城市生机。</p>
+        </div>
+      </section>
+      </div>
     </main>
+
+    <script>
+      (() => {
+        const navigation = document.querySelector(".birdsong-section-nav");
+        const caseStudy = document.querySelector(".birdsong-case-study");
+        const links = navigation
+          ? Array.from(navigation.querySelectorAll(".birdsong-section-nav__link"))
+          : [];
+        const sections = links
+          .map((link) => document.querySelector(link.getAttribute("href"))?.closest("section"))
+          .filter(Boolean);
+
+        if (!navigation || !caseStudy || !links.length || !("IntersectionObserver" in window)) {
+          return;
+        }
+
+        const readingLine = 144;
+        const observerOptions = {
+          root: null,
+          rootMargin: `-${readingLine}px 0px -65% 0px`,
+          threshold: [0, 0.01],
+        };
+
+        const setActive = (id) => {
+          links.forEach((link) => {
+            const active = link.hash === `#${id}`;
+            link.classList.toggle("is-active", active);
+            if (active) {
+              link.setAttribute("aria-current", "location");
+            } else {
+              link.removeAttribute("aria-current");
+            }
+          });
+        };
+
+        setActive("birdsong-research-title");
+
+        const visibilityObserver = new IntersectionObserver(([entry]) => {
+          navigation.classList.toggle("is-visible", entry.isIntersecting);
+        }, observerOptions);
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+          const current = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort(
+              (a, b) =>
+                Math.abs(a.boundingClientRect.top - readingLine) -
+                Math.abs(b.boundingClientRect.top - readingLine),
+            )[0];
+
+          const heading = current?.target.querySelector(".birdsong-research__title");
+          if (heading) {
+            setActive(heading.id);
+          }
+        }, observerOptions);
+
+        visibilityObserver.observe(caseStudy);
+        sections.forEach((section) => sectionObserver.observe(section));
+      })();
+    </script>
   </body>
 </html>

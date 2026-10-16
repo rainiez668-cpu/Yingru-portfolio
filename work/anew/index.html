@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="birdsong-detail-document">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Anew — Yingru Zhao</title>
-    <link rel="stylesheet" href="../../site-chrome.css" />
+  <link rel="stylesheet" href="../../styles/project-detail.css" />
+  <link rel="stylesheet" href="../../site-chrome.css" />
   </head>
   <body class="project-detail-page">
     <header>
@@ -24,6 +25,25 @@
       </nav>
       <div class="site-navigation-rule" aria-hidden="true"></div>
     </header>
+
+    <nav class="birdsong-section-nav anew-section-nav" aria-label="Anew 项目章节">
+      <a class="birdsong-section-nav__link is-active" href="#problem-definition" aria-current="location">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>问题定义</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#core-solution">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>设计策略</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#core-interaction">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>核心交互</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#design-system">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>设计系统</span>
+      </a>
+    </nav>
 
     <main class="project-detail">
       <a class="project-back" href="../../work.html">← BACK</a>
@@ -81,6 +101,929 @@
           </div>
         </dl>
       </section>
+
+      <div class="birdsong-case-study anew-case-study">
+        <section class="birdsong-research anew-problem-definition" aria-labelledby="problem-definition">
+          <h2 id="problem-definition" class="birdsong-research__title">问题定义</h2>
+
+          <div class="anew-problem-definition__columns">
+            <div class="anew-problem-background">
+              <h3 class="anew-problem-background__title">清单越长，越难开始。</h3>
+              <div class="anew-problem-background__copy">
+                <p>在使用传统待办应用时，我常常陷入一种循环：兴致勃勃地列出任务，却迟迟无法开始行动。</p>
+                <p>问题不在于不知道该做什么，而在于面对一长串待办事项时，还需要比较优先级、估算耗时、判断精力，再决定从何开始。随着未完成的任务不断累积，打开清单本身也逐渐成为一种压力。</p>
+              </div>
+            </div>
+
+            <div class="anew-design-question">
+              <p class="anew-design-question__label">核心设计问题</p>
+              <h3 class="anew-design-question__statement">如何减少任务开始前的决策负担，让用户更容易迈出第一步？</h3>
+              <p class="anew-design-question__support">从管理所有任务，转向开始眼前的一件事。</p>
+            </div>
+          </div>
+
+          <section class="anew-audience" aria-labelledby="anew-audience-title">
+            <h3 id="anew-audience-title" class="anew-audience__label">目标用户</h3>
+            <div class="anew-audience__primary-grid">
+              <article class="anew-audience__item">
+                <h4>01 / 核心用户</h4>
+                <p>面对多个待办事项容易无从下手、存在任务启动困难，并可能因任务积压而回避使用待办工具的人。</p>
+              </article>
+              <article class="anew-audience__item">
+                <h4>02 / 延伸用户</h4>
+                <p>希望摆脱复杂清单，以更轻量、低压力的方式安排日常事务的人。</p>
+              </article>
+            </div>
+            <article class="anew-audience__item anew-audience__item--excluded">
+              <h4>03 / 非目标用户</h4>
+              <p>需要多项目管理、甘特图、团队协作的用户；以及需要按固定时间点排程、精细规划全天时段的用户。</p>
+            </article>
+          </section>
+        </section>
+
+        <section class="birdsong-case-section birdsong-case-section--divided anew-core-solution" aria-labelledby="core-solution">
+          <h2 id="core-solution" class="birdsong-research__title">设计策略</h2>
+          <h3 class="anew-core-solution__title">从集中决策，到渐进式选择。</h3>
+          <p class="anew-core-solution__intro">Anew 尝试改变任务的呈现与选择方式，让用户不必在开始行动前同时比较所有待办事项。</p>
+
+          <article class="anew-flow-module">
+            <header class="anew-flow-module__header">
+              <h4>01 / 传统清单式任务管理</h4>
+              <p>多任务并列 · 集中决策</p>
+            </header>
+
+<div class="anew-flow-image anew-flow-image--traditional">
+              <img src="../../public/assets/images/work/anew/1.webp" alt="传统清单式任务管理的决策流程图" loading="lazy" decoding="async" width="1746" height="788" />
+            </div>
+            <p class="anew-flow-module__description">这是传统清单式任务管理中可能出现的决策路径。面对并列的待办事项，用户往往需要自行比较优先级、估算耗时并安排执行顺序。随着任务不断累积，这些前置判断可能增加开始行动的负担。</p>
+          </article>
+
+          <article class="anew-flow-module">
+            <header class="anew-flow-module__header">
+              <h4>02 / Anew 的渐进式选择</h4>
+              <p class="anew-flow-module__tag--accent">逐次判断 · 单任务聚焦</p>
+            </header>
+
+<div class="anew-flow-image anew-flow-image--anew">
+              <img src="../../public/assets/images/work/anew/2.webp" alt="Anew 渐进式选择的交互流程图" loading="lazy" decoding="async" width="2268" height="522" />
+            </div>
+            <p class="anew-flow-module__description">Anew则逐张呈现任务，将同时比较多个选项转化为逐次判断。用户可以左滑跳过，右滑加入今天。对于今天的任务，用户可以按需将一件事设为「今日大事」，无需提前为所有任务排序。</p>
+          </article>
+
+          <div class="anew-core-difference">
+            <p class="anew-core-difference__label">核心差异</p>
+            <p class="anew-core-difference__statement">区别不在于决策次数的绝对多少，而在于用户是否需要同时面对多个选择。</p>
+          </div>
+
+          <section class="anew-core-module anew-principle-module" aria-labelledby="anew-principle-title">
+            <h3 id="anew-principle-title" class="anew-core-solution__title">同一个原则，应用于两个阶段</h3>
+
+            <div class="anew-stage-grid">
+              <article class="anew-stage">
+                <div class="anew-stage__heading">
+                  <svg class="anew-stage__icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="5" y="4" width="14" height="10"></rect>
+                    <path d="M7 17h10M8.5 20h7"></path>
+                  </svg>
+                  <h4>规划时｜逐次判断，按需标记重点</h4>
+                </div>
+                <p><strong>Pick（选择）</strong> 一次只呈现一张任务卡片，让用户判断「今天要不要做」，而不是同时比较整张清单。之后可以进一步对一个任务标星，将其设为「今日大事」。</p>
+              </article>
+
+              <article class="anew-stage">
+                <div class="anew-stage__heading">
+                  <svg class="anew-stage__icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="8"></circle>
+                    <circle cx="12" cy="12" r="3.5"></circle>
+                    <path d="M12 1.5V4M12 20v2.5M1.5 12H4M20 12h2.5"></path>
+                  </svg>
+                  <h4>执行时｜单任务聚焦</h4>
+                </div>
+                <p><strong>Focus（专注）</strong> 默认只展示一件「今日大事」及其行动步骤。用户可以直接开始，也可以主动切换，无需预先排列所有今日任务。</p>
+              </article>
+            </div>
+
+          </section>
+
+          <section class="anew-core-module anew-exploration-module" aria-labelledby="anew-exploration-title">
+            <h3 id="anew-exploration-title" class="anew-core-solution__title">设计探索与方案取舍</h3>
+            <p class="anew-core-module__intro">在确定核心交互方向时，曾对不同的任务组织方式进行比较。</p>
+
+            <div class="anew-concept-grid">
+              <article class="anew-concept-card">
+                <div class="anew-concept-card__visual anew-concept-card__visual--sorting" aria-label="拖拽排序概念示意">
+                  <div class="anew-sort-task">
+                    <span class="anew-drag-handle" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                    <span>撰写报告</span>
+                  </div>
+                  <div class="anew-sort-task">
+                    <span class="anew-drag-handle" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                    <span>整理作品集</span>
+                  </div>
+                  <div class="anew-sort-task">
+                    <span class="anew-drag-handle" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                    <span>回复邮件</span>
+                  </div>
+                </div>
+                <div class="anew-concept-card__body">
+                  <p class="anew-concept-card__label">方案一</p>
+                  <h4>拖拽排序</h4>
+                  <p class="anew-concept-card__description">通过拖动任务调整优先级。</p>
+                  <p class="anew-concept-card__limitation">需要比较多个任务并调整先后，排序可能增加启动前的负担。</p>
+                </div>
+              </article>
+
+              <article class="anew-concept-card">
+                <div class="anew-concept-card__visual anew-concept-card__visual--schedule" aria-label="时间块规划概念示意">
+                  <div class="anew-schedule-row">
+                    <time>09:00</time>
+                    <span class="anew-schedule-block anew-schedule-block--mail">邮件</span>
+                  </div>
+                  <div class="anew-schedule-row">
+                    <time>11:00</time>
+                    <span class="anew-schedule-block anew-schedule-block--report">报告</span>
+                  </div>
+                  <div class="anew-schedule-row">
+                    <time>14:00</time>
+                    <span class="anew-schedule-block anew-schedule-block--design">设计</span>
+                  </div>
+                </div>
+                <div class="anew-concept-card__body">
+                  <p class="anew-concept-card__label">方案二</p>
+                  <h4>时间块规划</h4>
+                  <p class="anew-concept-card__description">提前为任务分配具体时段。</p>
+                  <p class="anew-concept-card__limitation">需要估算耗时与安排顺序，增加前期规划成本。</p>
+                </div>
+              </article>
+
+              <article class="anew-concept-card">
+                <div class="anew-concept-card__visual anew-concept-card__visual--three" aria-label="每日三件事概念示意">
+                  <strong>03</strong>
+                  <span>今日任务</span>
+                  <div class="anew-three-tasks" aria-hidden="true">
+                    <i>1</i><i>2</i><i>3</i>
+                  </div>
+                </div>
+                <div class="anew-concept-card__body">
+                  <p class="anew-concept-card__label">方案三</p>
+                  <h4>每日三件事</h4>
+                  <p class="anew-concept-card__description">限制每天最多选择三项任务。</p>
+                  <p class="anew-concept-card__limitation">固定数量不够灵活，也未解决从候选任务中筛选的问题。</p>
+                </div>
+              </article>
+            </div>
+
+            <section class="anew-final-direction" aria-labelledby="anew-final-direction-title">
+              <div class="anew-final-direction__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M12 4v14M6.5 12.5 12 18l5.5-5.5"></path>
+                </svg>
+              </div>
+              <div class="anew-final-direction__rule"></div>
+              <div class="anew-final-direction__label">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <circle cx="12" cy="12" r="8.5"></circle>
+                  <path d="m8.3 12.1 2.35 2.35 5.05-5.05"></path>
+                </svg>
+                <span>最终设计方向</span>
+              </div>
+              <h3 id="anew-final-direction-title">逐次选择，按需标记，单任务聚焦。</h3>
+              <p class="anew-final-direction__description">不要求用户提前排列所有任务，也不强制限制每日任务数量，而是将选择、重点标记与执行分开处理，让用户按需做出判断。</p>
+              <div class="anew-final-direction__keywords">
+                <div>
+                  <p>选择</p>
+                  <strong>今天做什么？</strong>
+                </div>
+                <div>
+                  <p>标记</p>
+                  <strong>什么最重要？</strong>
+                </div>
+                <div>
+                  <p>专注</p>
+                  <strong>现在做哪件？</strong>
+                </div>
+              </div>
+            </section>
+
+            <section class="anew-product-scope" aria-labelledby="anew-product-scope-title">
+              <div class="anew-product-scope__rule" aria-hidden="true"></div>
+              <h3 id="anew-product-scope-title">产品边界</h3>
+              <p class="anew-product-scope__intro">最终设计方向确定了 Anew 做什么，同样重要的是它不做什么。以下能力被主动排除在当前版本的产品范围之外。</p>
+
+              <div class="anew-product-scope__grid">
+                <article class="anew-scope-card">
+                  <header class="anew-scope-card__top">
+                    <span class="anew-scope-card__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </span>
+                    <span>01 / 04</span>
+                  </header>
+                  <h4>多用户协作与任务分享</h4>
+                  <p class="anew-scope-card__description">Anew 聚焦个人任务的选择与启动。协作需要额外处理他人的任务、反馈与进度，因此不纳入当前版本。</p>
+                </article>
+
+                <article class="anew-scope-card">
+                  <header class="anew-scope-card__top">
+                    <span class="anew-scope-card__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="m12.83 2.18 8.57 4.91a1 1 0 0 1 0 1.72l-8.57 4.91a2 2 0 0 1-1.66 0L2.6 8.81a1 1 0 0 1 0-1.72l8.57-4.91a2 2 0 0 1 1.66 0Z"></path><path d="m2 12 9.17 5.25a2 2 0 0 0 1.66 0L22 12"></path><path d="m2 16 9.17 5.25a2 2 0 0 0 1.66 0L22 16"></path></svg>
+                    </span>
+                    <span>02 / 04</span>
+                  </header>
+                  <h4>长期任务库与项目管理</h4>
+                  <p class="anew-scope-card__description">不引入复杂的项目层级、依赖关系和长期规划视图，避免将每日行动重新转化为大规模的任务整理。</p>
+                </article>
+
+                <article class="anew-scope-card">
+                  <header class="anew-scope-card__top">
+                    <span class="anew-scope-card__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18M15 14l4 4m0-4-4 4"></path></svg>
+                    </span>
+                    <span>03 / 04</span>
+                  </header>
+                  <h4>连续打卡机制</h4>
+                  <p class="anew-scope-card__description">不以连续天数衡量表现，也不设置断签惩罚，避免用户因为中断使用而承受额外压力。</p>
+                </article>
+
+                <article class="anew-scope-card">
+                  <header class="anew-scope-card__top">
+                    <span class="anew-scope-card__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M6 20v-6M12 20V10M18 20V4"></path></svg>
+                    </span>
+                    <span>04 / 04</span>
+                  </header>
+                  <h4>统计报表与完成率分析</h4>
+                  <p class="anew-scope-card__description">不引入长期完成率、效率排名等绩效指标，当前仅保留与当天行动相关的轻量进度反馈。</p>
+                </article>
+              </div>
+
+              <div class="anew-product-scope__summary">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 10l5 5-5 5"></path><path d="M4 4v7a4 4 0 0 0 4 4h12"></path></svg>
+                <p>产品边界不是功能缺失，而是围绕核心体验做出的主动取舍。</p>
+              </div>
+            </section>
+
+          </section>
+
+          <section class="birdsong-case-section birdsong-case-section--divided anew-core-interaction" aria-labelledby="core-interaction">
+            <h2 id="core-interaction" class="birdsong-research__title">核心交互</h2>
+            <h3 class="anew-core-solution__title">三个页面，完成一天的小循环</h3>
+            <p class="anew-core-interaction__intro">Anew 将每日任务管理组织为三个相互衔接的阶段：<strong>Today（选择）→Focus（专注）→Review（复盘）</strong>。</p>
+            <p class="anew-core-interaction__language"><em>界面支持中英文切换，以下展示英文版界面。</em></p>
+
+            <section class="anew-today-module" aria-labelledby="anew-today-title">
+              <div class="anew-interaction-index" aria-label="01 Today 选择">
+                <span class="anew-interaction-index__number">01 /</span>
+                <span class="anew-interaction-index__title">Today 选择</span>
+                <span class="anew-interaction-index__rule" aria-hidden="true"></span>
+              </div>
+
+              <div class="anew-today-module__introduction">
+                <h3 id="anew-today-title" class="anew-core-solution__title">逐张判断，按需突出重点</h3>
+                <p>上半部分逐张呈现任务卡片，用户可以右滑加入今天、左滑暂时跳过；下半部分展示已选择的今日任务。用户可以为其中一项标星，设为「今日大事」（One Big Thing），且同一时间仅保留一个标星任务。</p>
+                <p class="anew-today-module__closing">无需提前排列所有任务，也能突出当天的重点。</p>
+              </div>
+
+              <div class="anew-today-module__layout">
+                <div class="anew-today-module__main">
+                  <div class="anew-showcase-phone anew-today-phone">
+                    <div class="anew-showcase-phone__screen">
+                      <img src="../../public/assets/images/work/anew/mock4.webp" alt="Anew Today 英文界面，展示逐张选择任务与今日计划" loading="lazy" decoding="async" width="413" height="896" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="anew-today-module__details">
+                  <article class="anew-today-detail anew-today-detail--swipe">
+                    <h4>滑动选择</h4>
+                    <div class="anew-today-swipe-grid">
+                      <div class="anew-today-swipe-option">
+                        <img src="../../public/assets/images/work/anew/mock11.webp" alt="Anew Today 任务卡片左滑暂时跳过操作" loading="lazy" decoding="async" width="413" height="314" />
+                        <p>左滑·暂时跳过</p>
+                      </div>
+                      <div class="anew-today-swipe-option">
+                        <img src="../../public/assets/images/work/anew/mock5.webp" alt="Anew Today 任务卡片右滑加入今天操作" loading="lazy" decoding="async" width="413" height="314" />
+                        <p>右滑·加入今天</p>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="anew-today-detail anew-today-detail--star">
+                    <h4>唯一星标｜今日大事</h4>
+                    <div class="anew-today-detail__visual">
+                      <img src="../../public/assets/images/work/anew/mock6.webp" alt="Anew Today 计划中的唯一星标今日大事任务" loading="lazy" decoding="async" width="413" height="154" />
+                    </div>
+                    <p>同一时间仅保留一个标星任务</p>
+                  </article>
+
+                </div>
+              </div>
+
+              <div class="anew-today-basics">
+                <h4>辅助功能｜日常基础事项（Daily Basics）</h4>
+                <p>该页面还提供可自定义的日常基础事项，默认包含服药、喝水、伸展活动等。用户可以自由增删修改，清单内容持续保留，仅勾选状态每天重置，帮助用户以更低的操作成本维持日常节奏。</p>
+              </div>
+            </section>
+
+            <section class="anew-focus-module" aria-labelledby="anew-focus-title">
+              <div class="anew-interaction-index" aria-label="02 Focus 专注">
+                <span class="anew-interaction-index__number">02 /</span>
+                <span class="anew-interaction-index__title">Focus 专注</span>
+                <span class="anew-interaction-index__rule" aria-hidden="true"></span>
+              </div>
+
+              <div class="anew-focus-module__introduction">
+                <h3 id="anew-focus-title" class="anew-core-solution__title">一次一件，减少执行干扰</h3>
+                <p>Focus 默认只展示一件当前任务，并优先呈现标记为「今日大事」的任务。用户可以勾选行动步骤、主动切换任务，或按需开启专注计时器。</p>
+                <p>计时器默认关闭，不构成开始行动的必要条件。完成任务后，界面以克制的视觉反馈与「完成一个循环」（One loop closer）提示确认进展。</p>
+              </div>
+
+              <div class="anew-focus-showcase">
+                <article class="anew-focus-showcase__item">
+                  <div class="anew-focus-showcase__visual">
+                    <div class="anew-showcase-phone anew-focus-phone anew-focus-phone--default">
+                      <div class="anew-showcase-phone__screen">
+                        <img src="../../public/assets/images/work/anew/mock8.webp" alt="Anew Focus 英文界面，展示当前任务、行动步骤与可选专注计时器" loading="lazy" decoding="async" width="413" height="896" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="anew-focus-showcase__caption">
+                    <h4>默认聚焦于一个任务</h4>
+                    <p>不要求提前选择全部任务的执行顺序。</p>
+                  </div>
+                </article>
+
+                <article class="anew-focus-showcase__item">
+                  <div class="anew-focus-showcase__visual">
+                    <div class="anew-showcase-phone anew-focus-phone anew-focus-phone--complete">
+                      <div class="anew-showcase-phone__screen">
+                        <img src="../../public/assets/images/work/anew/mock9.webp" alt="Anew Focus 英文界面，展示任务完成后的 One loop closer 反馈" loading="lazy" decoding="async" width="413" height="895" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="anew-focus-showcase__caption">
+                    <h4>克制的正向反馈</h4>
+                    <p>完成后以短暂视觉变化和「One loop closer」确认进展。</p>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="anew-review-module" aria-labelledby="anew-review-title">
+              <div class="anew-interaction-index" aria-label="03 Review 复盘">
+                <span class="anew-interaction-index__number">03 /</span>
+                <span class="anew-interaction-index__title">Review 复盘</span>
+                <span class="anew-interaction-index__rule" aria-hidden="true"></span>
+              </div>
+
+              <div class="anew-review-module__layout">
+                <div class="anew-review-module__content">
+                  <h3 id="anew-review-title" class="anew-core-solution__title">轻量回顾，让今天连接明天</h3>
+                  <p>通过对话引导用户回顾一天，无需填写完整总结。</p>
+                  <p>遵循温和、非评判的原则：AI先回应你分享的内容，最多提一个轻量追问，不说教、不追加任务。用户也可以把复盘中的想法转成明日候选任务，让当天的反思自然延续到下一次行动。</p>
+
+                  <section class="anew-review-details" aria-labelledby="anew-review-details-title">
+                    <h4 id="anew-review-details-title">交互细节</h4>
+                    <ul>
+                      <li>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15a4 4 0 0 1-4 4H9l-5 3v-7a4 4 0 0 1-1-2.7V8a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4Z" /></svg>
+                        <span>一句话也可以完成复盘</span>
+                      </li>
+                      <li>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6" /></svg>
+                        <span>可选语音输入</span>
+                      </li>
+                      <li>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M10 8l4 4-4 4M8 12h6" /></svg>
+                        <span>将想法加入明日候选</span>
+                      </li>
+                    </ul>
+                  </section>
+
+                  <aside class="anew-review-demo-note" aria-labelledby="anew-review-demo-note-title">
+                    <div class="anew-review-demo-note__heading">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 10v5M12 7h.01" /></svg>
+                      <h4 id="anew-review-demo-note-title">公开演示说明</h4>
+                    </div>
+                    <div class="anew-review-demo-note__rule" aria-hidden="true"></div>
+                    <div class="anew-review-demo-note__copy">
+                      <p><strong>AI 回应：</strong>当前公开 Demo 使用预设 AI 回应，尚未接入实时模型。回应主要依赖英文关键词匹配，中文输入可能返回通用英文回复；访客无需配置 API 密钥。自行部署版本可按项目文档配置 OpenAI 或 Anthropic。</p>
+                      <p><strong>语音输入：</strong>语音输入依赖浏览器支持及 HTTPS 环境，电脑端 Chrome / Edge 和手机端 Safari 均可使用。不支持时界面会给出提示。</p>
+                    </div>
+                  </aside>
+                </div>
+
+                <div class="anew-review-module__visual">
+                  <div class="anew-showcase-phone anew-review-phone">
+                    <div class="anew-showcase-phone__screen">
+                      <img src="../../public/assets/images/work/anew/mock10.webp" alt="Anew Review 英文界面，展示对话式回顾与明日候选任务" loading="lazy" decoding="async" width="413" height="896" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </section>
+          </section>
+        </section>
+
+        <section class="birdsong-case-section birdsong-case-section--divided anew-design-system" aria-labelledby="design-system">
+          <h2 id="design-system" class="birdsong-research__title">设计系统</h2>
+
+          <h3 class="anew-design-system__title">柔和的视觉语言，清晰的信息层级。</h3>
+          <p class="anew-design-system__intro">Anew 通过六套可切换的主题提供不同的视觉氛围，并以统一的文字层级与组件色彩规则，让任务始终保持清晰可辨。</p>
+
+          <section class="anew-design-block anew-design-block--palette" aria-labelledby="anew-palette-title">
+            <header class="anew-design-heading">
+              <h3 id="anew-palette-title"><span>01 / </span>&nbsp;&nbsp;主题色彩</h3>
+            </header>
+
+            <div class="anew-theme-grid" id="anew-theme-grid" aria-label="Anew 主题选择"></div>
+            <div class="anew-theme-detail" id="anew-theme-detail" aria-live="polite"></div>
+            <p class="anew-copy-status" id="anew-copy-status" role="status" aria-live="polite"></p>
+          </section>
+
+          <section class="anew-design-block" aria-labelledby="anew-typography-title">
+            <header class="anew-design-heading">
+              <h3 id="anew-typography-title"><span>02 / </span>&nbsp;&nbsp;字体系统</h3>
+            </header>
+
+            <div class="anew-font-family-grid">
+              <article class="anew-font-card anew-font-card--sans">
+                <p class="anew-font-card__label">PRIMARY / 无衬线字体</p>
+                <p class="anew-font-card__hero">Aa Bb</p>
+                <div class="anew-font-card__samples">
+                  <p>Good morning.</p>
+                  <p>早上好，今天只做一件小事。</p>
+                </div>
+                <p class="anew-font-card__family">Avenir Next / Segoe UI / 苹方 / 微软雅黑</p>
+                <p class="anew-font-card__use">用于标题、任务内容、正文与主要操作。</p>
+              </article>
+
+              <article class="anew-font-card anew-font-card--mono">
+                <p class="anew-font-card__label">SECONDARY / 等宽字体</p>
+                <p class="anew-font-card__hero">01:45</p>
+                <div class="anew-font-card__samples">
+                  <p>MORNING PICKS · 1 OF 10</p>
+                  <p>30 MIN · 12:45</p>
+                </div>
+                <p class="anew-font-card__family">Cascadia Code / SF Mono / Consolas</p>
+                <p class="anew-font-card__use">用于数字、计时器、英文标签与元数据。</p>
+              </article>
+            </div>
+
+            <div class="anew-type-scale" aria-label="Anew 字体层级规范">
+              <div class="anew-type-scale__row anew-type-scale__row--display">
+                <p>Display</p><p>44px / 300</p><p>03</p>
+              </div>
+              <div class="anew-type-scale__row anew-type-scale__row--h1">
+                <p>H1 页面标题</p><p>31px / 700</p><p>Good morning.</p>
+              </div>
+              <div class="anew-type-scale__row anew-type-scale__row--h2">
+                <p>H2 任务标题</p><p>27px / 600</p><p>One thing at a time.</p>
+              </div>
+              <div class="anew-type-scale__row anew-type-scale__row--h3">
+                <p>H3 区块标题</p><p>19px / 600</p><p>All done for today.</p>
+              </div>
+              <div class="anew-type-scale__row anew-type-scale__row--body">
+                <p>Body 正文</p><p>14.5px / 300</p><p>Start with a single clear focus.</p>
+              </div>
+              <div class="anew-type-scale__row anew-type-scale__row--label">
+                <p>Label 标签</p><p>10.5px / 400</p><p>MORNING PICKS · 1 OF 10</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="anew-design-block" aria-labelledby="anew-bilingual-title">
+            <header class="anew-design-heading anew-design-heading--single">
+              <h3 id="anew-bilingual-title"><span>03 / </span>&nbsp;&nbsp;双语排版</h3>
+            </header>
+            <p class="anew-design-block__intro">同一信息层级，在中英文界面中使用不同的标签排版规则。英文采用等宽字体、大写与较宽字距；中文采用无衬线字体与更紧凑的字距。</p>
+
+            <div class="anew-bilingual-grid">
+              <article class="anew-language-card anew-language-card--en">
+                <h4>English / EN</h4>
+                <div class="anew-language-card__samples">
+                  <p>MORNING PICKS</p><p class="is-accent">ONE BIG THING</p><p>30 MIN</p>
+                </div>
+                <p class="anew-language-card__note">Mono · Uppercase · +0.16em</p>
+              </article>
+              <article class="anew-language-card anew-language-card--zh">
+                <h4>简体中文 / ZH-CN</h4>
+                <div class="anew-language-card__samples">
+                  <p>今日候选</p><p class="is-accent">今日大事</p><p>30 分钟</p>
+                </div>
+                <p class="anew-language-card__note">Sans · 不大写 · +0.04em</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="anew-design-block" aria-labelledby="anew-fixed-colors-title">
+            <header class="anew-design-heading anew-design-heading--single">
+              <h3 id="anew-fixed-colors-title"><span>04 / </span>&nbsp;&nbsp;语义色彩</h3>
+            </header>
+            <p class="anew-design-block__intro">六套主题切换时，三级文字灰度与六种任务类型的语义色保持不变。</p>
+
+            <div class="anew-text-color-grid">
+              <article class="anew-text-color" style="--sample-color:#1E2127"><span>Aa</span><div><h4>主文字</h4><p>Primary</p><button type="button" data-copy-value="#1E2127">#1E2127</button></div></article>
+              <article class="anew-text-color" style="--sample-color:#565C66"><span>Aa</span><div><h4>次级文字</h4><p>Secondary</p><button type="button" data-copy-value="#565C66">#565C66</button></div></article>
+              <article class="anew-text-color" style="--sample-color:#959AA4"><span>Aa</span><div><h4>辅助文字</h4><p>Tertiary</p><button type="button" data-copy-value="#959AA4">#959AA4</button></div></article>
+            </div>
+
+            <div class="anew-task-color-grid">
+              <article class="anew-task-color" style="--task-color:#BE5E37;--task-bg:#F4E4DA"><span>FOCUS</span><h4>专注</h4><p><button type="button" data-copy-value="#BE5E37">#BE5E37</button> · <button type="button" data-copy-value="#F4E4DA">#F4E4DA</button></p></article>
+              <article class="anew-task-color" style="--task-color:#4E8AA8;--task-bg:#E1EEF4"><span>QUICK</span><h4>快事</h4><p><button type="button" data-copy-value="#4E8AA8">#4E8AA8</button> · <button type="button" data-copy-value="#E1EEF4">#E1EEF4</button></p></article>
+              <article class="anew-task-color" style="--task-color:#5C6657;--task-bg:#E8EBE2"><span>ERRAND</span><h4>外出</h4><p><button type="button" data-copy-value="#5C6657">#5C6657</button> · <button type="button" data-copy-value="#E8EBE2">#E8EBE2</button></p></article>
+              <article class="anew-task-color" style="--task-color:#3E9B8B;--task-bg:#DFF0EC"><span>HEALTH</span><h4>健康</h4><p><button type="button" data-copy-value="#3E9B8B">#3E9B8B</button> · <button type="button" data-copy-value="#DFF0EC">#DFF0EC</button></p></article>
+              <article class="anew-task-color" style="--task-color:#8A8E84;--task-bg:#ECEDE8"><span>ADMIN</span><h4>事务</h4><p><button type="button" data-copy-value="#8A8E84">#8A8E84</button> · <button type="button" data-copy-value="#ECEDE8">#ECEDE8</button></p></article>
+              <article class="anew-task-color" style="--task-color:#C29A3A;--task-bg:#F6EED8"><span>LIFE</span><h4>生活</h4><p><button type="button" data-copy-value="#C29A3A">#C29A3A</button> · <button type="button" data-copy-value="#F6EED8">#F6EED8</button></p></article>
+            </div>
+          </section>
+
+          <section class="anew-design-block anew-components" aria-labelledby="anew-components-title">
+            <header class="anew-design-heading anew-design-heading--single">
+              <h3 id="anew-components-title"><span>05 / </span>&nbsp;&nbsp;核心组件</h3>
+            </header>
+            <h4 class="anew-components__title">一致的组件语言，降低重复理解的成本。</h4>
+            <p class="anew-design-block__intro anew-components__intro">Anew 围绕任务选择、优先级标记与行动执行建立统一的组件规则。通过一致的卡片结构、明确的主次操作与轻量状态反馈，让用户在不同页面中快速理解界面，而不必重新学习操作方式。</p>
+
+            <article class="anew-component-group anew-component-group--task-card">
+              <header class="anew-component-group__header">
+                <p><span></span> Task Card / 任务卡片</p>
+                <p>将任务标题、类型、预计耗时与辅助说明组织在同一张卡片中，突出当前需要判断的一项任务。</p>
+              </header>
+              <div class="anew-task-card-stage">
+                <div class="anew-ui-task-stack">
+                  <div class="anew-ui-task-card">
+                    <div class="anew-ui-task-card__meta">
+                      <span class="anew-ui-task-card__type">FOCUS</span>
+                      <span class="anew-ui-task-card__time">30 min</span>
+                    </div>
+                    <h5>The one thing that matters today</h5>
+                    <p>Start with a single clear focus</p>
+                    <div class="anew-ui-task-card__actions" aria-label="Task card actions">
+                      <button class="anew-ui-button anew-ui-button--secondary" type="button">Not today</button>
+                      <button class="anew-ui-button anew-ui-button--primary" type="button">Keep today</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="anew-component-anatomy">任务类型 · 标题 · 辅助说明 · 操作按钮</p>
+            </article>
+
+            <div class="anew-component-grid">
+              <article class="anew-component-group">
+                <header class="anew-component-group__header">
+                  <p><span></span> Actions / 操作按钮</p>
+                  <p>通过渐变、底色与描边区分操作层级，让主要决策更醒目，辅助操作与完成状态保持克制。</p>
+                </header>
+                <div class="anew-component-demo anew-component-demo--actions">
+                  <div class="anew-action-level">
+                    <p><strong>PRIMARY</strong><span>主操作</span></p>
+                    <button class="anew-ui-button anew-ui-button--primary" type="button">Keep today</button>
+                  </div>
+                  <div class="anew-action-level">
+                    <p><strong>SECONDARY</strong><span>次级操作</span></p>
+                    <button class="anew-ui-button anew-ui-button--outlined" type="button">Switch task</button>
+                  </div>
+                  <div class="anew-action-level">
+                    <p><strong>SOFT</strong><span>柔和操作</span></p>
+                    <button class="anew-ui-button anew-ui-button--secondary" type="button">Not today</button>
+                  </div>
+                  <div class="anew-action-level anew-action-level--pills">
+                    <p><strong>PILLS &amp; STATUS</strong><span>胶囊按钮与状态</span></p>
+                    <div class="anew-action-pills">
+                      <span class="anew-action-pill anew-action-pill--completed">Completed</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="anew-component-group">
+                <header class="anew-component-group__header">
+                  <p><span></span> Priority / 今日大事</p>
+                  <p>通过独立区块、强调描边与星标区分重点任务和普通任务，每天最多标记一件「今日大事」。</p>
+                </header>
+                <div class="anew-component-demo anew-component-demo--priority" data-priority-demo>
+                  <div class="anew-priority-row is-priority" data-priority-row>
+                    <span class="anew-priority-row__role">ONE BIG THING / 今日大事</span>
+                    <div class="anew-priority-row__content">
+                      <span class="anew-priority-row__dot anew-priority-row__dot--focus" aria-hidden="true"></span>
+                      <div><strong>The one thing that matters today</strong><span>FOCUS · 30 MIN</span></div>
+                      <button class="anew-priority-row__star" type="button" aria-label="取消今日大事标记" aria-pressed="true">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.72 5.51 6.08.88-4.4 4.29 1.04 6.06L12 16.88l-5.44 2.86 1.04-6.06-4.4-4.29 6.08-.88L12 3Z"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="anew-priority-row" data-priority-row>
+                    <span class="anew-priority-row__role">ALSO TODAY / 今日其他任务</span>
+                    <div class="anew-priority-row__content">
+                      <span class="anew-priority-row__dot anew-priority-row__dot--errand" aria-hidden="true"></span>
+                      <div><strong>Do one small errand</strong><span>ERRAND · 10 MIN</span></div>
+                      <button class="anew-priority-row__star" type="button" aria-label="设为今日大事" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.72 5.51 6.08.88-4.4 4.29 1.04 6.06L12 16.88l-5.44 2.86 1.04-6.06-4.4-4.29 6.08-.88L12 3Z"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="anew-component-group">
+                <header class="anew-component-group__header">
+                  <p><span></span> Small Steps / 行动步骤</p>
+                  <p>行动步骤以整行作为点击区域，完成后保留文字并降低视觉权重，让进度可见，同时减少对当前行动的干扰。</p>
+                </header>
+                <div class="anew-component-demo anew-component-demo--steps" data-steps-demo>
+                  <div class="anew-steps-heading"><span>SMALL STEPS</span><strong data-steps-count>1 / 3</strong></div>
+                  <label class="anew-step-row">
+                    <input type="checkbox" checked />
+                    <span>Name the one thing</span>
+                  </label>
+                  <label class="anew-step-row">
+                    <input type="checkbox" />
+                    <span>Clear your space</span>
+                  </label>
+                  <label class="anew-step-row">
+                    <input type="checkbox" />
+                    <span>Make a small start</span>
+                  </label>
+                </div>
+              </article>
+
+              <article class="anew-component-group">
+                <header class="anew-component-group__header">
+                  <p><span></span> Feedback / 完成反馈</p>
+                  <p>通过短暂的完成确认与轻量通知反馈操作结果，避免持续性的视觉奖励或不必要的打断。</p>
+                </header>
+                <div class="anew-component-demo anew-component-demo--feedback" data-feedback-demo>
+                  <div class="anew-feedback-tabs" role="tablist" aria-label="完成反馈状态">
+                    <button type="button" role="tab" aria-selected="true" aria-controls="anew-feedback-complete" id="anew-feedback-tab-complete" data-feedback-target="complete">完成确认</button>
+                    <button type="button" role="tab" aria-selected="false" aria-controls="anew-feedback-toast" id="anew-feedback-tab-toast" data-feedback-target="toast" tabindex="-1">轻量通知</button>
+                  </div>
+                  <div class="anew-feedback-panels">
+                    <div class="anew-feedback-panel anew-feedback-panel--complete" role="tabpanel" id="anew-feedback-complete" aria-labelledby="anew-feedback-tab-complete" data-feedback-panel="complete">
+                      <span class="anew-feedback-complete__check" aria-hidden="true">✓</span>
+                      <strong>One loop closer.</strong>
+                      <p>see you tomorrow morning</p>
+                    </div>
+                    <div class="anew-feedback-panel" role="tabpanel" id="anew-feedback-toast" aria-labelledby="anew-feedback-tab-toast" data-feedback-panel="toast" hidden>
+                      <div class="anew-feedback-toast">Your progress has been saved.</div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
     </main>
+
+    <script>
+      (() => {
+        const navigation = document.querySelector(".anew-section-nav");
+        const caseStudy = document.querySelector(".anew-case-study");
+        const links = navigation
+          ? Array.from(navigation.querySelectorAll(".birdsong-section-nav__link"))
+          : [];
+        const sections = links
+          .map((link) => document.getElementById(link.hash.slice(1)))
+          .filter((section) => section instanceof HTMLElement);
+
+        if (!navigation || !caseStudy || !links.length || !("IntersectionObserver" in window)) {
+          return;
+        }
+
+        const readingLine = 144;
+        const observerOptions = {
+          root: null,
+          rootMargin: `-${readingLine}px 0px -65% 0px`,
+          threshold: [0, 0.01],
+        };
+
+        const setActive = (id) => {
+          links.forEach((link) => {
+            const active = link.hash.slice(1) === id;
+            link.classList.toggle("is-active", active);
+            if (active) {
+              link.setAttribute("aria-current", "location");
+            } else {
+              link.removeAttribute("aria-current");
+            }
+          });
+        };
+
+        setActive("problem-definition");
+
+        links.forEach((link) => {
+          link.addEventListener("click", () => setActive(link.hash.slice(1)));
+        });
+
+        const visibilityObserver = new IntersectionObserver(([entry]) => {
+          navigation.classList.toggle("is-visible", entry.isIntersecting);
+        }, observerOptions);
+
+        const sectionVisibility = new Map(
+          sections.map((section) => [section.id, { isIntersecting: false }]),
+        );
+        const sectionObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            sectionVisibility.set(entry.target.id, { isIntersecting: entry.isIntersecting });
+          });
+
+          const current = sections
+            .filter((section) => sectionVisibility.get(section.id)?.isIntersecting)
+            .sort(
+              (a, b) =>
+                Math.abs(a.getBoundingClientRect().top - readingLine) -
+                Math.abs(b.getBoundingClientRect().top - readingLine),
+            )[0];
+
+          if (current) setActive(current.id);
+        }, observerOptions);
+
+        visibilityObserver.observe(caseStudy);
+        sections.forEach((section) => sectionObserver.observe(section));
+      })();
+
+      (() => {
+        const ANEW_THEMES = [
+          {
+            id: "daybreak", name: "Daybreak", zh: "晨光",
+            background: "linear-gradient(180deg, #E2ECF8 0%, #EFEAE8 52%, #FBEEDE 100%)",
+            backgroundStops: ["#E2ECF8", "#EFEAE8", "#FBEEDE"],
+            button: "linear-gradient(135deg, #84A4E8 0%, #F0A88E 100%)",
+            buttonStops: ["#84A4E8", "#F0A88E"], accent: "#C76A56", soft: "#F4E7DC",
+            done: { background: "#F6E7DD", border: "rgba(199,106,86,0.40)", text: "#A85138", check: "#C76A56" },
+          },
+          {
+            id: "tide", name: "Tide", zh: "潮汐",
+            background: "linear-gradient(180deg, #DEEDF0 0%, #ECEDE6 52%, #F8EFE2 100%)",
+            backgroundStops: ["#DEEDF0", "#ECEDE6", "#F8EFE2"],
+            button: "linear-gradient(135deg, #64BFAD 0%, #DDB969 100%)",
+            buttonStops: ["#64BFAD", "#DDB969"], accent: "#5E9277", soft: "#E7EEE9",
+            done: { background: "#E3F0E7", border: "rgba(90,160,117,0.40)", text: "#3E7A56", check: "#5AA075" },
+          },
+          {
+            id: "glacier", name: "Glacier", zh: "冰川",
+            background: "linear-gradient(180deg, #DCEEF7 0%, #E8F1F2 52%, #F4EEE4 100%)",
+            backgroundStops: ["#DCEEF7", "#E8F1F2", "#F4EEE4"],
+            button: "linear-gradient(135deg, #5B9FC8 0%, #79C7B7 100%)",
+            buttonStops: ["#5B9FC8", "#79C7B7"], accent: "#397FA5", soft: "#E1EFF4",
+            done: { background: "#DDEEF2", border: "rgba(57,127,165,0.38)", text: "#2E6E8E", check: "#397FA5" },
+          },
+          {
+            id: "sakura", name: "Sakura", zh: "樱花",
+            background: "linear-gradient(180deg, #F5E3EA 0%, #F3E9E7 52%, #F7F0DE 100%)",
+            backgroundStops: ["#F5E3EA", "#F3E9E7", "#F7F0DE"],
+            button: "linear-gradient(135deg, #D47E9B 0%, #E3AC76 100%)",
+            buttonStops: ["#D47E9B", "#E3AC76"], accent: "#B95F80", soft: "#F5E6EC",
+            done: { background: "#F3E2E9", border: "rgba(185,95,128,0.38)", text: "#984766", check: "#B95F80" },
+          },
+          {
+            id: "sunset", name: "Sunset", zh: "落日",
+            background: "linear-gradient(180deg, #F7E4D5 0%, #F3E5E1 50%, #E9E5F4 100%)",
+            backgroundStops: ["#F7E4D5", "#F3E5E1", "#E9E5F4"],
+            button: "linear-gradient(135deg, #E18B62 0%, #9B82CE 100%)",
+            buttonStops: ["#E18B62", "#9B82CE"], accent: "#C16B50", soft: "#F6E7DE",
+            done: { background: "#F5E3DA", border: "rgba(193,107,80,0.40)", text: "#9F513B", check: "#C16B50" },
+          },
+          {
+            id: "stone", name: "Stone", zh: "岩石",
+            background: "linear-gradient(180deg, #E5E8EA 0%, #ECEAE5 52%, #F3E9DE 100%)",
+            backgroundStops: ["#E5E8EA", "#ECEAE5", "#F3E9DE"],
+            button: "linear-gradient(135deg, #748894 0%, #B78D72 100%)",
+            buttonStops: ["#748894", "#B78D72"], accent: "#657985", soft: "#E8ECEE",
+            done: { background: "#E4EAEC", border: "rgba(101,121,133,0.38)", text: "#506570", check: "#657985" },
+          },
+        ];
+
+        const designSystem = document.querySelector(".anew-design-system");
+        const themeGrid = document.querySelector("#anew-theme-grid");
+        const themeDetail = document.querySelector("#anew-theme-detail");
+        const copyStatus = document.querySelector("#anew-copy-status");
+        if (!designSystem || !themeGrid || !themeDetail || !copyStatus) return;
+
+        const valueButton = (value) => `<button class="anew-color-value" type="button" data-copy-value="${value}">${value}</button>`;
+
+        const renderThemeCards = (activeId) => {
+          themeGrid.innerHTML = ANEW_THEMES.map((theme) => `
+            <button class="anew-theme-card${theme.id === activeId ? " is-active" : ""}" type="button" data-theme-id="${theme.id}" aria-pressed="${theme.id === activeId}" style="--theme-background:${theme.background};--theme-button:${theme.button};--theme-accent:${theme.accent}">
+              <span class="anew-theme-card__preview"><span class="anew-theme-card__button-band"></span></span>
+              <span class="anew-theme-card__meta"><strong>${theme.name}</strong><span>${theme.zh}</span></span>
+            </button>
+          `).join("");
+        };
+
+        const renderThemeDetail = (theme) => {
+          const index = ANEW_THEMES.findIndex((item) => item.id === theme.id) + 1;
+          themeDetail.innerHTML = `
+            <div class="anew-theme-detail__header">
+              <div><h4>${theme.name} / ${theme.zh}</h4><p>当前主题色彩构成 · 点击上方切换</p></div>
+              <span class="anew-theme-detail__count">${String(index).padStart(2, "0")} / 06</span>
+            </div>
+            <div class="anew-theme-detail__grid">
+              <section class="anew-theme-sample anew-theme-sample--background">
+                <h5>A. 背景渐变</h5>
+                <div class="anew-theme-sample__gradient" style="background:${theme.background}"></div>
+                <div class="anew-theme-sample__values">${theme.backgroundStops.map(valueButton).join("")}</div>
+              </section>
+              <div class="anew-theme-detail__aside">
+                <section class="anew-theme-sample anew-theme-sample--button">
+                  <h5>B. 主按钮渐变</h5>
+                  <div class="anew-theme-sample__button" style="background:${theme.button}">Keep today</div>
+                  <div class="anew-theme-sample__values">${theme.buttonStops.map(valueButton).join("")}</div>
+                </section>
+                <section class="anew-theme-sample anew-theme-sample--accent"><h5>C. 主色</h5><div class="anew-theme-sample__solid" style="background:${theme.accent}"></div><div class="anew-theme-sample__values">${valueButton(theme.accent)}</div></section>
+                <section class="anew-theme-sample anew-theme-sample--soft"><h5>D. 次级底色</h5><div class="anew-theme-sample__solid" style="background:${theme.soft}"></div><div class="anew-theme-sample__values">${valueButton(theme.soft)}</div></section>
+                <section class="anew-theme-sample anew-theme-sample--done">
+                  <h5>E. 完成态 / Done State</h5>
+                  <div class="anew-done-state" style="--done-bg:${theme.done.background};--done-border:${theme.done.border};--done-text:${theme.done.text};--done-check:${theme.done.check}"><span>✓</span> Task completed</div>
+                  <div class="anew-theme-sample__values">${valueButton(theme.done.background)}${valueButton(theme.done.border)}${valueButton(theme.done.text)}${valueButton(theme.done.check)}</div>
+                </section>
+              </div>
+            </div>
+          `;
+        };
+
+        const selectTheme = (themeId) => {
+          const theme = ANEW_THEMES.find((item) => item.id === themeId) || ANEW_THEMES[0];
+          renderThemeCards(theme.id);
+          renderThemeDetail(theme);
+        };
+
+        themeGrid.addEventListener("click", (event) => {
+          const button = event.target.closest("[data-theme-id]");
+          if (button) selectTheme(button.dataset.themeId);
+        });
+
+        designSystem.addEventListener("click", async (event) => {
+          const button = event.target.closest("[data-copy-value]");
+          if (!button) return;
+          try {
+            await navigator.clipboard.writeText(button.dataset.copyValue);
+            copyStatus.textContent = `已复制 ${button.dataset.copyValue}`;
+          } catch {
+            copyStatus.textContent = `复制失败，请手动选择 ${button.dataset.copyValue}`;
+          }
+        });
+
+        selectTheme("daybreak");
+      })();
+
+      (() => {
+        const components = document.querySelector(".anew-components");
+        if (!components) return;
+
+        const priorityRows = Array.from(components.querySelectorAll("[data-priority-row]"));
+        const updatePriority = (activeRow) => {
+          priorityRows.forEach((row) => {
+            const isPriority = row === activeRow;
+            const role = row.querySelector(".anew-priority-row__role");
+            const button = row.querySelector(".anew-priority-row__star");
+            row.classList.toggle("is-priority", isPriority);
+            role.textContent = isPriority ? "ONE BIG THING / 今日大事" : "ALSO TODAY / 今日其他任务";
+            button.setAttribute("aria-pressed", String(isPriority));
+            button.setAttribute("aria-label", isPriority ? "取消今日大事标记" : "设为今日大事");
+          });
+        };
+
+        priorityRows.forEach((row) => {
+          row.querySelector(".anew-priority-row__star")?.addEventListener("click", () => {
+            updatePriority(row.classList.contains("is-priority") ? null : row);
+          });
+        });
+
+        const stepsDemo = components.querySelector("[data-steps-demo]");
+        const stepInputs = stepsDemo ? Array.from(stepsDemo.querySelectorAll('input[type="checkbox"]')) : [];
+        const stepsCount = stepsDemo?.querySelector("[data-steps-count]");
+        const updateStepsCount = () => {
+          if (stepsCount) stepsCount.textContent = `${stepInputs.filter((input) => input.checked).length} / ${stepInputs.length}`;
+        };
+        stepInputs.forEach((input) => input.addEventListener("change", updateStepsCount));
+        updateStepsCount();
+
+        const feedbackDemo = components.querySelector("[data-feedback-demo]");
+        if (!feedbackDemo) return;
+        const feedbackTabs = Array.from(feedbackDemo.querySelectorAll("[data-feedback-target]"));
+        const feedbackPanels = Array.from(feedbackDemo.querySelectorAll("[data-feedback-panel]"));
+        const selectFeedback = (target) => {
+          feedbackTabs.forEach((tab) => {
+            const isSelected = tab.dataset.feedbackTarget === target;
+            tab.setAttribute("aria-selected", String(isSelected));
+            tab.tabIndex = isSelected ? 0 : -1;
+          });
+          feedbackPanels.forEach((panel) => { panel.hidden = panel.dataset.feedbackPanel !== target; });
+        };
+        feedbackTabs.forEach((tab, index) => {
+          tab.addEventListener("click", () => selectFeedback(tab.dataset.feedbackTarget));
+          tab.addEventListener("keydown", (event) => {
+            if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+            event.preventDefault();
+            const direction = event.key === "ArrowRight" ? 1 : -1;
+            const nextTab = feedbackTabs[(index + direction + feedbackTabs.length) % feedbackTabs.length];
+            nextTab.focus();
+            selectFeedback(nextTab.dataset.feedbackTarget);
+          });
+        });
+      })();
+    </script>
   </body>
 </html>

@@ -1,0 +1,88 @@
+/* Reworn in the Space — page-exclusive rules. */
+
+.birdsong-research__body .reworn-case-source {
+  color: var(--project-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.reworn-components-summary {
+  margin-top: clamp(42px, 4.5vw, 58px);
+}
+
+.reworn-interaction-subheading {
+  margin-top: clamp(36px, 3.75vw, 48px);
+}
+
+.birdsong-research__visual.reworn-image-8 {
+  width: 50%;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.reworn-components-intro,
+.reworn-case-section__after-gallery {
+  margin-top: clamp(32px, 3.4vw, 44px);
+}
+
+.reworn-exhibition-gallery {
+  display: grid;
+  grid-template-columns: minmax(0, 40.5fr) minmax(0, 59.5fr);
+  gap: clamp(18px, 2.6vw, 30px);
+  width: 75%;
+  max-width: 100%;
+  margin-inline: auto;
+  margin-top: clamp(36px, 3.75vw, 48px);
+}
+
+.reworn-exhibition-gallery__support {
+  display: grid;
+  align-content: start;
+  gap: clamp(18px, 2.6vw, 30px);
+  min-width: 0;
+}
+
+.reworn-exhibition-gallery__item {
+  width: 100%;
+  margin: 0;
+}
+
+.reworn-exhibition-gallery .reworn-exhibition-gallery__item {
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .birdsong-research__body .reworn-case-source {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .reworn-components-summary {
+    margin-top: 36px;
+  }
+
+  .reworn-interaction-subheading {
+    margin-top: 30px;
+  }
+
+  .birdsong-research__visual.reworn-image-8 {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .reworn-components-intro,
+  .reworn-case-section__after-gallery {
+    margin-top: 27px;
+  }
+
+  .reworn-exhibition-gallery {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .reworn-exhibition-gallery__support {
+    gap: 30px;
+  }
+}

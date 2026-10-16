@@ -27,7 +27,7 @@ Before adding new pages, project details, components, or interactions, read this
 - Name: Acid / Lime
 - HEX: `#BEEB4F`
 - CSS variable: `--site-acid`
-- Current use: logo first-letter accent, hover accents, Home glow/fragment effects.
+- Current use: logo first-letter accent, hover accents, Home glow/fragment effects, and Birdsong Beacon major-section / active-navigation markers.
 - Usage rule: accent only. Do not use as a broad background or large surface unless explicitly requested.
 
 ### Primary Ink
@@ -195,7 +195,7 @@ Before adding new pages, project details, components, or interactions, read this
 
 ## Project Detail Template
 
-Current template is shared by Anew and Nugget:
+Current Project Detail foundation is shared across project pages; individual pages may add project-specific long-form content after the overview:
 
 1. Header
 2. Back link
@@ -250,6 +250,70 @@ Current template is shared by Anew and Nugget:
   - Metadata moves below description
   - Vertical divider removed
   - Metadata gets top border
+
+### LAB Category Content Pattern
+
+- `INTERACTIVE POSTERS` and `VISUAL STUDIES` are peer LAB categories, presented through `.lab-category-nav`.
+- The category navigation is followed by a single shared content-start rhythm. The default Interactive Posters implementation (`.lab-experiments`) is the reference: desktop uses `margin-top: clamp(58px, 7.2vw, 108px)` and mobile uses `96px`.
+- Visual Studies (`.lab-visual-studies`) follows the same first-project start position. Its first project must not receive an extra top divider or top padding after the category navigation.
+- Blue rules remain available for meaningful internal or closing structure. Do not add a decorative rule between a category navigation and its first project, as that creates a false extra hierarchy level.
+- Categories may use different project layouts after this shared start; their content type does not need to share a grid.
+
+### Long-form Case Study Reference: Birdsong Beacon
+
+Birdsong Beacon is the current reference implementation for a long-form Project Detail / Case Study. It is a reference implementation, not a mandatory content template: its section names, bird research narrative, versions, imagery, and installation details are project-specific.
+
+#### Shared long-form foundation
+
+- Current production order is: global header, project back link, hero, project title, Project Overview / metadata, and then optional long-form Case Study content. Birdsong currently ends within its final Case Study section; it does not add a separate shared Footer or Next Project component.
+- Birdsong’s `.birdsong-case-study` is `width: min(100%, 1024px)` with `margin: 0 auto`. The parent `.project-detail` uses `clamp(23px, 4.5vw, 86px)` horizontal padding on larger viewports; on mobile it becomes `25px`, while the Case Study remains fluid.
+- Major sections, internal headings, body text, images, dividers, process lists, technical grids, and the optional closing statement share this single horizontal content axis. Do not introduce a default narrow reading column plus a separate wide image column.
+- Case Study images follow the container with `width: 100%`, `max-width: none`, and `height: auto`. They are not full-bleed, `100vw`, negative-margin, cropped, rounded, or shadowed by default. Lower-page images use `loading="lazy"`, explicit image dimensions, and async decoding where appropriate to reduce layout shift.
+- Internal content headings are left-aligned Dark Blue (`var(--project-ink)`), `clamp(20px, 1.6vw, 24px)`, weight `500`. They are distinct from major section markers.
+- The divider system is structural: `1px solid var(--project-rule)` (`rgb(101 188 235 / 68%)`). Use one rule to express a real section boundary; avoid decorative or duplicate consecutive rules.
+
+#### Major Case Study Section Marker
+
+- Birdsong’s major section marker is a centered inline group: an Acid / Lime (`#BEEB4F`) geometric four-point star plus a Site Blue heading. It is not an emoji, `⭐`, or `★` glyph.
+- The current CSS star is a `clip-path` polygon on `.birdsong-research__title::before`; it is `15px` square with a `10px` gap on desktop, and `13px` with an `8px` gap at `760px` and below.
+- The title is `clamp(20px, 1.6vw, 24px)`, weight `500`, Site Blue, with `letter-spacing: -0.02em` and `line-height: 1.3`. The marker is centered within the Case Study content axis.
+- This major marker is for primary narrative sections only. Internal headings, versions, insights, process steps, and technical modules retain their own left-aligned hierarchy.
+
+#### Optional Desktop Section Navigation
+
+- Use this pattern only for long Case Studies with enough Desktop side whitespace. It is optional; mobile relies on the in-content major section markers rather than a replacement navigation UI.
+- Birdsong’s semantic `<nav aria-label="Birdsong Beacon 项目章节">` contains only major section anchors. It excludes internal headings, versions, insights, images, and metadata.
+- The rail is fixed and does not alter the Case Study or image widths: `top: 50%`, `left: max(8px, calc(50% - 712px))`, `width: 144px`, and `padding-right: 28px`. Its visible transform is `translateY(-50%)`, placing the complete rail close to the viewport vertical center.
+- The rail’s right-side divider is part of the same navigation container (`::after`): `1px`, `rgb(101 188 235 / 45%)`, positioned `8px` above and below the list. It separates the auxiliary navigation from the reading content and is not a Case Study section divider.
+- Navigation labels use `14px`, weight `500`, `letter-spacing: 0.08em`, and `14px` item gaps. Inactive labels use `var(--project-muted)` (`#4C626C`); hover and active labels use Site Blue. The active-location star is a `10px` Acid / Lime geometric four-point marker; every row reserves its marker column so active changes do not shift labels.
+- Display is limited to `@media (min-width: 1400px)`. Do not shrink, shift, or compress Case Study content to force it into tablet or mobile layouts.
+- Links are semantic anchors to stable major-section IDs. Each target uses `scroll-margin-top: 120px`; the active link uses `aria-current="location"`.
+- Birdsong uses `IntersectionObserver` for both visibility and scroll spy. The rail becomes visible only when the Case Study enters the upper reading region and fades when it leaves; scrolling itself does not rewrite the URL hash. The observer reading line is `144px` from the viewport top with `rootMargin: -144px 0px -65% 0px`.
+- Motion is quiet: hidden state is opacity `0` with `translateY(calc(-50% + 8px))`; visible state is opacity `1` with `translateY(-50%)`. The transition is `360ms` (`ease` for opacity; `cubic-bezier(0.22, 1, 0.36, 1)` for transform). Under `prefers-reduced-motion: reduce`, smooth scrolling and transitions are disabled while the rail remains vertically centered.
+
+#### Long-form reading and closing
+
+- Build hierarchy with typography, whitespace, images, grid, and thin rules instead of rounded cards, dashboard UI, or SaaS components.
+- A closing statement is optional. Birdsong’s current ending uses a top structural rule, increased whitespace, Dark Blue text, `clamp(18px, 1.5vw, 20px)`, weight `600`, and `line-height: 1.7`; it is more prominent than body copy without becoming a giant quote or a card.
+- Product and UI/UX projects such as Anew and Nugget may use the same Project Detail foundation while adopting project-appropriate narrative modules such as product flow, interface screens, feature breakdowns, or system diagrams. Do not clone Birdsong-specific sections or content.
+
+#### Shared pattern vs. Birdsong-specific content
+
+- Shared long-form patterns are the unified content axis, text/image/divider alignment, typography hierarchy, major section marker, image treatment, optional Desktop Section Navigation, its accessibility and reduced-motion behavior, and the optional closing principle.
+- Birdsong-specific content includes bird calls, Water of Leith, abandoned traffic cones, the Birdsong section names, Version 1.0 / 2.1 / 2.2 / 2.3, National Robotarium, and its `1.webp`–`8.webp` visual narrative. These facts and modules must not be promoted into a site-wide template.
+
+#### Reference workflow
+
+When creating or modifying a long-form Project Detail:
+
+1. Read this document.
+2. Inspect the latest relevant production page.
+3. Inspect Birdsong Beacon for applicable long-form Case Study patterns.
+4. Inspect shared Project Detail styles.
+5. Treat current production code as the source of truth.
+6. Reuse established visual and interaction patterns where appropriate.
+7. Adapt the narrative structure to the actual project.
+8. Never blindly clone project-specific content.
 
 ## Work Index
 
