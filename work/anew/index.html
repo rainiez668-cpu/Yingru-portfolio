@@ -870,7 +870,10 @@
                 <header><div><span>04</span><h4>每日基础事项含义不清</h4></div><small class="anew-usability__priority anew-usability__priority--medium">中优先级</small></header><p class="anew-usability__affected">涉及用户：P02</p><span class="anew-usability__quote-label">用户原话</span><blockquote>“最上面那四个勾是干嘛的？为什么默认有这些？”</blockquote><div class="anew-usability__analysis"><div><h5>问题原因</h5><p>用户不理解预设事项的用途，可能将其误认为每天必须完成的任务。</p></div><div><h5>改进方向</h5><p>首次出现时简要解释模块用途，并提供清晰的编辑入口。</p></div></div>
               </article>
               <article class="anew-usability__issue">
-                <header><div><span>05</span><h4>AI 复盘语言不一致与能力边界不清</h4></div><small class="anew-usability__priority anew-usability__priority--low">低优先级</small></header><p class="anew-usability__affected">涉及用户：P01</p><span class="anew-usability__quote-label">用户原话</span><blockquote>“我打中文它回我英文，为什么会这样？”<br />“它是根据我今天完成的内容来回复的吗？还是随便说说的？”</blockquote><div class="anew-usability__analysis"><div><h5>问题原因</h5><p>当前公开 Demo 使用英文预设回复，中文输入无法获得一致的语言反馈；同时未明确说明模拟性质，容易让用户误以为系统已具备真实 AI 理解能力。</p></div><div><h5>改进方向</h5><p>补充中文模拟回复，并在界面中明确标注 Demo 使用预设内容。真实 AI 服务留待后续接入与验证。</p></div></div>
+                <header><div><span>05</span><h4>小步骤缺少编辑入口</h4></div><small class="anew-usability__priority anew-usability__priority--medium">中优先级</small></header><p class="anew-usability__affected">涉及用户：P05</p><span class="anew-usability__quote-label">用户原话</span><blockquote>“这个步骤是自带的吗？我想自己写的话，在哪里改？”</blockquote><div class="anew-usability__analysis"><div><h5>问题原因</h5><p>「快速添加」后自动生成默认步骤，但用户无法编辑或删除，误认为步骤是必填项，增加理解成本。</p></div><div><h5>改进方向</h5><p>将任务步骤设为可选，同时支持用户自行添加与编辑；未来将探索 AI 辅助拆解复杂任务的功能。</p></div></div>
+              </article>
+              <article class="anew-usability__issue">
+                <header><div><span>06</span><h4>AI 复盘语言不一致与能力边界不清</h4></div><small class="anew-usability__priority anew-usability__priority--low">低优先级</small></header><p class="anew-usability__affected">涉及用户：P01</p><span class="anew-usability__quote-label">用户原话</span><blockquote>“我打中文它回我英文，为什么会这样？”<br />“它是根据我今天完成的内容来回复的吗？还是随便说说的？”</blockquote><div class="anew-usability__analysis"><div><h5>问题原因</h5><p>当前公开 Demo 使用英文预设回复，中文输入无法获得一致的语言反馈；同时未明确说明模拟性质，容易让用户误以为系统已具备真实 AI 理解能力。</p></div><div><h5>改进方向</h5><p>补充中文模拟回复，并在界面中明确标注 Demo 使用预设内容。真实 AI 服务留待后续接入与验证。</p></div></div>
               </article>
             </div>
           </section>
@@ -923,7 +926,7 @@
               <header class="anew-design-heading"><h3 id="anew-limitations-reflection-title"><span>01 / </span>&nbsp;&nbsp;局限与反思</h3></header>
               <div class="anew-limitations__reflection-grid">
                 <article><header><span>01</span><h4>产品体验尚不完整</h4></header><p>目前已能够完成用户核心流程，但仍缺少首次使用引导，部分页面的空状态与过渡反馈也有待完善。</p><hr /><p>AI 复盘与任务规划目前使用模拟回复，尚未上线真实 AI 服务。现有代码已预留真实模型的接入能力，后续仍需完成配置、测试与实际部署。</p></article>
-                <article><header><span>02</span><h4>部分交互仍不够直观</h4></header><p>在前期体验测试中，滑动操作、跳过任务后的去向，以及「今日大事」星标的含义仍可能造成理解障碍。</p><hr /><p>这些问题说明，简洁的界面不等于清晰的体验。减少视觉信息的同时，也需要让用户理解自己可以做什么，以及操作之后会发生什么。</p></article>
+                <article><header><span>02</span><h4>部分交互仍不够直观</h4></header><p>前期测试中发现，滑动操作、跳过任务后的去向、星标的含义可能造成理解障碍。且「快速添加」会自动生成不可编辑的默认步骤，限制了用户自主拆解任务的能力。</p><hr /><p>说明简洁的界面不等于清晰的体验。除了让用户理解操作方式，还需要减少不必要的默认设置，给予用户适当的选择权。</p></article>
                 <article><header><span>03</span><h4>视觉细节与使用便利性有待提升</h4></header><p>目前六套主题已基本建立，但部分浅色文字与背景的对比度不足，不同主题之间也存在少量样式差异。</p><hr /><p>部分动画尚不能根据用户的系统设置自动减少，屏幕阅读器支持也需要进一步完善。未来需要在保持视觉风格的同时，让界面对更多用户更加友好。</p></article>
                 <article><header><span>04</span><h4>功能取舍需要围绕核心目标</h4></header><p>早期曾考虑根据用户精力状态推荐任务，但这意味着用户在开始前需要额外判断自己的状态，因此最终没有将其加入当前设计。</p><hr /><p>现阶段 Anew 采用无需注册的本地数据存储，降低首次使用门槛，也避免默认上传个人任务数据。虽然暂不支持跨设备同步，但是否引入账号体系，将根据后续真实使用需求决定。</p></article>
               </div>
@@ -931,8 +934,8 @@
             <section class="anew-limitations__roadmap" aria-labelledby="anew-limitations-roadmap-title">
               <header class="anew-design-heading"><h3 id="anew-limitations-roadmap-title"><span>02 / </span>&nbsp;&nbsp;下一阶段路线</h3></header>
               <div class="anew-limitations__roadmap-grid">
-                <article><header><span>01 / 近期</span><h4>完善首次体验与界面细节</h4></header><ul><li>增加简短、可跳过的欢迎引导，让新用户快速理解产品并开始第一次任务选择。</li><li>根据反馈优化滑动提示、跳过任务的状态说明、「今日大事」标记及每日基础事项的解释。</li><li>完善空状态、过渡反馈、中文界面与六套主题的视觉一致性，并优化文字清晰度、动画适配和无障碍支持。</li><li>明确标注 AI Demo 的模拟性质，避免用户误以为回复来自真实模型。</li></ul></article>
-                <article><header><span>02 / 中期</span><h4>完善核心功能与使用体验</h4></header><ul><li>接入并测试真实 AI 服务，让任务规划能够结合用户的复盘内容生成建议，并提供更自然的对话反馈。</li><li>探索大任务拆解功能，帮助用户将复杂任务转化为可以在 5 分钟内开始的具体行动。</li><li>设计更温和的周度回顾，重点呈现已经完成的进展，而不是强调未完成任务或连续打卡。</li><li>改善数据备份与离线使用能力，提高长期使用的可靠性。</li></ul></article>
+                <article><header><span>01 / 近期</span><h4>完善首次体验与界面细节</h4></header><ul><li>增加简短、可跳过的欢迎引导，让新用户快速理解产品并开始第一次任务选择。</li><li>优化滑动提示、跳过任务的状态说明、「今日大事」标记及每日基础事项的解释。</li><li> 调整「快速添加」的默认步骤逻辑，允许用户自行添加、编辑或跳过。</li><li>完善空状态、过渡反馈、中文界面与六套主题的一致性，持续优化文字对比度和无障碍体验。</li><li>明确标注 AI Demo 的模拟性质，避免用户误以为回复来自真实模型。</li></ul></article>
+                <article><header><span>02 / 中期</span><h4>完善核心功能与使用体验</h4></header><ul><li>接入测试真实 AI 服务，结合用户的复盘内容生成建议，并提供更自然的对话反馈。</li><li>探索 AI 辅助任务拆解，将复杂任务转化为5分钟内容易开始的具体行动，允许用户自由修改或采纳生成的步骤。</li><li>设计更温和的周度回顾，重点呈现已经完成的进展，而不是强调未完成任务或连续打卡。</li><li>改善数据备份与离线使用能力，提高长期使用的可靠性。</li></ul></article>
                 <article><header><span>03 / 长期</span><h4>验证产品价值与扩展方向</h4></header><ul><li>扩大真实用户测试规模，并与传统待办清单进行对照，评估任务启动时间、决策负担及长期使用体验。</li><li>探索在保护用户隐私的前提下收集匿名使用反馈，为后续设计迭代提供依据。</li><li>根据真实使用需求，评估是否增加账号同步与更深入的个性化功能。</li></ul></article>
               </div>
             </section>
