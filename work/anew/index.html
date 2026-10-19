@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN" class="birdsong-detail-document">
   <head>
     <meta charset="UTF-8" />
@@ -44,6 +44,18 @@
         <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
         <span>设计系统</span>
       </a>
+      <a class="birdsong-section-nav__link" href="#usability-testing">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>可用性测试</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#design-decisions-ai">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>角色与AI协作</span>
+      </a>
+      <a class="birdsong-section-nav__link" href="#limitations-next">
+        <span class="birdsong-section-nav__marker" aria-hidden="true"></span>
+        <span>局限与下一步</span>
+      </a>
     </nav>
 
     <main class="project-detail">
@@ -63,7 +75,7 @@
                 playsinline
               ></video>
               <div class="project-phone__island"></div>
-            </div>
+      </div>
           </div>
         </div>
 
@@ -80,8 +92,8 @@
             Anew 是一款 ADHD 友好的每日计划工具，核心目标是：减少开始一件事之前所需要做的决定。通过一次只呈现一件事，降低传统待办清单带来的决策压力，将一天组织为"选择 → 专注 → 完成 → 复盘"的轻量行动循环，让用户更容易从“计划”进入“行动”。
           </p>
           <div class="project-actions" aria-label="Anew 项目链接">
-            <a class="project-action" href="https://anew-323747-9-1500310802.sh.run.tcloudbase.com" target="_blank" rel="noopener noreferrer" aria-label="在线体验链接待补充">原型体验 <span class="cta-arrow" aria-hidden="true">↗︎</span></a>
-            <a class="project-action" href="https://github.com/rainiez668-cpu/Anew" target="_blank" rel="noopener noreferrer" aria-label="查看源码链接待补充">查看源码 <span class="cta-arrow" aria-hidden="true">↗︎</span></a>
+            <a class="project-action" href="https://anew-323747-9-1500310802.sh.run.tcloudbase.com" target="_blank" rel="noopener noreferrer" aria-label="在线体验 Anew 原型">原型体验 <span class="cta-arrow" aria-hidden="true">↗︎</span></a>
+            <a class="project-action" href="https://github.com/rainiez668-cpu/Anew" target="_blank" rel="noopener noreferrer" aria-label="查看 Anew GitHub 源码">查看源码 <span class="cta-arrow" aria-hidden="true">↗︎</span></a>
           </div>
         </div>
         <dl class="project-meta" aria-label="项目信息">
@@ -113,7 +125,7 @@
               <h3 class="anew-problem-background__title">清单越长，越难开始。</h3>
               <div class="anew-problem-background__copy">
                 <p>在使用传统待办应用时，我常常陷入一种循环：兴致勃勃地列出任务，却迟迟无法开始行动。</p>
-                <p>问题不在于不知道该做什么，而在于面对一长串待办事项时，还需要比较优先级、估算耗时、判断精力，再决定从何开始。随着未完成的任务不断累积，打开清单本身也逐渐成为一种压力。</p>
+                <p>在面对一长串待办事项时，通常需要比较优先级、估算耗时、判断精力，再决定从何开始。随着未完成的任务不断累积，打开清单本身也逐渐成为一种压力。</p>
               </div>
             </div>
 
@@ -141,6 +153,7 @@
               <p>需要多项目管理、甘特图、团队协作的用户；以及需要按固定时间点排程、精细规划全天时段的用户。</p>
             </article>
           </section>
+
         </section>
 
         <section class="birdsong-case-section birdsong-case-section--divided anew-core-solution" aria-labelledby="core-solution">
@@ -369,7 +382,7 @@
           <section class="birdsong-case-section birdsong-case-section--divided anew-core-interaction" aria-labelledby="core-interaction">
             <h2 id="core-interaction" class="birdsong-research__title">核心交互</h2>
             <h3 class="anew-core-solution__title">三个页面，完成一天的小循环</h3>
-            <p class="anew-core-interaction__intro">Anew 将每日任务管理组织为三个相互衔接的阶段：<strong>Today（选择）→Focus（专注）→Review（复盘）</strong>。</p>
+            <p class="anew-core-interaction__intro">Anew 将每日任务管理组织为三个衔接的页面：<strong>Today（选择）→Focus（专注）→Review（复盘）</strong>。</p>
             <p class="anew-core-interaction__language"><em>界面支持中英文切换，以下展示英文版界面。</em></p>
 
             <section class="anew-today-module" aria-labelledby="anew-today-title">
@@ -381,8 +394,7 @@
 
               <div class="anew-today-module__introduction">
                 <h3 id="anew-today-title" class="anew-core-solution__title">逐张判断，按需突出重点</h3>
-                <p>上半部分逐张呈现任务卡片，用户可以右滑加入今天、左滑暂时跳过；下半部分展示已选择的今日任务。用户可以为其中一项标星，设为「今日大事」（One Big Thing），且同一时间仅保留一个标星任务。</p>
-                <p class="anew-today-module__closing">无需提前排列所有任务，也能突出当天的重点。</p>
+                <p>上半部分逐张呈现任务卡片，用户可以右滑加入今天、左滑暂时跳过；下半部分展示已选择的今日任务。用户可以为其中一项标星，设为「今日大事」（One Big Thing），且同一时间仅保留一个标星任务。无需提前排列所有任务，也能突出当天的重点。</p>
               </div>
 
               <div class="anew-today-module__layout">
@@ -508,7 +520,7 @@
                     </div>
                     <div class="anew-review-demo-note__rule" aria-hidden="true"></div>
                     <div class="anew-review-demo-note__copy">
-                      <p><strong>AI 回应：</strong>当前公开 Demo 使用预设 AI 回应，尚未接入实时模型。回应主要依赖英文关键词匹配，中文输入可能返回通用英文回复；访客无需配置 API 密钥。自行部署版本可按项目文档配置 OpenAI 或 Anthropic。</p>
+                      <p><strong>AI 回应：</strong>当前公开 Demo 使用预设 AI 回应，尚未调用真实AI模型。回应主要依赖英文关键词匹配，中文输入可能返回通用英文回复。</p>
                       <p><strong>语音输入：</strong>语音输入依赖浏览器支持及 HTTPS 环境，电脑端 Chrome / Edge 和手机端 Safari 均可使用。不支持时界面会给出提示。</p>
                     </div>
                   </aside>
@@ -525,9 +537,7 @@
 
             </section>
           </section>
-        </section>
-
-        <section class="birdsong-case-section birdsong-case-section--divided anew-design-system" aria-labelledby="design-system">
+                  <section class="birdsong-case-section birdsong-case-section--divided anew-design-system" aria-labelledby="design-system">
           <h2 id="design-system" class="birdsong-research__title">设计系统</h2>
 
           <h3 class="anew-design-system__title">柔和的视觉语言，清晰的信息层级。</h3>
@@ -644,7 +654,6 @@
             <header class="anew-design-heading anew-design-heading--single">
               <h3 id="anew-components-title"><span>05 / </span>&nbsp;&nbsp;核心组件</h3>
             </header>
-            <h4 class="anew-components__title">一致的组件语言，降低重复理解的成本。</h4>
             <p class="anew-design-block__intro anew-components__intro">Anew 围绕任务选择、优先级标记与行动执行建立统一的组件规则。通过一致的卡片结构、明确的主次操作与轻量状态反馈，让用户在不同页面中快速理解界面，而不必重新学习操作方式。</p>
 
             <article class="anew-component-group anew-component-group--task-card">
@@ -773,6 +782,166 @@
                 </div>
               </article>
             </div>
+          </section>
+        <section class="birdsong-case-section birdsong-case-section--divided anew-usability" id="usability-testing" aria-labelledby="anew-usability-title">
+          <header class="anew-usability__heading">
+            <h2 id="anew-usability-title" class="birdsong-research__title">可用性测试</h2>
+            <h3 class="anew-usability__question">设计能否自我说明？</h3>
+            <p class="anew-usability__intro">渐进式选择能否让用户在首次使用时自然理解？为探索这一问题，我进行了一次小规模、无操作指导的可用性测试，观察参与者能否独立完成「选择 → 专注 → 完成 → 复盘」，并记录过程中出现的犹豫与误解。</p>
+          </header>
+          <section class="anew-usability__overview" aria-labelledby="anew-usability-overview-title">
+            <header class="anew-design-heading">
+              <h3 id="anew-usability-overview-title"><span>01 / </span>&nbsp;&nbsp;测试概况</h3>
+            </header>
+            <div class="anew-usability__metrics">
+              <div class="anew-usability__metric"><strong>5位</strong><span>参与者</span></div>
+              <div class="anew-usability__metric"><strong>远程</strong><span>同屏测试</span></div>
+              <div class="anew-usability__metric"><strong>20 min</strong><span>每人时长</span></div>
+              <div class="anew-usability__metric"><strong>无指导</strong><span>操作方式</span></div>
+            </div>
+            <p class="anew-usability__overview-note">所有参与者均收到相同的任务目标：完成任务选择、专注与复盘。测试过程中不提供操作说明，由参与者自行探索。</p>
+          </section>
+          <section class="anew-usability__participants" aria-labelledby="anew-usability-participants-title">
+            <header class="anew-usability__subheading"><h3 id="anew-usability-participants-title">参与者概况</h3><span>N = 5</span></header>
+            <div class="anew-usability__participant-list">
+              <article class="anew-usability__participant"><div class="anew-usability__participant-label anew-usability__participant-label--focus"><strong>P01</strong><span>重点用户</span></div><div class="anew-usability__participant-copy"><strong>25 岁 · 设计实习生</strong><span>背景：自述有任务启动困难</span><p>任务管理习惯：使用手机备忘录，面对较多任务时难以决定从哪件开始。</p></div></article>
+              <article class="anew-usability__participant"><div class="anew-usability__participant-label anew-usability__participant-label--focus"><strong>P02</strong><span>重点用户</span></div><div class="anew-usability__participant-copy"><strong>25 岁 · 研究生</strong><span>背景：自述有任务启动困难</span><p>任务管理习惯：使用纸质清单记录学习任务，容易反复规划却迟迟不开始。</p></div></article>
+              <article class="anew-usability__participant"><div class="anew-usability__participant-label anew-usability__participant-label--list"><strong>P03</strong><span>清单用户</span></div><div class="anew-usability__participant-copy"><strong>26 岁 · HR</strong><span>背景：有待办 App 使用经验</span><p>任务管理习惯：使用 Todoist，习惯任务分类、截止日期与完成勾选。</p></div></article>
+              <article class="anew-usability__participant"><div class="anew-usability__participant-label anew-usability__participant-label--list"><strong>P04</strong><span>清单用户</span></div><div class="anew-usability__participant-copy"><strong>26 岁 · 会计</strong><span>背景：有待办 App 使用经验</span><p>任务管理习惯：使用滴答清单，偏好浏览全部任务后安排优先级。</p></div></article>
+              <article class="anew-usability__participant"><div class="anew-usability__participant-label anew-usability__participant-label--new"><strong>P05</strong><span>新手用户</span></div><div class="anew-usability__participant-copy"><strong>24 岁 · 待业毕业生</strong><span>背景：不使用待办 App</span><p>任务管理习惯：主要依靠日历、聊天记录和即时记忆处理日常事项。</p></div></article>
+            </div>
+          </section>
+          <section class="anew-usability__sampling" aria-labelledby="anew-usability-sampling-title">
+            <h3 id="anew-usability-sampling-title">样本选择逻辑</h3>
+            <div class="anew-usability__sampling-grid">
+              <article><strong>P01–P02 / 重点用户</strong><p>关注自述有任务启动困难的潜在用户。</p></article>
+              <article><strong>P03–P04 / 清单用户</strong><p>观察既有待办清单使用习惯对操作理解的影响。</p></article>
+              <article><strong>P05 / 新手用户</strong><p>观察缺乏待办 App 使用经验时的首次理解情况。</p></article>
+            </div>
+          </section>
+          <p class="anew-usability__scope">参与者均无 ADHD 临床诊断。本次测试仅关注自述的任务启动困难与界面可用性，不用于评估临床效果。</p>
+
+          <section class="anew-usability__results" aria-labelledby="anew-usability-results-title">
+            <header class="anew-design-heading">
+              <h3 id="anew-usability-results-title"><span>02 / </span>&nbsp;&nbsp;关键测试结果</h3>
+            </header>
+            <p class="anew-usability__section-intro">通过六项观察指标，了解参与者在首次使用 Anew 时，对任务选择、核心流程及复盘体验的理解情况。</p>
+            <div class="anew-usability__result-grid">
+              <article class="anew-usability__result-card">
+                <strong>4 / 5</strong><h4>无引导完成首次规划</h4><p>P01、P02、P03、P05 完成；P04 在规划阶段寻求帮助。</p><span class="anew-usability__progress" style="--anew-progress:80%" aria-hidden="true"></span>
+              </article>
+              <article class="anew-usability__result-card">
+                <strong>1 / 5</strong><h4>首次任务选择使用滑动</h4><p>仅 P01 首次采用滑动；其余用户先点击按钮。</p><span class="anew-usability__progress" style="--anew-progress:20%" aria-hidden="true"></span>
+              </article>
+              <article class="anew-usability__result-card">
+                <strong>5 / 5</strong><h4>自主找到「快速添加」</h4><p>五位参与者均找到功能入口。</p><span class="anew-usability__progress" style="--anew-progress:100%" aria-hidden="true"></span>
+              </article>
+              <article class="anew-usability__result-card">
+                <strong>3 / 5</strong><h4>独立完成完整核心循环</h4><p>P01、P02、P03 完成「选择 → 专注 → 完成 → 复盘」；P04、P05 在部分环节需要协助。</p><span class="anew-usability__progress" style="--anew-progress:60%" aria-hidden="true"></span>
+              </article>
+              <article class="anew-usability__result-card">
+                <strong>4 / 5</strong><h4>表示愿意在日常使用</h4><p>P01、P02、P03、P05 表达正向意愿；P04 更倾向保留传统清单工具。</p><span class="anew-usability__progress" style="--anew-progress:80%" aria-hidden="true"></span>
+              </article>
+              <article class="anew-usability__result-card anew-usability__result-card--time">
+                <strong>12 秒</strong><h4>首个任务决策平均耗时</h4><p>从第一张候选卡片出现，到第一次有效选择。</p>
+              </article>
+            </div>
+            <div class="anew-usability__finding">
+              <div><strong>初步发现</strong><p>多数参与者能够理解基础任务选择，但首次规划的完成并不代表整个核心流程都足够清晰。主要障碍集中在手势发现、任务状态理解与复盘反馈。</p></div>
+            </div>
+          </section>
+
+          <section class="anew-usability__issues" aria-labelledby="anew-usability-issues-title">
+            <header class="anew-design-heading">
+              <h3 id="anew-usability-issues-title"><span>03 / </span>&nbsp;&nbsp;问题与改进</h3>
+            </header>
+            <p class="anew-usability__section-intro">根据测试中的操作表现与用户反馈，整理出五项主要问题，并提出对应的设计改进方向。</p>
+            <div class="anew-usability__issue-list">
+              <article class="anew-usability__issue">
+                <header><div><span>01</span><h4>滑动手势不易发现</h4></div><small class="anew-usability__priority anew-usability__priority--high">高优先级</small></header><p class="anew-usability__affected">涉及用户：P02、P03、P04、P05</p><span class="anew-usability__quote-label">用户原话</span><blockquote>“我直接点下面的按钮，原来可以滑动？”</blockquote><div class="anew-usability__analysis"><div><h5>问题原因</h5><p>用户通过按钮完成任务选择，却没有发现卡片也支持滑动。按钮本身是有效的操作路径，但滑动这一可选交互没有被充分感知。</p></div><div><h5>改进方向</h5><p>首次进入时，通过卡片轻微左右摇摆提示滑动操作，同时保留按钮作为等效操作。</p></div></div>
+              </article>
+              <article class="anew-usability__issue">
+                <header><div><span>02</span><h4>跳过任务的状态不明确</h4></div><small class="anew-usability__priority anew-usability__priority--high">高优先级</small></header><p class="anew-usability__affected">涉及用户：P03、P04</p><span class="anew-usability__quote-label">用户原话</span><blockquote>“我刚划掉的任务就不完成了吗？有点不敢点。”</blockquote><div class="anew-usability__analysis"><div><h5>问题原因</h5><p>跳过后任务从当前视图消失，用户无法判断任务去了哪里，以及之后是否还会出现。</p></div><div><h5>改进方向</h5><p>首次跳过后显示简短状态说明，明确任务的保留方式与再次出现规则。</p></div></div>
+              </article>
+              <article class="anew-usability__issue">
+                <header><div><span>03</span><h4>星标功能不易理解</h4></div><small class="anew-usability__priority anew-usability__priority--medium">中优先级</small></header><p class="anew-usability__affected">涉及用户：P04</p><span class="anew-usability__quote-label">用户原话</span><blockquote>“哪个是今天最重要的事？这个有点不明确。”<br />“我还是想一眼看到全部任务再挑。”</blockquote><div class="anew-usability__analysis"><div><h5>问题原因</h5><p>星标与「今日大事」的关联不够明确，属于交互理解问题；希望一次浏览全部任务，则反映了用户既有的清单使用习惯，不必因此放弃逐次选择的设计原则。</p></div><div><h5>改进方向</h5><p>首次使用时增加一次性引导，解释星标与「今日大事」的关系，后续仍保留简洁的星标操作。</p></div></div>
+              </article>
+              <article class="anew-usability__issue">
+                <header><div><span>04</span><h4>每日基础事项含义不清</h4></div><small class="anew-usability__priority anew-usability__priority--medium">中优先级</small></header><p class="anew-usability__affected">涉及用户：P02</p><span class="anew-usability__quote-label">用户原话</span><blockquote>“最上面那四个勾是干嘛的？为什么默认有这些？”</blockquote><div class="anew-usability__analysis"><div><h5>问题原因</h5><p>用户不理解预设事项的用途，可能将其误认为每天必须完成的任务。</p></div><div><h5>改进方向</h5><p>首次出现时简要解释模块用途，并提供清晰的编辑入口。</p></div></div>
+              </article>
+              <article class="anew-usability__issue">
+                <header><div><span>05</span><h4>AI 复盘语言不一致与能力边界不清</h4></div><small class="anew-usability__priority anew-usability__priority--low">低优先级</small></header><p class="anew-usability__affected">涉及用户：P01</p><span class="anew-usability__quote-label">用户原话</span><blockquote>“我打中文它回我英文，为什么会这样？”<br />“它是根据我今天完成的内容来回复的吗？还是随便说说的？”</blockquote><div class="anew-usability__analysis"><div><h5>问题原因</h5><p>当前公开 Demo 使用英文预设回复，中文输入无法获得一致的语言反馈；同时未明确说明模拟性质，容易让用户误以为系统已具备真实 AI 理解能力。</p></div><div><h5>改进方向</h5><p>补充中文模拟回复，并在界面中明确标注 Demo 使用预设内容。真实 AI 服务留待后续接入与验证。</p></div></div>
+              </article>
+            </div>
+          </section>
+          <section class="anew-usability__validated" aria-labelledby="anew-usability-validated-title">
+            <header class="anew-design-heading"><h3 id="anew-usability-validated-title"><span>04 / </span>&nbsp;&nbsp;被验证的设计选择</h3></header>
+            <p class="anew-usability__section-intro">测试不仅暴露了交互中的理解障碍，也呈现出一些与原始设计意图相符的使用行为。</p>
+            <div class="anew-usability__validated-list">
+              <article class="anew-usability__validated-card"><header><div><span class="anew-usability__validated-index">01</span><h4>计时器是可选支持，而非开始的条件</h4></div></header><div class="anew-usability__validated-content"><div class="anew-usability__validated-quote"><span class="anew-usability__label">用户原话 · P02</span><blockquote>“我不想一开始就被时间限制，先做一点再说。”</blockquote></div><div class="anew-usability__validated-analysis"><div><span class="anew-usability__label">观察行为</span><p>P02 注意到计时器，但选择不使用。</p></div><div><span class="anew-usability__label">印证了什么</span><p>用户无需预先设定时间也能开始行动，正确理解了计时器的可选性质。</p></div></div></div></article>
+              <article class="anew-usability__validated-card"><header><div><span class="anew-usability__validated-index">02</span><h4>让任务选择变得轻量</h4></div></header><div class="anew-usability__validated-content"><div class="anew-usability__validated-quote"><span class="anew-usability__label">用户原话 · P03</span><blockquote>“这样一张一张选还挺有意思的。”</blockquote></div><div class="anew-usability__validated-analysis"><div><span class="anew-usability__label">观察行为</span><p>P03 对逐张呈现的任务选择方式给出积极反馈。</p></div><div><span class="anew-usability__label">印证了什么</span><p>逐张选择具有一定吸引力，但能否真正降低决策负担，仍需与传统清单模式比较。</p></div></div></div></article>
+              <article class="anew-usability__validated-card"><header><div><span class="anew-usability__validated-index">03</span><h4>跳过任务不意味着失败</h4></div></header><div class="anew-usability__validated-content"><div class="anew-usability__validated-quote"><span class="anew-usability__label">用户原话 · P03</span><blockquote>“噢我刚划掉的明天还会回来？这个还不错。”</blockquote></div><div class="anew-usability__validated-analysis"><div><span class="anew-usability__label">观察行为</span><p>P03 得知跳过不会永久丢失任务后，给出积极反馈。</p></div><div><span class="anew-usability__label">印证了什么</span><p>这一机制符合减轻任务管理压力的设计目标，但仍需要在跳过操作发生时，明确说明任务的去向。</p></div></div></div></article>
+            </div>
+          </section>
+          <section class="anew-usability__hypothesis" aria-labelledby="anew-usability-hypothesis-title">
+            <header class="anew-design-heading"><h3 id="anew-usability-hypothesis-title"><span>05 / </span>&nbsp;&nbsp;设计假设的验证</h3></header>
+            <article class="anew-usability__hypothesis-card"><div class="anew-usability__assumption"><span class="anew-usability__label">原始假设</span><strong>渐进式选择能够降低任务启动前的决策负担，让用户比传统「任务并列展示 + 提前排序」模式更快开始第一项任务。</strong></div></article>
+            <div class="anew-usability__evidence"><div><h4>支持这一方向的观察</h4><p>P01、P02 两位自述存在任务启动困难的参与者，均独立完成了「选择 → 专注 → 完成 → 复盘」的核心循环。</p><p>可选计时器与逐张选择获得积极反馈，说明部分用户能够在不完成额外设置的情况下进入行动。</p></div><div><h4>反证与设计边界</h4><p>P04 更倾向于先浏览全部任务再做决定，说明渐进式选择并不适用于所有用户的既有习惯。</p><p>同时，跳过任务后的去向、星标含义等问题表明，减少界面信息也可能增加用户对系统状态的不确定感。</p></div></div>
+            <div class="anew-usability__conclusion"><div><span class="anew-usability__label">验证结论</span><strong>定性上初步支持，量化上尚无法证明。</strong><p>现有观察表明，Anew 的核心交互具有一定的首次使用可理解性。但由于本次测试未设置传统清单模式的对照组，尚不能证明 Anew 能有效缩短任务启动时间，原始效率假设仍需进一步验证。</p></div></div>
+          </section>
+          <section class="birdsong-case-section birdsong-case-section--divided anew-design-decisions-ai" id="design-decisions-ai" aria-labelledby="anew-design-decisions-ai-title">
+            <header class="anew-design-decisions-ai__heading">
+              <h2 id="anew-design-decisions-ai-title" class="birdsong-research__title">角色与AI协作</h2>
+              <p class="anew-design-decisions-ai__intro">Anew 是由我独立主导设计、借助 AI 辅助开发完成的个人项目。</p>
+            </header>
+            <section class="anew-design-decisions-ai__roles" aria-labelledby="anew-design-decisions-ai-roles-title">
+              <header class="anew-design-heading"><h3 id="anew-design-decisions-ai-roles-title"><span>01 / </span>&nbsp;&nbsp;角色分工</h3></header>
+              <div class="anew-design-decisions-ai__role-headings" aria-hidden="true"><h4>我的职责</h4><h4>AI 辅助的工作</h4></div>
+              <div class="anew-design-decisions-ai__role-list">
+                <article class="anew-design-decisions-ai__role"><div class="anew-design-decisions-ai__responsibility"><h4>产品定义</h4><p>识别任务启动困难，明确目标用户、产品定位与功能边界。</p></div><div class="anew-design-decisions-ai__ai"><span>AI 辅助</span><p>辅助需求梳理、功能可行性分析。</p></div></article>
+                <article class="anew-design-decisions-ai__role"><div class="anew-design-decisions-ai__responsibility"><h4>体验设计</h4><p>规划核心流程与信息架构，定义关键交互及状态规则。</p></div><div class="anew-design-decisions-ai__ai"><span>AI 辅助</span><p>辅助分析交互逻辑、提供实现方案。</p></div></article>
+                <article class="anew-design-decisions-ai__role"><div class="anew-design-decisions-ai__responsibility"><h4>UI 与视觉设计</h4><p>探索视觉方向，确定设计语言、信息层级、布局及组件规则。</p></div><div class="anew-design-decisions-ai__ai"><span>AI 辅助</span><p>整理 Markdown 设计规范，生成界面与组件初版。</p></div></article>
+                <article class="anew-design-decisions-ai__role"><div class="anew-design-decisions-ai__responsibility"><h4>设计评估与迭代</h4><p>评审视觉、交互与功能表现，识别问题并确定优化方向。</p></div><div class="anew-design-decisions-ai__ai"><span>AI 辅助</span><p>根据反馈调整样式与交互、排查并修改代码问题。</p></div></article>
+                <article class="anew-design-decisions-ai__role"><div class="anew-design-decisions-ai__responsibility"><h4>一致性与质量检查</h4><p>检查跨页面组件一致性、响应式适配及核心流程完整性。</p></div><div class="anew-design-decisions-ai__ai"><span>AI 辅助</span><p>辅助复用组件、检查布局与运行问题。</p></div></article>
+                <article class="anew-design-decisions-ai__role"><div class="anew-design-decisions-ai__responsibility"><h4>产品交付</h4><p>决定功能取舍、整理展示内容，推动可运行原型上线。</p></div><div class="anew-design-decisions-ai__ai"><span>AI 辅助</span><p>辅助构建、调试与部署。</p></div></article>
+              </div>
+            </section>
+            <section class="anew-design-decisions-ai__principles" aria-labelledby="anew-design-decisions-ai-principles-title">
+              <header class="anew-design-heading"><h3 id="anew-design-decisions-ai-principles-title"><span>02 / </span>&nbsp;&nbsp;如何避免 AI 产出偏离设计？</h3></header>
+              <p class="anew-design-decisions-ai__section-intro">AI 能快速提供实现方案，但也可能引入额外功能或破坏既有样式。因此，我逐步建立了一套以设计约束为核心的协作方式。</p>
+              <div class="anew-design-decisions-ai__principle-grid">
+                <article><header><h4>明确修改边界</h4></header><p><strong>不只描述效果，也说明什么不能改变：</strong>明确目标、涉及页面、交互行为与保留项，避免局部调整影响既有操作逻辑和组件结构。</p></article>
+                <article><header><h4>建立设计规范</h4></header><p><strong>用统一规则约束生成结果：</strong>将色彩、字体、间距、组件状态与交互规则整理为 Markdown 文档，要求 AI 修改前先阅读规范。</p></article>
+                <article><header><h4>小范围迭代</h4></header><p><strong>将复杂需求拆成可检查的任务：</strong>按功能或组件逐步实现，每轮修改后检查效果，再决定下一步，降低问题定位与回退成本。</p></article>
+                <article><header><h4>体验验收</h4></header><p><strong>代码能运行，不代表体验正确：</strong>检查任务流转、状态反馈、视觉层级及已有功能是否受到影响，以实际体验决定是否接受修改。</p></article>
+              </div>
+            </section>
+          </section>
+<section class="birdsong-case-section birdsong-case-section--divided anew-limitations" id="limitations-next" aria-labelledby="anew-limitations-title">
+            <header class="anew-limitations__heading"><h2 id="anew-limitations-title" class="birdsong-research__title">局限与下一步</h2><p class="anew-limitations__intro">Anew 已实现任务选择、专注、完成与复盘的核心流程，但仍处于原型验证阶段。在体验完整性、交互反馈与长期使用方面，仍有进一步完善的空间。</p></header>
+            <section class="anew-limitations__reflection" aria-labelledby="anew-limitations-reflection-title">
+              <header class="anew-design-heading"><h3 id="anew-limitations-reflection-title"><span>01 / </span>&nbsp;&nbsp;局限与反思</h3></header>
+              <div class="anew-limitations__reflection-grid">
+                <article><header><span>01</span><h4>产品体验尚不完整</h4></header><p>目前已能够完成用户核心流程，但仍缺少首次使用引导，部分页面的空状态与过渡反馈也有待完善。</p><hr /><p>AI 复盘与任务规划目前使用模拟回复，尚未上线真实 AI 服务。现有代码已预留真实模型的接入能力，后续仍需完成配置、测试与实际部署。</p></article>
+                <article><header><span>02</span><h4>部分交互仍不够直观</h4></header><p>在前期体验测试中，滑动操作、跳过任务后的去向，以及「今日大事」星标的含义仍可能造成理解障碍。</p><hr /><p>这些问题说明，简洁的界面不等于清晰的体验。减少视觉信息的同时，也需要让用户理解自己可以做什么，以及操作之后会发生什么。</p></article>
+                <article><header><span>03</span><h4>视觉细节与使用便利性有待提升</h4></header><p>目前六套主题已基本建立，但部分浅色文字与背景的对比度不足，不同主题之间也存在少量样式差异。</p><hr /><p>部分动画尚不能根据用户的系统设置自动减少，屏幕阅读器支持也需要进一步完善。未来需要在保持视觉风格的同时，让界面对更多用户更加友好。</p></article>
+                <article><header><span>04</span><h4>功能取舍需要围绕核心目标</h4></header><p>早期曾考虑根据用户精力状态推荐任务，但这意味着用户在开始前需要额外判断自己的状态，因此最终没有将其加入当前设计。</p><hr /><p>现阶段 Anew 采用无需注册的本地数据存储，降低首次使用门槛，也避免默认上传个人任务数据。虽然暂不支持跨设备同步，但是否引入账号体系，将根据后续真实使用需求决定。</p></article>
+              </div>
+            </section>
+            <section class="anew-limitations__roadmap" aria-labelledby="anew-limitations-roadmap-title">
+              <header class="anew-design-heading"><h3 id="anew-limitations-roadmap-title"><span>02 / </span>&nbsp;&nbsp;下一阶段路线</h3></header>
+              <div class="anew-limitations__roadmap-grid">
+                <article><header><span>01 / 近期</span><h4>完善首次体验与界面细节</h4></header><ul><li>增加简短、可跳过的欢迎引导，让新用户快速理解产品并开始第一次任务选择。</li><li>根据反馈优化滑动提示、跳过任务的状态说明、「今日大事」标记及每日基础事项的解释。</li><li>完善空状态、过渡反馈、中文界面与六套主题的视觉一致性，并优化文字清晰度、动画适配和无障碍支持。</li><li>明确标注 AI Demo 的模拟性质，避免用户误以为回复来自真实模型。</li></ul></article>
+                <article><header><span>02 / 中期</span><h4>完善核心功能与使用体验</h4></header><ul><li>接入并测试真实 AI 服务，让任务规划能够结合用户的复盘内容生成建议，并提供更自然的对话反馈。</li><li>探索大任务拆解功能，帮助用户将复杂任务转化为可以在 5 分钟内开始的具体行动。</li><li>设计更温和的周度回顾，重点呈现已经完成的进展，而不是强调未完成任务或连续打卡。</li><li>改善数据备份与离线使用能力，提高长期使用的可靠性。</li></ul></article>
+                <article><header><span>03 / 长期</span><h4>验证产品价值与扩展方向</h4></header><ul><li>扩大真实用户测试规模，并与传统待办清单进行对照，评估任务启动时间、决策负担及长期使用体验。</li><li>探索在保护用户隐私的前提下收集匿名使用反馈，为后续设计迭代提供依据。</li><li>根据真实使用需求，评估是否增加账号同步与更深入的个性化功能。</li></ul></article>
+              </div>
+            </section>
+            <section class="anew-limitations__closing" aria-labelledby="anew-limitations-closing-title">
+              <header class="anew-design-heading"><h3 id="anew-limitations-closing-title"><span>03 / </span>&nbsp;&nbsp;项目结语</h3></header>
+              <p>从最初的设计构想，到逐步完成可运行的移动端 Web 应用，Anew 让我有机会将产品思考、交互设计与 AI 辅助开发结合起来。</p>
+              <p>这次实践也让我更加明确：好的设计并不意味着不断增加功能，而是理解用户真正需要什么，并尽可能减少不必要的负担。</p>
+              <p class="anew-limitations__closing-statement"><span>Anew 的目标不是让每一天都更高效，</span> <span>而是让开始一件事变得更容易。</span></p>
+            </section>
           </section>
         </section>
       </div>
@@ -941,7 +1110,10 @@
                   <div class="anew-theme-sample__values">${valueButton(theme.done.background)}${valueButton(theme.done.border)}${valueButton(theme.done.text)}${valueButton(theme.done.check)}</div>
                 </section>
               </div>
-            </div>
+        </section>
+
+        </section>
+      </div>
           `;
         };
 
